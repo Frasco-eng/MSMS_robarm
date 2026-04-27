@@ -1,12 +1,12 @@
 # Latex terminations
-.aux
-.blg
-.brf
-.blg
-.toc
-.log
-.out
-.fls
-.fdb_latexmk
-.synctex.gz
+*.aux
+*.blg
+*.brf
+*.blg
+*.toc
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
