@@ -1,0 +1,348 @@
+%══════════════════════════════════════════════════════════════════════
+\chapter{Thermo-fluid Systems}
+\label{ch:thermofluid}
+%══════════════════════════════════════════════════════════════════════
+
+Thermal and fluid systems require special treatment in the bond graph framework.
+The fundamental difficulty is that heat (energy exchange due to temperature gradients) does not fit naturally into the standard power-product $e \cdot f$ = power unless the correct thermodynamic variables are chosen.
+There are two approaches: the simple \textbf{pseudo-bond graph} (useful for heat conduction problems but limited) and the rigorous \textbf{true bond graph} based on entropy flow as the flow variable.
+
+\section{Thermodynamic background}
+
+\paragraph{Classical vs.\ irreversible thermodynamics.}
+Classical thermodynamics studies equilibrium states and the energy accounting between them, without modelling the transition process.
+\textbf{Irreversible thermodynamics} models the dynamic evolution — how a system transitions from one state to another via heat flows and work — under the assumption of \emph{local pseudo-equilibrium}: at any instant and for any small volume element, the system is in thermodynamic equilibrium, allowing the use of equilibrium state functions locally.
+
+\paragraph{Internal energy and the Gibbs equation.}
+The \textbf{internal energy} per unit mass $u$ of a pure substance depends on entropy per unit mass $s$ and specific volume $v = 1/\rho$:
+\begin{equation}
+  u = u(s, v).
+\end{equation}
+The fundamental thermodynamic relation (\textbf{Gibbs equation}) gives:
+\begin{equation}
+  du = T\,ds - p\,dv,
+\end{equation}
+where $T > 0$ is temperature (absolute) and $p > 0$ is thermodynamic pressure.
+In rate form:
+\begin{equation}
+  \dot{u} = T\dot{s} - p\dot{v}.
+\end{equation}
+The equations of state are the partial derivatives:
+\begin{equation}
+  T = \frac{\partial u}{\partial s}\bigg|_v, \qquad p = -\frac{\partial u}{\partial v}\bigg|_s.
+\end{equation}
+
+\paragraph{Entropy and disorder.}
+Entropy $S$ quantifies microscopic disorder: the number of possible different microscopic arrangements the particles of a system can assume WITHOUT altering the macroscopic observable state (defined by pressure, temperature, volume). It is macroscopically quantified as $S = k_B \ln \Omega$, where $k_B$ is the Boltzmann constant and $\Omega$ is the number of microstates.
+Heat flow between systems at different temperatures is always spontaneous from high-$T$ to low-$T$, always irreversible, and always increases total entropy (second law).
+This irreversibility is the thermodynamic arrow of time. In fact, all physical laws potentially admit time to flow both forward and backward, but time actually always evolves in a forward direction because that is the direction mathematically related to an increase in global entropy.
+
+\paragraph{The thermodynamic laws summary.}
+Before proceeding, it is useful to recall the governing principles:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+    \item \textbf{Zeroth Law:} Transitivity of thermal equilibria (if A is in eq. with B, and B with C, then A is in eq. with C). This defines temperature as a universal comparable quantity.
+    \item \textbf{First Law:} Energy conservation, embodied in the Gibbs equation $\Delta U = Q - W$.
+    \item \textbf{Second Law:} For any possible heat flow, the net and global entropy change is ALWAYS increasing. This defines the irreversibility of time.
+    \item \textbf{Third Law:} As $T \to 0$ K, the system's entropy tends to stabilize to a minimum $S^{\min} \ge 0$.
+\end{itemize}
+
+\begin{insightbox}[Heat vs.\ work — the key distinction]
+\textbf{Heat} $\dot{Q}$ is energy exchange driven by temperature gradients;
+it changes internal energy via the entropy term $T\dot{S}$. \textbf{Work} $\dot{W}$ is energy exchange via macroscopic forces;
+it changes internal energy via $-p\dot{V}$. The critical difference: work is ``ordered'' energy (zero entropy increase in an ideal process);
+heat is ``disordered'' energy (always increases entropy). In nature, \emph{pure work exchange is never possible} — any macroscopic process generates some entropy increase (dissipation), which appears as heat.
+\end{insightbox}
+
+\section{Pseudo-bond graph for heat transfer}
+
+The simplest approach: treat temperature as effort and heat flow rate $\dot{Q}$ as flow. Note that heat flow itself already has the dimensions of power.
+\begin{equation}
+  e \leftrightarrow T, \quad f \leftrightarrow \dot{Q}, \quad \text{but}\quad e\cdot f = T\dot{Q} \neq \text{power}.
+\end{equation}
+The product $T\dot{Q}$ has units of [K$\cdot$W] — it is \emph{not} power.
+This is a \textbf{pseudo-bond graph}: it uses bond graph algebra but with non-power variables.
+Despite this limitation, pseudo-bond graphs give the correct heat transfer equations:
+
+\paragraph{Thermal resistor.}
+Heat flows through a slab of material with thermal conductivity $k$, thickness $l$, area $A$:
+\begin{equation}
+  \dot{Q} = \frac{T_1 - T_2}{R}, \quad R = \frac{l}{kA}.
+\end{equation}
+In the pseudo-bond graph, this is an R-element with $R = l/(kA)$, connected to two 0-junctions representing the two surface temperatures.
+The 1-junction implements $T_1 - T_2$.
+
+\paragraph{The missing element: Thermal Inertia.}
+It is crucial to note that \textbf{there are no thermal inertias}. Let us suppose a thermal I-element existed. In the pseudo-bond graph, its constitutive law would be $\Delta T = I \frac{d\dot{Q}}{dt}$. This implies that a heat flow $\dot{Q}$ could have a constant, non-zero value even if the temperature difference $\Delta T$ is zero, or it could flow against a temperature gradient due to a sort of "thermal momentum". This directly violates the Second Law of Thermodynamics, which postulates that spontaneous heat flow must always be directed from a higher to a lower temperature. Therefore, a thermal I-element cannot exist, as it would imply the possibility of violating fundamental thermodynamics.
+
+\paragraph{Thermal capacitance.}
+A lump of material with uniform temperature $T$, specific heat $c$, and mass $m$ absorbs heat:
+\begin{equation}
+  C\,\dot{T} = \dot{Q}_\mathrm{in} - \dot{Q}_\mathrm{out}, \qquad C = mc.
+\end{equation}
+This is a C-element in the pseudo-bond graph. Causality: $\dot{Q}$ is the flow (input), $T$ is the effort (output) — standard integral causality. The expression for $C$ can be formally derived by assuming the element does negligible work by expanding or contracting (constant volume). From the Gibbs equation $du = T\,ds - p\,dv$, if $dv = 0$, we have $du = T\,ds = dQ/m$. Since the specific heat at constant volume defines $du = c_v dT$, we obtain $dQ = m c_v dT$, or $\dot{Q} dt = m c_v dT$. Integrating this yields $T = T_0 + \frac{1}{mc_v}\int \dot{Q} dt$. Thus, the thermal capacitance is exactly $C = mc_v$.
+
+\begin{warningbox}[Pseudo-bond graphs cannot couple to true bond graphs]
+The pseudo-bond graph cannot be directly coupled to a true mechanical or electrical bond graph via power bonds, because $T\dot{Q} \neq $ power.
+Coupling requires ad-hoc elements (e.g.\ a mechanical-thermal R-field) that handle the power conversion explicitly.
+This limitation motivates the true bond graph approach.
+\end{warningbox}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}, node distance=1.5cm]
+  \node (T1) {$T_1:Se$};
+  \node[circle,draw,minimum size=0.6cm] (j1) [right of=T1] {1};
+  \node[circle,draw,minimum size=0.6cm] (j01) [right of=j1] {0};
+  \node[circle,draw,minimum size=0.6cm] (j12) [right of=j01] {1};
+  \node[circle,draw,minimum size=0.6cm] (j02) [right of=j12] {0};
+  \node[circle,draw,minimum size=0.6cm] (j13) [right of=j02] {1};
+  \node (T11) [right of=j13] {$Se:T_{11}$};
+  
+  \node (R1) [above of=j1, node distance=1cm] {R};
+  \node (C1) [above of=j01, node distance=1cm] {C};
+  \node (R2) [above of=j12, node distance=1cm] {R};
+  \node (C2) [above of=j02, node distance=1cm] {C};
+  \node (R3) [above of=j13, node distance=1cm] {R};
+  
+  \draw[->, thick] (T1) -- (j1);
+  \draw[->, thick] (j1) -- (j01);
+  \draw[->, thick] (j01) -- (j12);
+  \draw[->, thick] (j12) -- (j02);
+  \draw[->, thick] (j02) -- (j13);
+  \draw[->, thick] (j13) -- (T11);
+  
+  \draw[->, thick] (j1) -- (R1);
+  \draw[->, thick] (j01) -- (C1);
+  \draw[->, thick] (j12) -- (R2);
+  \draw[->, thick] (j02) -- (C2);
+  \draw[->, thick] (j13) -- (R3);
+\end{tikzpicture}
+\vspace{0.2cm}
+\\ \textit{Pseudo-bond graph for a pipe wall: alternating R (conduction) and C (thermal mass) elements, analogous to an RC electrical circuit.}
+\end{center}
+
+\section{True bond graph for thermodynamics}
+
+The correct power variable pair for thermal systems is:
+\begin{equation}
+  e \leftrightarrow T \quad\text{(temperature, effort)},
+  \qquad
+  f \leftrightarrow \dot{S} \quad\text{(entropy flow rate, flow)},
+  \qquad
+  P = T\dot{S} = \dot{Q}.
+\end{equation}
+With this choice, $e\cdot f = T\dot{S}$ \emph{is} the true power (the heat power $\dot{Q}$), since $\dot{Q} = T\dot{S}$ for a reversible heat exchange.
+This is the \textbf{true bond graph} for thermal systems.
+
+\paragraph{The pure substance as a C-field.}
+The Gibbs equation $\dot{u} = T\dot{s} - p\dot{v}$ reveals that a pure substance, viewed as a 2-port element, is a \textbf{C-field}:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Port 1 (thermal): effort $T$, flow $\dot{S}$, displacement $S$.
+  \item Port 2 (mechanical): effort $p$, flow $-\dot{V}$, displacement $-V$ (or $\dot{V}$ with sign absorbed into orientation).
+\end{itemize}
+The constitutive law of the C-field is $T = T(S,V)$, $p = p(S,V)$ — the equations of state of the substance.
+The energy stored in the C-field is the internal energy $U(S,V) = mu(s,v)$.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},
+  blk/.style={draw,fill=#1!10,rounded corners=3pt,minimum width=1.6cm,minimum height=0.7cm}]
+  \node[blk=teal,minimum width=1.2cm,minimum height=1.5cm,font=\bfseries] (C) at (0,0) {C};
+  \draw[<-,thick] (-1.5, 0.35) -- (C.west|-{(0,0.35)})
+    node[left]{$\dot{S}$} node[midway,above,font=\scriptsize]{TS port};
+  \draw[->,thick] (-1.5,-0.35) -- (C.west|-{(0,-0.35)})
+    node[left]{$T$};
+  \draw[<-,thick] (1.5, 0.35) -- (C.east|-{(0,0.35)})
+    node[right]{$\dot{V}$} node[midway,above,font=\scriptsize]{pV port};
+  \draw[->,thick] (1.5,-0.35) -- (C.east|-{(0,-0.35)})
+    node[right]{$p$};
+  \node[font=\footnotesize,gray] at (0,-1.3) {2-port C-field: pure substance};
+\end{tikzpicture}
+\end{center}
+
+\section{Equations of state for a perfect gas}
+
+For a perfect (ideal) gas, $pv = RT$ (where $R$ is the specific gas constant) and $u = c_v(T-T_0)$.
+Using the Gibbs equation to find $u(s,v)$:
+
+From $du = T\,ds - p\,dv$, with $p = RT/v$ and $u = c_v T$:
+\begin{equation}
+  ds = \frac{du}{T} + \frac{p}{T}dv = c_v\frac{dT}{T} + R\frac{dv}{v}
+  \quad\Rightarrow\quad
+  s = c_v\ln\frac{T}{T_0} + R\ln\frac{v}{v_0}.
+\end{equation}
+Inverting to express $T$ in terms of $s$ and $v$:
+\begin{equation}
+  \boxed{T(s,v) = T_0\,\exp\!\left(\frac{s}{c_v}\right)\left(\frac{v}{v_0}\right)^{-R/c_v}}
+  \qquad\Rightarrow\quad
+  p(s,v) = -\frac{\partial u}{\partial v}\bigg|_s = \frac{RT}{v} = p_0\,\exp\!\left(\frac{s}{c_v}\right)\left(\frac{v}{v_0}\right)^{-\frac{c_p}{c_v}}.
+\end{equation}
+These are the \textbf{complete constitutive equations} for the perfect-gas C-field in integral causality (inputs: $\dot{S}$, $\dot{V}$; outputs: $T$, $p$).
+The constitutive law is nonlinear even for a perfect gas.
+
+\begin{insightbox}[Maxwell reciprocal relations for the gas C-field]
+The Maxwell reciprocal condition $\partial T/\partial(-V)|_S = \partial(-p)/\partial S|_V$ is equivalent to the compatibility of the Gibbs equation — it holds by construction when the constitutive law is derived from a state function $u(s,v)$.
+Always derive equations of state from a potential (internal energy, enthalpy, Helmholtz or Gibbs free energy) to guarantee this consistency. Arbitrary constitutive laws would not, in general, allow the existence of a conservative internal energy function, potentially allowing net energy production in a cycle (a perpetual motion machine of the first kind).
+\end{insightbox}
+
+\paragraph{Legendre transforms and mixed causality.}
+When mixed causality is needed on the C-field (e.g.\ pressure $p$ as input, volume $V$ as output, while entropy $S$ remains input with temperature $T$ as output), the appropriate potential is the \textbf{enthalpy} $h(s,p) = u + pv$:
+\begin{equation}
+  \frac{\partial h}{\partial s} = T, \qquad \frac{\partial h}{\partial p} = v.
+\end{equation}
+The full set of Legendre transforms:
+\begin{align}
+  h(s,p) &= u + pv \quad\Rightarrow\quad \frac{\partial h}{\partial s}=T,\;\frac{\partial h}{\partial p}=v \quad\text{(enthalpy)}\\
+  f(T,v) &= u - Ts \quad\Rightarrow\quad \frac{\partial f}{\partial T}=-s,\;\frac{\partial f}{\partial v}=-p \quad\text{(Helmholtz)}\\
+  g(T,p) &= u + pv - Ts \quad\Rightarrow\quad \frac{\partial g}{\partial T}=-s,\;\frac{\partial g}{\partial p}=v \quad\text{(Gibbs free energy)}
+\end{align}
+Each corresponds to a different causal form of the C-field.
+
+\section{True bond graph for heat transfer: the thermal resistor}
+
+In the true bond graph, a thermal resistor is a \textbf{2-port R-field}.
+Two reservoirs at temperatures $T_1$ and $T_2$ exchange heat $\dot{Q} = H(T_1 - T_2)$ through the resistor.
+With $\dot{Q} = T_i\dot{S}_i$:
+\begin{equation}
+  \dot{S}_1 = \frac{\dot{Q}}{T_1} = \frac{H(T_1-T_2)}{T_1}, \qquad
+  \dot{S}_2 = \frac{\dot{Q}}{T_2} = \frac{H(T_1-T_2)}{T_2}.
+\end{equation}
+The net entropy production rate is:
+\begin{equation}
+  \dot{S}_2 - \dot{S}_1 = H(T_1-T_2)\left(\frac{1}{T_2}-\frac{1}{T_1}\right) = H\frac{(T_1-T_2)^2}{T_1 T_2} \geq 0.
+\end{equation}
+This is always non-negative (second law of thermodynamics).
+Unlike the pseudo-bond graph resistor, the true R-field is \emph{not} symmetric in entropy flow: more entropy leaves the hot side ($\dot{S}_1$) than enters the cold side ($\dot{S}_2$) — entropy is generated by the irreversible heat flow. Although the 2-port resistive field is power-conservative ($T_1\dot{S}_1 = T_2\dot{S}_2$), it is \textbf{neither a transformer nor a gyrator}, because it strictly increases the entropy of the system independently of the heat flow direction.
+
+\begin{warningbox}[The only admissible causality for the thermal R-field]
+The constitutive relation $\dot{S}_i = H(T_1-T_2)/T_i$ shows that \emph{both temperatures must be inputs} to compute the entropy flows.
+This means both effort-in causalities are imposed: $T_1$ and $T_2$ are inputs, $\dot{S}_1$ and $\dot{S}_2$ are outputs.
+No other causal form is admissible.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}, node distance=2cm]
+  \node (T1) at (0,0) {$T_1$};
+  \node[draw, minimum width=1cm, minimum height=0.6cm] (R) at (2.5,0) {R};
+  \node (T2) at (5,0) {$T_2$};
+  
+  \draw[->, thick] (0.5,0) -- node[above] {$\dot{S}_1$} (1.9,0);
+  \draw[thick] (1.9,-0.2) -- (1.9,0.2); % Causal stroke at R
+  
+  \draw[->, thick] (3.1,0) -- node[above] {$\dot{S}_2$} (4.5,0);
+  \draw[thick] (3.1,-0.2) -- (3.1,0.2); % Causal stroke at R
+\end{tikzpicture}
+\end{center}
+\end{warningbox}
+
+\section{Thermomechanical coupling}
+
+A mechanically dissipative element (e.g.\ a friction force) dissipates power $\dot{W}_\mathrm{diss} = F_f \dot{x} > 0$.
+In the true bond graph, this power heats the surrounding fluid or structure: $T\dot{S}_\mathrm{gen} = F_f\dot{x}$.
+The dissipated mechanical power enters the thermal C-field via its TS port.
+This is modelled as a \textbf{2-port R-field} connecting the mechanical port $(F, \dot{x})$ to the thermal port $(T, \dot{S})$.
+The constitutive equations are:
+\begin{equation}
+  F_f = A\,\mathrm{sgn}(\dot{x}) \quad\text{(Coulomb friction)},
+  \qquad
+  \dot{S}_\mathrm{gen} = \frac{|F_f\dot{x}|}{T} = \frac{A|\dot{x}|}{T} \geq 0.
+\end{equation}
+This models a situation where frictional energy reaches the fluid instantaneously (a standard simplifying assumption).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}, node distance=2.5cm]
+  \node (mech) {$1$};
+  \node[draw, minimum width=1.2cm, minimum height=0.8cm] (R) [right of=mech] {R};
+  \node (therm) [right of=R] {$0$};
+  
+  \draw[->, thick] (mech) -- node[above] {$F_f$} node[below] {$\dot{x}$} (R);
+  \draw[->, thick] (R) -- node[above] {$T$} node[below] {$\dot{S}_\mathrm{gen}$} (therm);
+  
+  \node[font=\footnotesize, gray] at (0,-1) {Mechanical port};
+  \node[font=\footnotesize, gray] at (5,-1) {Thermal port};
+\end{tikzpicture}
+\end{center}
+
+\figplaceholder{Full thermo-mechanical bond graph: two-chamber gas system with piston (TF), thermal partition (R-field), friction (2-port R-field with TS port), and two C-fields for gas chambers}{See slides 19--20, pack M08}
+
+\paragraph{Interpretation.}
+The bond graph makes visible what energy accounting reveals: when the piston moves, work is done on or by the gas.
+Some of that work is converted to heat through friction and thermal conduction, increasing entropy.
+The ``lost'' mechanical energy is not gone — it has become heat energy stored in the gas and unavailable for mechanical work.
+The irreversibility is embedded in the R-fields.
+
+\section{Thermoelectric R-element}
+
+A resistor dissipating electrical power at rate $ei$ also converts that power to heat, raising its temperature $T$.
+The true bond graph couples the electrical port $(e, i)$ to the thermal port $(T, \dot{S})$:
+\begin{equation}
+  ei = T\dot{S} \quad\Rightarrow\quad \dot{S} = \frac{ei}{T}.
+\end{equation}
+If $R(T) = R_0(1 + \gamma(T - T_0))$ (temperature-dependent resistance), the constitutive law coupling all four variables is nonlinear.
+This is the \textbf{thermoelectric R-field} — a 2-port element with one electrical port and one thermal port, physically representing the Joule heating effect.
+
+If the resistor's body temperature $T$ is varying and depends on how much thermal energy is stored in it, it must be modeled as a thermal C-element attached to the 0-junction. Assuming no significant power flows at the $p\dot{V}$ port (negligible expansion work against the atmosphere), we use the linear relation $\Delta T = Q/C$. However, we must express $T$ as a function of $S$. Since $dQ = T dS$, we have $dT = \frac{T dS}{C}$, which integrates to $S = C \ln(T/T_0)$. Inverting this yields the nonlinear constitutive equation for the resistor's thermal capacitance in the true bond graph:
+\begin{equation}
+  T(S) = T_0 e^{S/C}.
+\end{equation}
+
+\begin{insightbox}[True vs.\ pseudo in practice]
+The true bond graph (with $T, \dot{S}$ as thermal port variables) is conceptually correct and allows seamless coupling to mechanical and electrical domains via standard power bonds.
+The pseudo-bond graph ($T, \dot{Q}$) is simpler and sufficient for pure heat conduction problems with no coupling to other domains.
+For mixed thermomechanical or thermoelectric systems — which is the case for most real mechatronic components — the true formulation is necessary.
+\end{insightbox}
+
+\section{Fluid dynamic systems revisited: Eulerian approach and Bernoulli}
+
+Previously, fluid systems were modeled using a simple 1D lumped parameter approach (Lagrangian perspective). While plausible for short segments and linear elements, estimating the fluid inertia $I = \rho L / A$ has severe limitations for transient conditions, varying density, or varying cross-sectional areas. 
+
+A more accurate description requires the \textbf{Eulerian approach}, where observations are made at a fixed point in space as different fluid particles pass by. The Eulerian Newton's law relates the velocity field to the pressure gradient and gravity:
+\begin{equation}
+  \rho\frac{Dv}{Dt} = \rho\left(\frac{\partial v}{\partial t} + v\frac{\partial v}{\partial s}\right) = -\frac{\partial p}{\partial s} - \rho g\frac{dz}{ds}
+\end{equation}
+where $D/Dt$ is the material derivative. For an incompressible fluid, $v(s,t) = Q(t)/A(s)$. Substituting this into the Eulerian Newton's law and integrating along the streamline from $s_0$ to $s_l$ yields the \textbf{Bernoulli equation} for the line element:
+\begin{equation}
+  I\dot{Q} + \frac{\rho Q^2}{2}\left(\frac{1}{A_l^2} - \frac{1}{A_0^2}\right) = p_0(t) - p_l(t) - \rho g(z_l - z_0)
+\end{equation}
+where $I = \rho \int_0^l \frac{ds}{A(s)}$ is the generalized fluid inertia.
+
+\paragraph{The Bernoulli Resistor ($R_B$).}
+The term involving $Q^2$ represents the dynamic pressure associated with the kinetic energy of the fluid. In a bond graph, it is represented as an unusual resistance, the \textbf{Bernoulli resistance} $R_B$. 
+\begin{equation}
+  \Delta p_\mathrm{dyn} = \frac{\rho Q^2}{2}\left(\frac{1}{A_l^2} - \frac{1}{A_0^2}\right)
+\end{equation}
+Unlike standard resistors, $R_B$ does not always dissipate power. It models the conversion between static pressure energy and kinetic energy (dynamic pressure). 
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+    \item If $A_0 > A_l$ (a nozzle), the fluid accelerates, kinetic energy increases, and static pressure drops. This operates in the \textbf{static power loss} region.
+    \item If $A_0 < A_l$ (a diffuser), the fluid decelerates, kinetic energy decreases, and static pressure is recovered. This operates in the \textbf{static power recovery} region, where the resistance appears to \emph{supply} static power.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth, scale=0.85]
+  \draw[->] (-4,0) -- (4,0) node[right] {$Q$};
+  \draw[->] (0,-4) -- (0,4) node[above] {$\Delta p_\mathrm{dyn}$};
+  
+  % A0 > Al (Nozzle)
+  % Corrected syntax: from (-3,3) bend at (0,0) to (3,3)
+  \draw[thick, dashed] (-3,3) parabola bend (0,0) (3,3);
+  \node[font=\footnotesize] at (2.5, 3.2) {$A_0 > A_l$};
+  \node[font=\scriptsize, align=center] at (-2.5, 2) {Static\\power recovery};
+  \node[font=\scriptsize, align=center] at (2.5, 1.5) {Static\\power loss};
+  
+  % A0 < Al (Diffuser)
+  % Corrected syntax: from (-3,-3) bend at (0,0) to (3,-3)
+  \draw[thick] (-3,-3) parabola bend (0,0) (3,-3);
+  \node[font=\footnotesize] at (2.5, -2.5) {$A_0 < A_l$};
+  \node[font=\scriptsize, align=center] at (-2.5, -2) {Static\\power loss};
+  \node[font=\scriptsize, align=center] at (2.5, -1.5) {Static\\power recovery};
+\end{tikzpicture}
+\vspace{0.2cm}
+\\ \textit{Constitutive curves of the Bernoulli Resistor showing static power loss and recovery regions.}
+\end{center}
+
+\section{Pseudo-bond graphs for compressible gases}
+
+When dealing with compressible gases where density changes drastically, maintaining a true bond graph representation becomes computationally complex because the Eulerian description entangles inertial and compliance aspects. This motivates the \textbf{thermodynamic accumulator}, a specialized pseudo-bond graph element.
+
+The control volume transports mass, so the flow variables become mass flow rate $\dot{m}$ and enthalpy flow rate $\dot{E}_h$. The accumulator acts as a multi-port C-field with integral causality, storing internal energy $E$ and mass $m$:
+\begin{equation}
+  \dot{E} = \sum \dot{E}_{h,\mathrm{in}} - \sum \dot{E}_{h,\mathrm{out}} - p\dot{V}, \qquad \dot{m} = \sum \dot{m}_\mathrm{in} - \sum \dot{m}_\mathrm{out}
+\end{equation}
+This formulation smoothly interfaces with restrictors (modeling isentropic nozzles) to build complete, low-order, accurate models of interacting thermo-fluid systems, such as piston-ported engines or air cylinders with leakage.

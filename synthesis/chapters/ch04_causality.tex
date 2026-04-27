@@ -1,0 +1,164 @@
+%══════════════════════════════════════════════════════════════════════
+\chapter{Causality and System Equations}
+\label{ch:causality}
+%══════════════════════════════════════════════════════════════════════
+
+In the world of state-space equations, the very same system can be described with different (but equivalent) sets of differential equations. The whole order of the system equations will always be the same (equal to the order of the model). For instance, a system can be represented by a single nth-order differential equation in terms of one unknown variable, or $n$ first-order coupled differential equations in terms of $n$ unknown variables (system theory approach), or various combinations of unknowns and equations of appropriate orders obtained with the Lagrangian approach. 
+
+We aim for a unified and easier methodology: Bond Graphs! One reason for constructing bond graphs is that it is straightforward to derive system equations and to develop numerical simulations. We can also go from a bond graph directly to a simulation without first obtaining the equations of motion manually. The real virtue of bond graph modelling becomes apparent when one considers that all system models use the same symbols. One formulation and solution procedure is needed!
+
+Assigning causality to a bond graph is the step that transforms a structural description into a computational one. It decides which variables are inputs and which are outputs at every port, propagates these choices through the graph, and ultimately determines the mathematical character of the resulting model. The systematic procedure for doing this — the Sequential Causal Assignment Procedure (SCAP) — is the workhorse algorithm for deriving state-space equations from bond graphs.
+
+\section{The augmented bond graph}
+
+Before deriving equations, the bond graph must be \textbf{augmented}: 
+\begin{enumerate}
+  \item The bond graph has been designed, and an appropriate power convention has been assigned.
+  \item All bonds are numbered consecutively. This creates the \emph{computational bond graph}.
+  \item Each bond is assigned a causal orientation (causal stroke) for the $e$ and $f$ variables.
+\end{enumerate}
+
+The causal strokes record, for every bond, whether effort flows left-to-right or right-to-left — i.e.\ which element is computing each variable. The power half-arrow and the causal stroke are completely independent pieces of information. The half-arrow records the assumed positive power direction; the causal stroke records the computational input--output assignment. Do not confuse them. Power sign convention and causality assignment are totally unrelated.
+
+\section{Causality constraints by element type}
+
+In a causal sense, there are two types of bond graph elements: sources ($Se$ and $Sf$) and junctions (0, 1, TF, and GY), that must meet certain causal conditions or their basic definitions are no longer valid. If a system cannot meet these causal conditions, the basic physical model on which the bond graph is based must be restudied; an impossible situation that is not capable of sensible mathematical resolution has been created.
+
+Every element imposes constraints on the causalities of its bonds:
+\begin{itemize}[leftmargin=2em,itemsep=3pt]
+  \item \textbf{Se}: must impose effort — the causal stroke is always \emph{away} from the Se.
+  \item \textbf{Sf}: must impose flow — the causal stroke is always \emph{toward} the Sf.
+  \item \textbf{C (integral causality)}: flow is input, effort is output — stroke away from C. A capacitor in integral causality is used as a charge storage and for this it fills having its own voltage.
+  \item \textbf{C (derivative causality)}: effort is input, flow is output — stroke toward C. This is the \emph{non-preferred} form. A capacitor in derivative causality is used as a current generator to keep up lacks of voltage by discharging $I=C\dot{V}$.
+  \item \textbf{I (integral causality)}: effort is input, flow is output — stroke toward I. An inductor in integral causality is used as a momentum storage and for this it fills having its own current (speed).
+  \item \textbf{I (derivative causality)}: flow is input, effort is output — stroke away from I. Non-preferred. An inductor in derivative causality is used as a voltage generator to keep up lacks of current by discharging $V=L\dot{I}$.
+  \item \textbf{R}: generally indifferent (either causality), unless the constitutive law is not invertible (e.g.\ Coulomb friction, which is not a bijection in $e$--$f$).
+  \item \textbf{TF}: one port effort-in, the other effort-out (one stroke in, one out).
+  \item \textbf{GY}: both ports effort-in, or both effort-out (both strokes on the same side).
+  \item \textbf{0-junction}: exactly one bond has its effort directed \emph{into} the junction (one stroke pointing away from the junction); all others have effort directed out (stroke toward junction).
+  \item \textbf{1-junction}: exactly one bond has its flow directed \emph{into} the junction (one stroke toward junction); all others have flow directed out (stroke away from junction).
+\end{itemize}
+
+These constraints mean that once any one element in a connected sub-graph gets its causality assigned, that assignment propagates through junctions and 2-port elements like a chain reaction. The constraint elements represent the physical structure in the system, and assigning causality to them means that they are used correctly in a particular "input-output fashion".
+
+\section{The Sequential Causal Assignment Procedure (SCAP)}
+
+\begin{enumerate}[leftmargin=2em,label=\textbf{Step \arabic*.},itemsep=4pt]
+  \item \textbf{Assign source causalities.} For each Se and Sf, assign the only admissible causal form. Propagate the implications through all constraint elements (0, 1, TF, GY) which may be connected to it. 
+  \item Repeat step 1 until all sources have been assigned the required causality.
+  \item \textbf{Assign storage elements (preferred causality).} For each C and I element not yet causally assigned, assign \emph{integral causality} (preferred). Propagate through constraint elements. 
+  \item Repeat step 3 until all storage elements have been assigned a causality. 
+  \item \textbf{Assign R-elements (if still needed).} If bonds remain unassigned after steps 1--4, choose any unassigned R-element and assign an arbitrary causality to it, and extend the causal implications through the graph. Each such arbitrary assignment signals an \textbf{algebraic loop}. 
+  \item Repeat step 5 until all R-elements have been used.
+  \item \textbf{Assign remaining bonds arbitrarily.} Any remaining unassigned bond (joined to two constraint elements) can be assigned arbitrarily. Extend the causal implications. Each produces another algebraic loop.
+  \item Repeat step 7 until all remaining bonds have been assigned.
+\end{enumerate}
+
+The procedure is straightforward and orderly, and it can be implemented in a simulation environment. Note that in assigning causality, the results do not depend on the order of bonds chosen (except in special circumstances).
+
+\begin{insightbox}[What the SCAP tells you]
+Several situations can arise when applying the SCAP, revealing the type of mathematical model:
+\begin{itemize}[leftmargin=1.5em,itemsep=0pt]
+  \item \textbf{All storage elements in integral causality, and the graph is complete after step 4}: the simplest and most common case. The model yields explicit ODEs directly.
+  \item \textbf{Causality is completed using steps 5-8}: one or more \emph{algebraic loops} exist. The model involves coupled algebraic--differential equations; some effort or flow variable is algebraically related to itself and must be solved simultaneously.
+  \item \textbf{Some storage elements forced into derivative causality (during step 3)}: the model contains \emph{implicit} differential equations (DAEs). The number of derivative-causality storage elements equals the \emph{reduction in system order} relative to the total element count.
+\end{itemize}
+\end{insightbox}
+
+\section{Reading off state-space equations: Basic formulation \& Reduction}
+
+From a fully augmented bond graph model, the equations for the system can be developed in a very orderly fashion, either by hand or thanks to a simulation package. Very general and powerful procedures are available for producing sets of system equations, consisting of these main steps: select input and energy state variables, formulate the initial set of system equations, and reduce the initial equations to state-space form.
+
+The selection of inputs is straightforward, since they are associated to each source element. These variables will appear in the final state-space equations if they have any effect on system behaviour.
+
+The state variables are:
+\begin{itemize}[leftmargin=2em,itemsep=0pt]
+  \item The \textbf{momentum $p$} on every I-element in \emph{integral} causality.
+  \item The \textbf{displacement $q$} on every C-element in \emph{integral} causality.
+\end{itemize}
+
+It is useful to indicate the \textbf{co-energy variables}: flows on the I-elements ($f = \Phi_I^{-1}(p)$) and efforts on the C-elements ($e = \Phi_C^{-1}(q)$). Co-energy variables appear in the initial formulation and then they are eliminated during the reduction process since they are function of the state.
+
+The order of the system equals the number of energy storage elements in integral causality. The derivation procedure is systematic:
+
+\begin{enumerate}[leftmargin=2em,label=\textbf{(\arabic*)},itemsep=3pt]
+  \item For each state variable, write its rate of change (time derivative) as an effort or a flow: $\dot{p} = e$ or $\dot{q} = f$.
+  \item Causality is used to track the efforts and flows through the bond graph. The causal stroke tells us which element is \emph{providing} this effort or flow. Trace through the bond graph from the state variable's bond, substituting at each junction and element, until only sources and \textbf{co-energy variables} remain. It makes no difference which state variable we start with.
+  \item Substitute the co-energy variables last to obtain equations purely in state variables and inputs. This leads to explicit first-order equations.
+\end{enumerate}
+
+\figplaceholder{Example 1: Formulation of a simple 2-state system}{See slides 18-19, pack M04}
+
+\begin{mathbox}[Simple example: RC circuit]
+State variable: $q_2$ on C. Input: $e_1(t)$ from Se.\smallskip
+
+From the 0-junction: $e_2 = e_1 - e_4$ (0-jct, effort balance).\newline
+From the 1-junction: $e_4 = R_4 f_4 = R_4 f_2$ (R-element, effort-in causality, same flow on 1-jct).\newline
+Co-energy: $f_2 = \dot{q}_2$, and $e_2 = q_2/C_2$.\medskip
+
+Result: $\dot{q}_2 = f_2 = \frac{e_1 - q_2/C_2}{R_4}$ — the standard RC first-order equation.
+\end{mathbox}
+
+\paragraph{The 1-junction encodes KVL, the 0-junction encodes KCL.}
+Reading equations from a bond graph is essentially applying Kirchhoff's laws automatically: the 0-junction says ``efforts sum to zero around a node'' (I Kirchhoff); the 1-junction says ``flows sum to zero around a loop'' (V Kirchhoff). Causality tells you which variable is expressed in terms of the others.
+
+\figplaceholder{Example 3: System with a transformer and multiple states}{See slides 20-23, pack M04}
+
+\section{Algebraic loops}
+
+Talking about state-space equations formulation, in situations in which we do NOT have algebraic-loops and we have ALL storage energy elements in integral causality, the formulation is very straight-forward, obtaining explicit differential equations. Instead, when we have algebraic loops (we have encountered steps 5-6 of the SCAP) and/or we have some energy storage elements in derivative causality, the formulation is not anymore so immediate! 
+
+An algebraic loop arises when a chain of elements forms a closed ring with no energy-storage element breaking it. In that loop, one variable (effort or flow) becomes algebraically related to itself (as well as to other inputs and co-energy state variables). Tracing around the loop brings you back to your starting point: $e_1 = F_1(e_2, f_2)$, $e_2 = F_2(e_3, f_3) \dots$ until we reach again the initial variable.
+
+The procedure for handling algebraic loops is to first make an arbitrary causal assignment on one of the causally unassigned bonds and then propagate the causal information as far as possible. If the causality completes after one arbitrary assignment, then there is one algebraic loop. The more loops involved, the more difficult the final formulation becomes.
+
+\begin{warningbox}[Cause of algebraic loops]
+Algebraic loops always arise from a \textbf{modelling simplification}. For example, two parallel dampers with no masses to separate them create an algebraic loop in force. In reality, there would be some small compliance or inertia in between; the idealisation of perfectly rigid connections removes it and creates the loop. 
+\end{warningbox}
+
+When SCAP is stuck on step 4, it is necessary to arbitrarily assign causality to one bond. It is recommended that when a resistance element is involved in the algebraic loop, the resistance element be chosen for the arbitrary assignment (step 5). It is customary to choose the variable that was arbitrarily selected to be the output from the R-element and the input to the rest of the system. 
+
+In order to solve the algebraic loop, we have to collect all the equations involved in the loop and solve the system to find an expression of $e/f$ that depends \emph{only} on inputs and/or co-energy state variables. This explicit algebraic equation can then be substituted directly into the ODEs.
+
+For linear systems, this procedure will work for multiple loops, although solving by hand becomes formidable rather quickly. For nonlinear systems, it may not be possible to invert some of the algebraic relationships (e.g. Coulomb friction). When these inversions appear to be impossible, we HAVE TO eradicate the problem at the root by passing to less simplistic modelling assumptions!
+
+\figplaceholder{Algebraic Loop Example: Assigning arbitrary causality on an R-element}{See slides 26-29, pack M04}
+
+\section{Derivative causality}
+
+Another possible consequence of certain modelling assumptions is that, after sequential causal assignment, one or more energy storage elements are forced into derivative causality. 
+When a C-element is forced to accept derivative causality (effort-in), it means that its effort (and hence its displacement $q = Ce$) is \emph{algebraically determined} by the rest of the system — it does not contribute an independent state variable to the final equations. This occurs when two C-elements are connected in a configuration that rigidly constrains their displacements (e.g.\ two springs rigidly connected without an intervening mass). The system order is reduced by one per derivative-causality C.
+
+Similarly for I-elements in derivative causality (flow-in): their momenta are algebraically determined. The independent state variables remain the energy variables in the energy storage elements with integral causality. (Note: The derivative elements do still store energy!).
+
+The true problem arises when formulating the equations. When we encounter a C/I element in derivative causality, we are guaranteed to end up with its power variable that is NOT the co-energy one ($\dot{q}$ for C-elements and $\dot{p}$ for I-elements). We end up with a double problem: we end up with the derivative of an energy variable, AND this energy variable is NOT a state one!
+
+These situations always signal an \textbf{implicit (DAE) model}. Implicit state equations can be algebraically transformed to explicit ones, but this is not necessarily a simple task. 
+
+\paragraph{Handling Derivative Causality Algebraically:}
+Given the dependent energy variable of a C/I element in derivative causality, it is always guaranteed that it is algebraically related (constrained) to variables that are independent state ones. 
+\begin{enumerate}
+    \item Find out (by inspecting the BG) the algebraic relation that gives the energy dependent variable as a function of the state ones.
+    \item Differentiate that relation to obtain an expression for $\dot{q}$ (for C) or $\dot{p}$ (for I) as a function of differentiated state variables.
+    \item Substitute this back into your equations. The result is a valid state equation, but it will be in implicit form.
+    \item To get it in explicit form, further algebraic manipulations are required to isolate the derivatives of the state variables on the left side.
+\end{enumerate}
+
+\figplaceholder{Derivative Causality Example: Neglecting motor inertia}{See slides 34-36, pack M04}
+
+\paragraph{Handling Derivative Causality at the Root:}
+Derivative causality is ALWAYS caused by too simplistic modelling assumptions! It physically indicates an over-idealisation (e.g.\ perfectly rigid connections between compliant elements, or massless inertial elements). 
+
+It is always possible to revisit the modelling assumptions that resulted in the formulation problem and change these assumptions to yield a model that is virtually the same as the original one, but without the formulation problems. Introducing a new energy storage element (a tiny mass or compliance) restores integral causality and ordinary ODE structure. 
+
+There are some computational penalties that accompany very small added inertias or very stiff added compliances in a model (it introduces a fast time scale, making the system "stiff" for numerical solvers). However, for some systems, these penalties are a very small price to pay for eliminating formulation problems at the root.
+
+\section{System order and physical meaning}
+
+The order of a bond graph model equals the number of independent energy storage elements. This is a fundamental invariant: it does not matter which set of state variables is chosen (positions vs.\ momenta, etc.) — the order is always the same. Equivalently, the order equals the minimum number of initial conditions needed to uniquely determine future evolution.
+
+The energy of the system at any instant is the sum of the energies stored in all elements with integral causality:
+\begin{equation}
+  E_{\mathrm{total}}(t) = \sum_{C\text{-elements}} E_C(q) + \sum_{I\text{-elements}} E_I(p).
+\end{equation}
+This is the \textbf{Hamiltonian} of the system (in the linear case, $E = \frac{1}{2}\mathbf{x}^T Q \mathbf{x}$ for an appropriate positive-definite matrix $Q$).

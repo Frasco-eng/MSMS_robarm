@@ -1,0 +1,137 @@
+\documentclass[10pt,a4paper,openany]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{palatino}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm} % <-- ADDED: For bold math symbols (vectors, matrices) used in Ch05 & Ch06
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx} % <-- ADDED: Crucial for inserting real images later
+\usepackage{float}    % <-- ADDED: For precise figure placement [H]
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,shapes.misc,
+  calc,decorations.pathreplacing,fit,backgrounds,matrix,decorations.markings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[many]{tcolorbox}
+\usepackage{hyperref}
+
+% ── geometry ─────────────────────────────────────────────────────────
+\geometry{top=2.2cm,bottom=2.2cm,left=2.4cm,right=2.4cm,headheight=13pt}
+
+% ── headers ──────────────────────────────────────────────────────────
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── chapter/section titles (GRAYSCALE & FIXED) ───────────────────────
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{black}}
+  {\filleft\large Chapter~\thechapter}{1ex}
+  {\titlerule[1pt]\vspace{1ex}\filright\LARGE}
+  [{\vspace{1ex}\titlerule[1pt]}]
+
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{black}}
+  {\thesection}{1em}{}
+  [{\titlerule[0.4pt]}]
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries\color{black}}
+  {\thesubsection}{1em}{}
+
+% ── tcolorboxes (GRAYSCALE) ──────────────────────────────────────────
+\newtcolorbox{insightbox}[1][]{enhanced,breakable,
+  colback=white,colframe=black,
+  fonttitle=\bfseries\small,title={Key Insight\ifx&#1&\else: #1\fi},
+  boxrule=1pt,arc=3pt,drop fuzzy shadow=black!20,left=7pt,right=7pt,top=3pt,bottom=3pt}
+
+\newtcolorbox{mathbox}[1][]{enhanced,breakable,
+  colback=black!3,colframe=black,
+  fonttitle=\bfseries\small,title={Derivation\ifx&#1&\else: #1\fi},
+  boxrule=1pt,arc=3pt,left=7pt,right=7pt,top=3pt,bottom=3pt}
+
+\newtcolorbox{warningbox}[1][]{enhanced,breakable,
+  colback=black!5,colframe=black,
+  fonttitle=\bfseries\small,title={Watch out\ifx&#1&\else: #1\fi},
+  boxrule=1pt,arc=3pt,left=7pt,right=7pt,top=3pt,bottom=3pt}
+
+\newtcolorbox{defbox}[1][]{enhanced,breakable,
+  colback=white,colframe=black,
+  fonttitle=\bfseries\small,title={Definition\ifx&#1&\else: #1\fi},
+  boxrule=1pt,arc=3pt,left=7pt,right=7pt,top=3pt,bottom=3pt}
+
+% image placeholder
+\newcommand{\figplaceholder}[2]{%
+  \begin{center}
+  \begin{tikzpicture}
+    \draw[dashed,gray!60,thick,rounded corners=4pt]
+      (0,0) rectangle (12cm,3.8cm);
+    \node[gray!70,font=\small\itshape,align=center] at (6cm,1.9cm)
+      {$\blacksquare$\quad #1\\[4pt]\footnotesize #2};
+  \end{tikzpicture}
+  \end{center}}
+
+% ── macros ───────────────────────────────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ddt}{\frac{d}{dt}}
+\newcommand{\ppt}{\frac{\partial}{\partial t}}
+\newcommand{\ppx}{\frac{\partial}{\partial x}}
+
+% ── theorems ─────────────────────────────────────────────────────────
+\theoremstyle{definition}
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+
+% ── hyperref (GRAYSCALE) ─────────────────────────────────────────────
+\hypersetup{colorlinks,linkcolor=black,urlcolor=black,
+  pdftitle={Modelling and Simulation of Mechatronic Systems -- Study Notes}}
+
+%══════════════════════════════════════════════════════════════════════
+\begin{document}
+%══════════════════════════════════════════════════════════════════════
+
+\title{\vspace{-1cm}
+  \LARGE\bfseries Modelling and Simulation\\of Mechatronic Systems\\[0.5cm]
+  \large\normalfont\itshape Complete Study Notes\\[0.3cm]
+  \normalsize\textcolor{gray}{Based on A.~Macchelli's lectures --- UniBO DISI}}
+\author{Study Notes}
+\date{\today}
+\maketitle\thispagestyle{empty}
+
+\tableofcontents\newpage
+
+%──────────────────────────────────────────────────────────────────────
+\part{Foundations of Bond Graph Modelling}
+%──────────────────────────────────────────────────────────────────────
+ \include{chapters/ch01_intro}
+ \include{chapters/ch02_elements}
+ \include{chapters/ch03_system_models}
+
+%──────────────────────────────────────────────────────────────────────
+\part{Causality, Equations and Advanced Structures}
+%──────────────────────────────────────────────────────────────────────
+ \include{chapters/ch04_causality}
+ \include{chapters/ch05_fields}
+
+%──────────────────────────────────────────────────────────────────────
+\part{Mechanical, Distributed and Thermo-fluid Systems}
+%──────────────────────────────────────────────────────────────────────
+ \include{chapters/ch06_multibody}
+ \include{chapters/ch07_distributed}
+ \include{chapters/ch08_thermofluid}
+
+\end{document}

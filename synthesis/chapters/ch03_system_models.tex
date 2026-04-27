@@ -1,0 +1,162 @@
+%══════════════════════════════════════════════════════════════════════
+\chapter{System Models in Different Domains}
+\label{ch:systemmodels}
+%══════════════════════════════════════════════════════════════════════
+
+Using the bond graph arsenal, it is possible to create mathematical models for a wide variety of physical systems (but not for all, e.g. thermal systems are typically not included here). With the nine basic elements in hand, we can build bond graph models of electrical circuits, mechanical systems (translational, rotational, planar), and hydraulic circuits. The procedure is systematic and domain-independent; once mastered for one domain, it transfers immediately to all others. We start with single-energy-domain systems, then introduce transducer elements (e.g., motors, sensors), and finally arrive at multi-energy-domain (mechatronic) systems.
+
+\section{Electrical circuits and networks}
+
+Any electrical circuit can be modelled by a bond graph containing elements of the set $\{ 0, 1, R, C, I, Se, Sf \}$. For electrical circuits the mapping to bond graph variables is direct: voltage is effort, current is flow. The 0-junction encodes Kirchhoff's current law at a node (same voltage, currents sum to zero); the 1-junction encodes Kirchhoff's voltage law around a loop (same current, voltage drops sum to zero).
+
+\paragraph{Construction procedure.}
+Constructing the overall bond graph model is much easier if a procedure can be followed that ensures success regardless of the complexity.
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Assign a power convention}: for each circuit element choose positive current direction and positive voltage drop. Talking about power in BG, we typically ensure that, when positive, power is flowing \emph{towards} the passive 1-port element. Note that active elements are elements providing power (sources, but also energy-storing elements freeing their energy). In some situations, sources may even absorb power.
+  \item \textbf{One 0-junction per node voltage}: place a 0-junction for every distinct node voltage (including what will be the ground). Every bond touching a 0-junction carries the same effort (node voltage).
+  \item \textbf{One 1-junction per element}: for each circuit element (R, L, C, source), insert a 1-junction to represent the voltage difference across it. By properly directing the half-arrows on 1-junctions, the voltage drop can be established across each element. Connect the 1-junction between the two 0-junctions at its terminals. Attach the bond graph element (R, I, C, Se, Sf) to the 1-junction.
+  \item \textbf{Ground = zero effort source}: choose a ground node and connect the ground 0-junction to a Sf~: 0 (zero-flow source) or Se~: 0 (zero-voltage), which in practice means deleting all bonds with zero power at that junction. Note that different bond graphs will result for a given circuit if we choose different ground nodes.
+  \item \textbf{Simplify}: apply bond graph identities to remove redundant junctions and bonds.
+\end{enumerate}
+
+\figplaceholder{Bond graph of a bridge/ladder circuit (Wheatstone bridge or RLC network)}{See slides 5--8, pack M03}
+
+An electrical network is an extension of electrical circuits to include idealised transformers and gyrators. Electrical gyrators are exhibited in Hall effect transducers, where voltage across a semiconductor material is related to a current through the material perpendicular to the voltage drop direction. The same construction method extends to \textbf{electrical networks} containing transformers (TF) and gyrators (GY). The transformer element inserts between two 1-junctions; the turns ratio $N$ becomes the TF modulus. The basic rules for bond graph construction remain unchanged.
+
+\begin{insightbox}[Ladder and T/pi structures]
+With practice, you will observe certain recurrent patterns, and your ability to do more by inspection will increase. Transmission lines and long hydraulic lines have lumped approximations as ladder networks — cascaded T or pi sections. 
+In bond graph terms, the T-section corresponds to alternating 1-junctions (series inductors) and 0-junctions (shunt capacitors). 
+The topological dual (exchanging 0 and 1 junctions) gives the pi-section. Notice that the difference between these two schemes is the role of current and voltage is interchanged. This technique holds in general when we want to find the topological dual of even complex circuits: exchange 0 and 1 junctions in the BG!
+The pi and tee structures become truncations of the ladder structure that allow for reasonable inclusion of some of the transmission line dynamics without having the overall system become too large. Understanding this duality is a powerful shortcut when building bond graphs by inspection.
+\end{insightbox}
+
+\section{Mechanical translation}
+
+Mechanical systems are those composed of components such as masses, springs, dampers, levers, flywheels, gears, shafts, and so forth. When dynamic systems are put together from these components, we must interconnect rotating and translating inertial elements with axial and rotational springs and dampers, and we must appropriately account for the kinematics of the systems.
+
+For mechanical translation, velocity is flow and force is effort. The analogy with electrical circuits is \emph{dual}: in electrical circuits, nodes share voltage (0-junction); in mechanics, rigid connections share velocity (1-junction). 
+
+\paragraph{Construction procedure for Mechanical Translation.}
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Indicate velocity directions}: on a free-body-type sketch, use arrows and symbols to indicate the positive direction of absolute velocity components. Fixing conventional directions in this scheme is the first crucial step! State whether force-generating elements are positive in tension or compression using symbols such as +T or +C.
+  \item \textbf{One 1-junction per distinct velocity}: each inertia is attached to its absolute velocity 1-junction.
+  \item \textbf{0-junctions for relative velocities}: spring and damper forces react to the rate of extension, meaning they depend on the \emph{relative} velocity across them. A 0-junction connecting two 1-junctions produces the relative velocity difference needed by the compliant/resistive element. The sign at the 0-junction must be chosen so that the relative velocity is positive when the element is in the assumed tension/compression state. When forces are positive in tension, power will flow toward the elements.
+  \item \textbf{Reference (ground)}: the inertial frame is fixed in zero velocity, represented by a Sf~: 0, which is deleted after establishing relative velocities.
+  \item \textbf{Attach elements}: inertias on 1-junctions; springs (C~: $1/k$) and dampers (R~: $b$) on their relative-velocity 0-junctions; gravity and other absolute forces as Se sources on velocity 1-junctions.
+\end{enumerate}
+
+The \emph{beauty} of power conservation in junctions is that we need only to constrain the velocities, and the forces will be automatically balanced without further effort. Newton's second law and the action-reaction principle are built in without explicitly writing them. We can perform a double check to see that the force balance is realized by the 1-junctions.
+
+\figplaceholder{Quarter-car suspension bond graph (Se masses + C spring + R damper + C tyre)}{See slides 16--18, pack M03}
+
+\paragraph{Reducible loop.}
+When a spring and damper are in parallel (same relative velocity), the 0-junction connecting both their velocity 1-junctions can be simplified using bond graph identities into a single 0-junction carrying both the C and R elements. This is the \textbf{reducible loop} — a very common pattern that emphasizes that several elements share exactly the same relative velocity.
+
+\paragraph{Levers, pulleys and kinematic linkages.}
+With minor efforts, it is possible to deal with translational systems containing levers, pulleys, and other simple motion-force transforming devices. These introduce position-dependent force/velocity transformations, represented by modulated transformers (MTF) or fixed TF when the geometry is constant. The MTF modulus is the relevant geometric ratio (e.g.\ the Jacobian in robotics).
+
+\section{Fixed-axis rotation}
+
+Fixed-axis rotation occurs in the mechanics of rotating machines, such as electric motors and internal combustion engines, gear boxes, transmissions, transfer cases, differentials, and drive shafts.
+
+Only minor modifications to the procedure for mechanical translation allow handling systems with fixed-axis rotation. It is entirely analogous to translation with the variable substitution $V \to \omega$, $F \to \tau$, $m \to J$, $k \to k_r$, $b \to b_r$. 
+
+The construction procedure is identical: 1-junctions for distinct absolute angular velocities, 0-junctions for relative angular velocity across compliant or resistive rotational elements, TF for gear pairs (modulus = gear ratio $r_1/r_2$), and eliminating the bonds with zero angular velocity.
+
+In the fixed-axis rotation framework, it's not really relevant to talk about +T or +C; what is relevant is to maintain coherence with the relative velocities across all the schemes (e.g., choosing one velocity as the upstream master velocity and the other as the downstream slave velocity).
+
+\figplaceholder{Gear-shaft system with shafts, flywheels and bearings}{See slides 23--24, pack M03}
+
+\section{Plane motion of rigid bodies}
+
+Mechanical bodies with finite mass both translate and rotate in real applications; their dynamics are governed by a simultaneous combination of translation and rotation. 3-D motion is not trivial, so plane motion is much simpler. Plane motion results when the inertial bodies of a physical system are constrained to translate in two dimensions and to rotate only about an axis perpendicular to the plane of motion. The motion is always w.r.t. an inertial frame (with eventually coordinate transformations in the middle).
+
+When a body both translates and rotates in a plane, three absolute velocity components are needed: $v_x$, $v_y$ (translational velocities of the centre of mass) and $\omega$ (angular velocity). Newton's law in the plane gives three 1-junctions, one per component, each with its own inertia element:
+
+\begin{equation}
+  m\dot{v}_x = F_x, \quad m\dot{v}_y = F_y, \quad J\dot{\omega} = \tau,
+\end{equation}
+
+so the kinetic energy is $T = \frac{1}{2}m v_x^2 + \frac{1}{2}m v_y^2 + \frac{1}{2}J\omega^2$ with three I-elements. This dynamic representation does not involve directly any position information, which is coherent with the fact that this object stores kinetic energy, not potential energy.
+
+Devices are attached at points $P$ offset from the centre of mass by $(r_P\cos\theta, r_P\sin\theta)$ in the inertial frame. The velocity of point $P$ is:
+\begin{equation}
+  v_{Px} = v_x - (r_P\sin\theta)\omega, \qquad
+  v_{Py} = v_y + (r_P\cos\theta)\omega.
+\end{equation}
+These are linear combinations of the three body-velocity components — implemented with MTF elements (moduli $r_P\sin\theta$ and $r_P\cos\theta$, time-varying through $\theta$). By power conservation ($\Delta F_x v_x + F_y v_y + \tau \omega = F_{Px}v_{Px} + F_{Py}v_{Py} + \tau_P \omega_P$), the corresponding forces and torques at the body's ports are automatically balanced without writing free-body equations explicitly. The result is an "object" with a force/velocity interface toward the environment (what is outside the system). All the port variables are expressed with respect to the inertial frame. 
+
+\figplaceholder{Plane-motion bond graph port object: 3 velocity ports (vx, vy, omega) and corresponding force/torque ports}{See slides 26--27, pack M03}
+
+\begin{insightbox}[Parenthesis: the Body Frame!]
+To characterize the energy of a rigid body, it is necessary to know the velocity of the center of mass and the angular velocity. The velocities discussed so far are expressed in the inertial reference, but for multi-body dynamics, it is sometimes convenient to introduce body-fixed coordinates. This coordinate frame remains attached to the center of mass and moves with the body. The advantage is that the inertial tensor is constant, unlike in the inertial frame where it varies with the configuration of the mechanism. 
+However, expressing absolute accelerations in the body frame requires additional terms (e.g., $a_X = \dot{v}_X - \omega v_Y$). While body frames are generally preferred to have a constant inertial tensor, in the planar case, inertial frames can be used without any problems.
+\end{insightbox}
+
+\paragraph{Connecting rigid bodies: joints.}
+Going back to the formulation in the inertial frame, to interconnect rigid bodies and obtain complex mechanisms, it is necessary to define joints that constrain motion in specific directions.
+A \textbf{rotational joint} constrains the two connected bodies to have the same position (zero relative linear velocity) while leaving angular velocity free. Any difference in angular velocity ($\omega_r = \omega_B - \omega_A$) means a torque exists.
+A \textbf{translational joint} constrains relative motion to one direction. Since velocities are in the inertial frame, this direction is not fixed and is related to an angle $\phi$. The relative velocities must be transformed into the direction of the joint.
+Both are represented by setting appropriate velocity-difference bonds to zero and using MTF elements for the direction transformation in the inertial frame. This is the basis for the bond graph modelling of robot manipulators and mechanisms.
+
+\figplaceholder{2-DOF planar manipulator bond graph, and slider-crank mechanism}{See slides 31--32, pack M03}
+
+\section{Hydraulic and acoustic circuits}
+
+We now model some special but important classes of fluid-flow systems.
+
+One category is \textbf{hydrostatic systems}. Typical examples are pumps, motors, pipes, pistons, valves, filters, and accumulators that use nearly incompressible fluids. Such systems are found in machine tools, earth-moving equipment, power transmissions, and aircraft control surface servomechanisms. These systems have high pressures and low fluid velocities so that the static pressure dominates the dynamic pressure. Pressure is effort, volume flow rate $Q$ is flow.
+
+A second category involves compressible gases where the pressure deviations are small enough that the \textbf{acoustic approximation} applies. In this regime, the gas behaves linearly, sound waves can be described using simplified wave equations, and we can avoid considering thermodynamic effects. Pneumatic systems with large pressure variations need a more complicated modeling treatment.
+
+For both, the construction procedure follows the same 0/1-junction rules as electrical circuits:
+\begin{enumerate}
+  \item Indicate positive directions for fluid flows and pressures.
+  \item For each distinct absolute pressure introduce a 0-junction. Attach elements if they react to one of the absolute pressures. If necessary, include a 0-junction for atmospheric pressure (which can be eliminated if "gauge" pressures are used).
+  \item Insert R-, C-, and I-elements between appropriate 0-junctions using 1-junctions that establish pressure differences acting on the passive elements.
+  \item Simplify the graph.
+\end{enumerate}
+
+\subsection{Fluid Resistance}
+A 1-port fluid resistor relates a pressure drop to a volume flow rate. The value of the resistance can be measured experimentally.
+A linear resistance can be assumed for a long, thin tube in which laminar flow (fluid flows in parallel layers, not turbulent) of an incompressible fluid develops: $R = 128 \mu l / (\pi d^4)$.
+If the Reynolds number is low ($Re < 2000$), $P = R Q$. If it is turbulent ($Re > 5000$), $P = a_t Q |Q|^{3/4}$.
+
+Short obstructions like orifices and valves are important cases where a pressure drop occurs over short lengths. For an orifice with a fixed area, the pressure drop is proportional to the square of the volume flow rate ($P = \rho Q|Q| / (2 C_d^2 A_0^2)$), where the discharge coefficient $C_d$ depends on the geometry and nonidealities.
+For valves, the area $A(x)$ depends on a position coordinate. The position of a mechanical part influences the hydraulic resistance, acting as a transducer linking the mechanical and hydrostatic domains. They can be modeled by variable-resistance elements modulated by a displacement $\dot{z}$.
+
+\subsection{Fluid Capacitance}
+A fluid capacitor imposes a relationship between a pressure and the integral of the volume flow rate (a volume of fluid).
+For a straight-walled water tank in a gravity field, $C = A / (\rho g)$ (linear).
+To model fluid compressibility in a rigid pipe, the bulk modulus $B$ is used: $C = V_0 / B$. For gases under the acoustic approximation, $C = V_0 / (\rho_0 c^2)$.
+Sometimes capacitance is due to the elasticity of the vessel containing the fluid. For a thin-walled pipe, using the hoop-stress formula, $C = 2r_0 V_0 / (t_w E)$.
+If both fluid compressibility and pipe elasticity contribute, an equivalent compliance can be constructed: $C_{eq} = V_0(1/B + 2r_0 / t_w E)$.
+
+When fluid compliance cannot be modeled with linear behavior, nonlinear models are essential. An example is a gas accumulator with a rubber bladder containing compressed gas. Using the isentropic pressure-volume law ($P V^\gamma = const$), the pressure is a nonlinear function of the volume: $P = P_0 V_0^\gamma / (V_0 - V)^\gamma$.
+
+\subsection{Fluid Inertia}
+Fluid systems have inertia effects analogous to mechanical systems: fluid elements store kinetic energy. The inertia coefficient is related to the parameters of a pipe segment. From Newton's law, a linear inertia coefficient for a pipe of constant cross-section $A$ and length $l$ is $I = \rho l / A$. For a pipe with a non-constant section, $I = \int_0^l \rho / A(s) ds$.
+
+\begin{warningbox}[Pseudo-bond graphs in hydraulics]
+In some hydraulic treatments, momentum $p_P = \int P\,dt$ and volume $V = \int Q\,dt$ are used as state variables, but the product of the chosen effort--flow pair may not equal power in non-standard formulations. Always verify that $e \cdot f$ has units of watts before coupling hydraulic submodels to other domains.
+\end{warningbox}
+
+\section{Transducers \& multi-energy domain models}
+
+Transducers are devices that couple subsystems of distinct energy domains. A major reason for studying bond graphs is that they provide a uniform and precise way to represent systems when several forms of power and energy are involved.
+
+\paragraph{Transformer transducers.} 
+An ideal transformer transducer, like a hydraulic ram (piston), converts mechanical power to hydraulic power: $F/A = P$ and $A V = Q$. This applies only to the ideal effects at the face of the piston. Real devices exhibit power losses and energy-storing mechanisms. The process consists of enriching the idealized model. On the mechanical side, we add a 1-junction with a resistor to include friction (which may be dry friction, $F_f = F_0 sgn(V)$, or linear, $F_f = bV$) and an I-element for the piston's mass. On the hydraulic side, a 0-junction and resistance represent leakage, and a C-element models fluid compliance (which may be nonlinear and depend on the nominal extension $x_0$). This complexity can lead to oscillatory phenomena that are damped by the resistance.
+
+Positive displacement hydraulic pumps and motors consist of pistons moved by a shaft. With many pistons, the angular speed is related to the flow rate by a nearly constant coefficient: $P_B - P_A = T \tau$ and $T Q = \omega$. This is also modeled by a TF element.
+
+\paragraph{Gyrator transducers.}
+Electromechanical transducers, such as rotary/linear motors or voice coils, use gyrators. A current-carrying conductor moving in a magnetic field experiences an induced voltage (Faraday's law, $e = BlV$) and produces a force (Lorentz force, $Bli = F$). The cross-coupling of effort to flow and flow to effort makes this a gyrator ($e/V = GY = F/i$).
+
+For a DC motor/generator with a commutator, the induced voltage is proportional to the angular speed, and the torque is proportional to the current: $e = T\omega$ and $T i = \tau$. A detailed model is developed by adding the winding resistance and inductance, and the rotor's inertia and friction to the basic GY element.
+
+\paragraph{Modulated Transducers.}
+If the gain is time-dependent, MTF and MGY can model more complex power transducers. For example, an AC generator acts like a single piston/crank. The flux linkage depends on the angle $\theta$, leading to $e = (n B l_2 l_1 \cos\theta)\omega$ and $(n B l_2 l_1 \cos\theta)i = \tau$. This is modeled by a Modulated Gyrator (MGY). Alternatively, using the Lorentz force and the lever law, it can be modeled as a GY followed by a Modulated Transformer (MTF). 
+Similarly, the relation in a slider-crank mechanism between torque/angular speed and force/velocity is governed by a purely geometric transformation ($F \dot{x} = \tau \omega$ with $\dot{x} = f(\theta)\omega$). This is modeled as an ideal, power-conserving MTF with no inherent losses or energy storage.
+
+The best model is the simplest one capable of demonstrating the aspects of the behavior that need to be understood. Extra loss and dynamic elements must be added with restraint.

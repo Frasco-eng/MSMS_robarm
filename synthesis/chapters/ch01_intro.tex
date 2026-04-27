@@ -1,0 +1,162 @@
+%══════════════════════════════════════════════════════════════════════
+\chapter{Physical Modelling and the Bond Graph Philosophy}
+%══════════════════════════════════════════════════════════════════════
+
+The goal of this course is to build \textbf{mathematical models of dynamic mechatronic systems} — systems that combine mechanics, electronics, hydraulics and thermodynamics into a single interacting whole[cite: 1].
+The challenge is that each of these domains has historically developed its own graphical notation and set of equations (circuit diagrams, free-body diagrams, hydraulic schematics), which makes multi-domain systems hard to model coherently[cite: 2].
+\textbf{Bond graph theory} solves this by providing a single, unified, energy-based language that describes all physical domains on the same footing[cite: 3].
+This uniform notation allows one to study the structure of the system, meaning the nature of the parts and the sets of interconnections among them[cite: 120, 121].
+
+\section{The systems viewpoint}
+
+A \textbf{system} is any entity that can be conceptually separated from its environment by a physical or conceptual boundary[cite: 4, 72].
+Inside the boundary are interacting subsystems and components; across the boundary flow the stimuli (inputs) and responses (outputs)[cite: 5].
+The key insight of the systems viewpoint is that a system's behaviour \emph{as a whole} is not simply the superposition of its parts in isolation — interfaces and interactions matter just as much as individual component dynamics[cite: 6, 84].
+In engineering practice, design tasks are broken into parts worked on in isolation, but those parts must ultimately interact[cite: 7, 81].
+If the assumptions made in one group are too crude, the assembled system fails to meet its specification[cite: 8].
+The systems engineer must hold both the component detail and the system-level behaviour in view simultaneously[cite: 9]. 
+Achieving this ideal goal requires knowledge pertinent to the study of systems per se, bridging isolated disciplines like vibrations, dynamics, fluid mechanics, thermo-dynamics, and automatic control[cite: 92, 93, 94, 95, 96, 97].
+
+\begin{insightbox}[The modelling trade-off]
+No system can be modelled exactly. The art is to choose the \textbf{right level of complexity}: detailed enough to answer the questions being asked, simple enough to be tractable[cite: 10, 74].
+A model that is too simple will miss important dynamics[cite: 11];
+one that is too detailed will obscure the physics and be computationally intractable[cite: 12].
+This judgement is acquired through practice and physical intuition[cite: 13].
+\end{insightbox}
+
+Dynamic models serve four distinct purposes: 
+\begin{itemize}
+    \item \textbf{Analysis}: Predict the future given known inputs and initial conditions[cite: 14]. This can be data-based (black box) or physics-law based (white box) depending on how the component is characterized[cite: 201, 212, 214].
+    \item \textbf{Identification}: Find the model from measured input/output histories[cite: 14].
+    \item \textbf{Synthesis}: Find the system that turns a given input into a desired output[cite: 14].
+    \item \textbf{Control}: Design a feedback law that drives the system to a desired behaviour[cite: 14].
+\end{itemize}
+Each task uses the same model but in a different way[cite: 14].
+
+\section{Power as the universal currency}
+
+The central idea of bond graph theory is that \textbf{all physical interactions involve the exchange of power}[cite: 15, 229].
+When a motor drives a pump, when a spring pushes a mass, when a voltage source drives a current through a resistor — in every case, energy flows across a boundary, and the instantaneous rate of that flow is power[cite: 16].
+By making power the primary language, bond graphs work equally well in every energy domain[cite: 17].
+At every interconnection point between subsystems — called a \textbf{port} — two variables are defined whose product is instantaneous power:
+\begin{equation}
+  P(t) = e(t)\,f(t)
+\end{equation}
+These are called the \textbf{effort} $e$ and the \textbf{flow} $f$[cite: 18].
+Their specific physical meaning depends on the domain[cite: 19]:
+
+\begin{center}
+\begin{tabular}{lllll}
+  \toprule
+  \textbf{Domain} & \textbf{Effort} $e$ & \textbf{Flow} $f$ & \textbf{Power} $ef$ \\
+  \midrule
+  Mechanical (translation) & Force $F$ [N] & Velocity $V$ [m/s] & [W] \\
+  Mechanical (rotation)    & Torque $\tau$ [N$\cdot$m] & Ang.\ velocity $\omega$ [rad/s] & [W] \\
+  Electrical               & Voltage $e$ [V] & Current $i$ [A] & [W] \\
+  Hydraulic                & Pressure $P$ [Pa] & Volume flow $Q$ [m$^3$/s] & [W] \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Two additional variables complete the picture[cite: 21].
+The \textbf{momentum} $p$ (generalised) is the time integral of effort[cite: 21];
+the \textbf{displacement} $q$ is the time integral of flow[cite: 22]:
+\begin{equation}
+  p(t) = p_0 + \int_{t_0}^t e(\tau)\,d\tau,
+  \qquad
+  q(t) = q_0 + \int_{t_0}^t f(\tau)\,d\tau,
+  \qquad
+  \dot{p} = e,\quad \dot{q} = f.
+\end{equation}
+These are the \textbf{energy variables} (or state variables)[cite: 23, 330]. 
+While power is the instantaneous flow, energy flow is the time integral of that power: $E(t) = \int^t P(\tau) d\tau = \int^t e(\tau)f(\tau) d\tau$[cite: 340, 342].
+The reason for their name is that energy stored in a system is always a function of these integrated quantities — for a spring, $E = kq^2/2$;
+for a mass, $E = p^2/(2m)$; for a capacitor, $E = q^2/(2C)$; for an inductor, $E = p^2/(2L)$[cite: 23, 24].
+In cases where an effort is a function of displacement, the energy is $E(q) = \int e(q) dq$; conversely, when flow is a function of momentum, $E(p) = \int f(p) dp$[cite: 344, 345, 348].
+
+The relationship between these four variables is elegantly summarized by the \textbf{Tetrahedron of State}:
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth, node distance=2.5cm]
+  \node (e) at (0, 2) {$e$};
+  \node (f) at (0, -2) {$f$};
+  \node (p) at (-2, 0) {$p$};
+  \node (q) at (2, 0) {$q$};
+
+  \draw[->, thick] (e) to[bend right] node[left] {$\int dt$} (p);
+  \draw[->, thick] (f) to[bend right] node[right] {$\int dt$} (q);
+  \draw[->, thick] (p) to[bend right] node[right] {$\frac{d}{dt}$} (e);
+  \draw[->, thick] (q) to[bend right] node[left] {$\frac{d}{dt}$} (f);
+\end{tikzpicture}
+\end{center}
+
+The power and energy variables — $\{e, f, p, q\}$ — are the only types needed to model physical systems in the bond graph framework[cite: 25, 347].
+
+\section{Bonds, ports and multiports}
+
+A \textbf{subsystem with one or more ports} is called a \textbf{multiport}[cite: 26].
+Each port is a place where power can flow in or out[cite: 27].
+Familiar examples: an electric motor is a 3-port (field winding, armature winding, mechanical shaft)[cite: 28];
+a hydraulic pump is a 2-port (shaft, fluid line); a mechanical spring is a 1-port[cite: 29].
+When two multiports are connected — meaning one port of each is joined — power flows between them and the effort and flow at the shared port become identical for both[cite: 30, 488].
+This shared port is a \textbf{bond}, drawn as a line with a half-arrow indicating the assumed positive direction of power flow[cite: 31]:
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}]
+  \node[draw,rounded corners=3pt,fill=gray!10,minimum width=2cm,minimum height=1cm]
+    (A) at (0,0) {System A};
+  \node[draw,rounded corners=3pt,fill=gray!10,minimum width=2cm,minimum height=1cm]
+    (B) at (5,0) {System B};
+  \draw[thick] (A.east) -- node[above]{$e$} node[below]{$f$} (B.west);
+  \draw[->,thick] (2.0,0) -- (2.8,0);
+  \node[font=\footnotesize,gray] at (2.5,-0.5) {half-arrow: power convention};
+\end{tikzpicture}
+\end{center}
+
+When major sub-systems are represented by words instead of internal details, the resulting graph is known as a \textbf{word bond graph}[cite: 509, 514]. 
+The half-arrow is \emph{not} the direction of causality and \emph{not necessarily} the direction energy actually flows at any given instant — it simply sets the sign convention: power is positive when it flows in the direction of the arrow[cite: 34].
+
+\begin{defbox}[Bond]
+A bond is a line connecting two ports[cite: 35]. It carries \emph{both} an effort $e$ and a flow $f$ simultaneously[cite: 35].
+The product $ef$ is the instantaneous power flowing in the direction of the half-arrow[cite: 36].
+A bond is a 2-wire connection in the metaphorical sense: it always transmits a pair of conjugate variables[cite: 37].
+\end{defbox}
+
+\section{Causality: inputs, outputs and causal strokes}
+
+At any port, one of the two power variables is the \textbf{input} (cause) and the other is the \textbf{output} (effect)[cite: 38].
+One can either impose a force and observe the resulting velocity, or impose a velocity and observe the resulting force — but \textbf{never both simultaneously}[cite: 39, 537].
+This choice is called the \textbf{causality} of the port[cite: 40].
+
+Causality is indicated on a bond graph by a \textbf{causal stroke}: a short perpendicular bar at one end of the bond[cite: 41, 581].
+It is critical to remember that the half-arrow power direction indications and the causal stroke are \textbf{totally uncorrelated}.
+The rule is:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item The causal stroke marks the end toward which the \textbf{effort} is being directed (effort is an input to that end)[cite: 41, 581].
+  \item The \textbf{flow} signal is then directed \emph{away} from the stroked end (flow is an output of that end)[cite: 42, 582].
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}]
+  \node (A) at (0,0) {A};
+  \node (B) at (4,0) {B};
+  \draw[thick] (A.east) -- (B.west);
+  \draw[thick] (3.8,-0.2) -- (3.8,0.2); % causal stroke at B end
+  \node[font=\footnotesize] at (2,0.3) {$e$: input to B, output of A};
+  \node[font=\footnotesize] at (2,-0.3) {$f$: output of B, input to A};
+\end{tikzpicture}
+\end{center}
+
+Causal assignment is not free — each type of element has constraints on which causalities are admissible[cite: 46].
+The choice of causality throughout the bond graph propagates and constrains subsequent choices, and ultimately determines whether the system equations are explicit ODEs, implicit DAEs, or contain algebraic loops[cite: 47].
+This is detailed in Chapter~\ref{ch:causality}[cite: 48].
+
+\section{Pure signal flow and active bonds}
+
+Not all interconnections transmit significant power[cite: 49].
+A sensor measuring a velocity transmits negligible power back to the mechanism it measures[cite: 49];
+an electronic amplifier takes a tiny input signal and produces a much larger output, with power supplied by an external source[cite: 50].
+In these cases, one of the two power variables is negligible, and the bond \textbf{degenerates to a single signal} — called an \textbf{active bond}, drawn with a full arrow rather than a half-arrow[cite: 51, 613].
+Because their description is functional rather than physical, ideal instruments and amplifiers represented by these bonds violate many physical laws[cite: 635, 637]. 
+Active bonds are used to represent signal processing, controllers, and ideal sensors within an otherwise power-based bond graph[cite: 52].
+The combination of bond graphs (for the physical plant) and block diagrams (for the controller) is the natural language for mechatronic system design[cite: 53, 670].
