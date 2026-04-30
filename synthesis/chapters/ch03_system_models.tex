@@ -1,33 +1,95 @@
-%══════════════════════════════════════════════════════════════════════
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{System Models in Different Domains}
 \label{ch:systemmodels}
-%══════════════════════════════════════════════════════════════════════
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Using the bond graph arsenal, it is possible to create mathematical models for a wide variety of physical systems (but not for all, e.g. thermal systems are typically not included here). With the nine basic elements in hand, we can build bond graph models of electrical circuits, mechanical systems (translational, rotational, planar), and hydraulic circuits. The procedure is systematic and domain-independent; once mastered for one domain, it transfers immediately to all others. We start with single-energy-domain systems, then introduce transducer elements (e.g., motors, sensors), and finally arrive at multi-energy-domain (mechatronic) systems.
 
 \section{Electrical circuits and networks}
 
 Any electrical circuit can be modelled by a bond graph containing elements of the set $\{ 0, 1, R, C, I, Se, Sf \}$. For electrical circuits the mapping to bond graph variables is direct: voltage is effort, current is flow. The 0-junction encodes Kirchhoff's current law at a node (same voltage, currents sum to zero); the 1-junction encodes Kirchhoff's voltage law around a loop (same current, voltage drops sum to zero).
 
+$TF$ and $GY$ are not included since they are used to represent electrical networks.
+
+\begin{itemize}
+  \item 0 Junction: Same voltage
+  \item 1 Junction: Same current
+\end{itemize}
+
+
 \paragraph{Construction procedure.}
 Constructing the overall bond graph model is much easier if a procedure can be followed that ensures success regardless of the complexity.
+
+\begin{figure} [H]
+\centering 
+\includegraphics[scale=0.25]{figs/chapter3/3_1.png}
+\caption{Example of electric circuit}
+\end{figure}
+
 \begin{enumerate}[leftmargin=2em,itemsep=2pt]
   \item \textbf{Assign a power convention}: for each circuit element choose positive current direction and positive voltage drop. Talking about power in BG, we typically ensure that, when positive, power is flowing \emph{towards} the passive 1-port element. Note that active elements are elements providing power (sources, but also energy-storing elements freeing their energy). In some situations, sources may even absorb power.
   \item \textbf{One 0-junction per node voltage}: place a 0-junction for every distinct node voltage (including what will be the ground). Every bond touching a 0-junction carries the same effort (node voltage).
   \item \textbf{One 1-junction per element}: for each circuit element (R, L, C, source), insert a 1-junction to represent the voltage difference across it. By properly directing the half-arrows on 1-junctions, the voltage drop can be established across each element. Connect the 1-junction between the two 0-junctions at its terminals. Attach the bond graph element (R, I, C, Se, Sf) to the 1-junction.
-  \item \textbf{Ground = zero effort source}: choose a ground node and connect the ground 0-junction to a Sf~: 0 (zero-flow source) or Se~: 0 (zero-voltage), which in practice means deleting all bonds with zero power at that junction. Note that different bond graphs will result for a given circuit if we choose different ground nodes.
+  \item \textbf{Ground = zero effort source}: choose a ground node and connect the ground 0-junction to a Sf~: 0 (zero-flow source) or Se~: 0 (zero-voltage), which in practice means deleting all bonds with zero power at that junction. Note that different bond graphs will result for a given circuit if we choose different ground nodes.7
+
+
+  \begin{figure} [H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_2.png}
+  \caption{Example of bond graph construction for the circuit in Fig. 3.1.}
+  \end{figure}
+
+
+
   \item \textbf{Simplify}: apply bond graph identities to remove redundant junctions and bonds.
 \end{enumerate}
 
-\figplaceholder{Bond graph of a bridge/ladder circuit (Wheatstone bridge or RLC network)}{See slides 5--8, pack M03}
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_3.png}
+\caption{Example of bond graph simplification.}
+\end{figure}
 
-An electrical network is an extension of electrical circuits to include idealised transformers and gyrators. Electrical gyrators are exhibited in Hall effect transducers, where voltage across a semiconductor material is related to a current through the material perpendicular to the voltage drop direction. The same construction method extends to \textbf{electrical networks} containing transformers (TF) and gyrators (GY). The transformer element inserts between two 1-junctions; the turns ratio $N$ becomes the TF modulus. The basic rules for bond graph construction remain unchanged.
+
+An electrical network is an extension of electrical circuits to include idealised transformers $TF$ and gyrators $GYG$. 
+
+
+
+\subsubsection{Electrical Transformers}
+It's used used to to step voltages up or down. 
+
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_4.png}
+\caption{Ideal transformer with turns ratio $N$.}
+\end{figure}
+
+
+\subsubsection{Electrical Gyrators}
+
+Electrical gyrators are exhibited in Hall effect transducers, where voltage across a semiconductor material is related to a current through the material perpendicular to the voltage drop direction. The same construction method extends to \textbf{electrical networks} containing transformers (TF) and gyrators (GY). The transformer element inserts between two 1-junctions; the turns ratio $N$ becomes the TF modulus. The basic rules for bond graph construction remain unchanged.
+
+
 
 \begin{insightbox}[Ladder and T/pi structures]
-With practice, you will observe certain recurrent patterns, and your ability to do more by inspection will increase. Transmission lines and long hydraulic lines have lumped approximations as ladder networks — cascaded T or pi sections. 
+
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_5.png}
+\caption{Resistive ladder with resistors}
+\end{figure}
+
+Transmission lines and long hydraulic lines have lumped approximations as ladder networks  cascaded T or pi sections. 
 In bond graph terms, the T-section corresponds to alternating 1-junctions (series inductors) and 0-junctions (shunt capacitors). 
 The topological dual (exchanging 0 and 1 junctions) gives the pi-section. Notice that the difference between these two schemes is the role of current and voltage is interchanged. This technique holds in general when we want to find the topological dual of even complex circuits: exchange 0 and 1 junctions in the BG!
-The pi and tee structures become truncations of the ladder structure that allow for reasonable inclusion of some of the transmission line dynamics without having the overall system become too large. Understanding this duality is a powerful shortcut when building bond graphs by inspection.
+The pi and tee structures become truncations of the ladder structure that allow for reasonable inclusion of some of the \textbf{transmission line dynamics without having the overall system become too large}. Understanding this duality is a powerful shortcut when building bond graphs by inspection.
+
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_6.png}
+\caption{pi and tee sections as truncations of the ladder structure.}
+\end{figure}
+
+
 \end{insightbox}
 
 \section{Mechanical translation}
@@ -36,21 +98,47 @@ Mechanical systems are those composed of components such as masses, springs, dam
 
 For mechanical translation, velocity is flow and force is effort. The analogy with electrical circuits is \emph{dual}: in electrical circuits, nodes share voltage (0-junction); in mechanics, rigid connections share velocity (1-junction). 
 
+\begin{itemize}
+  \item 0 Junction: Relative velocity (force-generating elements)
+  \item 1 Junction: Same velocity
+\end{itemize}
+
 \paragraph{Construction procedure for Mechanical Translation.}
 \begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \begin{figure} [H]
+    \centering
+    \includegraphics[scale=0.25]{figs/chapter3/3_7.png}
+    \caption{Example of mechanical system with translation.}
+  \end{figure}
+
   \item \textbf{Indicate velocity directions}: on a free-body-type sketch, use arrows and symbols to indicate the positive direction of absolute velocity components. Fixing conventional directions in this scheme is the first crucial step! State whether force-generating elements are positive in tension or compression using symbols such as +T or +C.
+  \begin{figure} [H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_8.png}
+  \caption{Example of free-body sketch with velocity directions and force conventions.}
+  \end{figure}
+
   \item \textbf{One 1-junction per distinct velocity}: each inertia is attached to its absolute velocity 1-junction.
   \item \textbf{0-junctions for relative velocities}: spring and damper forces react to the rate of extension, meaning they depend on the \emph{relative} velocity across them. A 0-junction connecting two 1-junctions produces the relative velocity difference needed by the compliant/resistive element. The sign at the 0-junction must be chosen so that the relative velocity is positive when the element is in the assumed tension/compression state. When forces are positive in tension, power will flow toward the elements.
+  
+
+  \begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_9.png}
+  \caption{Example of bond graph construction for the mechanical system in Fig. 3.7.}
+  \end{figure}
+
+
   \item \textbf{Reference (ground)}: the inertial frame is fixed in zero velocity, represented by a Sf~: 0, which is deleted after establishing relative velocities.
   \item \textbf{Attach elements}: inertias on 1-junctions; springs (C~: $1/k$) and dampers (R~: $b$) on their relative-velocity 0-junctions; gravity and other absolute forces as Se sources on velocity 1-junctions.
 \end{enumerate}
 
 The \emph{beauty} of power conservation in junctions is that we need only to constrain the velocities, and the forces will be automatically balanced without further effort. Newton's second law and the action-reaction principle are built in without explicitly writing them. We can perform a double check to see that the force balance is realized by the 1-junctions.
 
-\figplaceholder{Quarter-car suspension bond graph (Se masses + C spring + R damper + C tyre)}{See slides 16--18, pack M03}
+
 
 \paragraph{Reducible loop.}
-When a spring and damper are in parallel (same relative velocity), the 0-junction connecting both their velocity 1-junctions can be simplified using bond graph identities into a single 0-junction carrying both the C and R elements. This is the \textbf{reducible loop} — a very common pattern that emphasizes that several elements share exactly the same relative velocity.
+When a spring and damper are in parallel (same relative velocity), the 0-junction connecting both their velocity 1-junctions can be simplified using bond graph identities into a single 0-junction carrying both the C and R elements. This is the \textbf{reducible loop} , a very common pattern that emphasizes that several elements share exactly the same relative velocity.
 
 \paragraph{Levers, pulleys and kinematic linkages.}
 With minor efforts, it is possible to deal with translational systems containing levers, pulleys, and other simple motion-force transforming devices. These introduce position-dependent force/velocity transformations, represented by modulated transformers (MTF) or fixed TF when the geometry is constant. The MTF modulus is the relevant geometric ratio (e.g.\ the Jacobian in robotics).
@@ -65,7 +153,12 @@ The construction procedure is identical: 1-junctions for distinct absolute angul
 
 In the fixed-axis rotation framework, it's not really relevant to talk about +T or +C; what is relevant is to maintain coherence with the relative velocities across all the schemes (e.g., choosing one velocity as the upstream master velocity and the other as the downstream slave velocity).
 
-\figplaceholder{Gear-shaft system with shafts, flywheels and bearings}{See slides 23--24, pack M03}
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_10.png}
+\caption{Example of bond graph construction for a fixed-axis rotational system.}
+\end{figure}
+
 
 \section{Plane motion of rigid bodies}
 
@@ -77,6 +170,19 @@ When a body both translates and rotates in a plane, three absolute velocity comp
   m\dot{v}_x = F_x, \quad m\dot{v}_y = F_y, \quad J\dot{\omega} = \tau,
 \end{equation}
 
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_11.png}
+\caption{Mechanical body}
+\end{figure}
+
+\begin{figure} [H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_12.png}
+  \caption{Bond graph representation of the plane motion of a rigid body.}
+
+\end{figure}
+
 so the kinetic energy is $T = \frac{1}{2}m v_x^2 + \frac{1}{2}m v_y^2 + \frac{1}{2}J\omega^2$ with three I-elements. This dynamic representation does not involve directly any position information, which is coherent with the fact that this object stores kinetic energy, not potential energy.
 
 Devices are attached at points $P$ offset from the centre of mass by $(r_P\cos\theta, r_P\sin\theta)$ in the inertial frame. The velocity of point $P$ is:
@@ -84,22 +190,50 @@ Devices are attached at points $P$ offset from the centre of mass by $(r_P\cos\t
   v_{Px} = v_x - (r_P\sin\theta)\omega, \qquad
   v_{Py} = v_y + (r_P\cos\theta)\omega.
 \end{equation}
-These are linear combinations of the three body-velocity components — implemented with MTF elements (moduli $r_P\sin\theta$ and $r_P\cos\theta$, time-varying through $\theta$). By power conservation ($\Delta F_x v_x + F_y v_y + \tau \omega = F_{Px}v_{Px} + F_{Py}v_{Py} + \tau_P \omega_P$), the corresponding forces and torques at the body's ports are automatically balanced without writing free-body equations explicitly. The result is an "object" with a force/velocity interface toward the environment (what is outside the system). All the port variables are expressed with respect to the inertial frame. 
+These are linear combinations of the three body-velocity components, implemented with MTF elements (moduli $r_P\sin\theta$ and $r_P\cos\theta$, time-varying through $\theta$). By power conservation ($\Delta F_x v_x + F_y v_y + \tau \omega = F_{Px}v_{Px} + F_{Py}v_{Py} + \tau_P \omega_P$), the corresponding forces and torques at the body's ports are automatically balanced without writing free-body equations explicitly. The result is an "object" with a force/velocity interface toward the environment (what is outside the system). All the port variables are expressed with respect to the inertial frame. 
 
-\figplaceholder{Plane-motion bond graph port object: 3 velocity ports (vx, vy, omega) and corresponding force/torque ports}{See slides 26--27, pack M03}
 
 \begin{insightbox}[Parenthesis: the Body Frame!]
 To characterize the energy of a rigid body, it is necessary to know the velocity of the center of mass and the angular velocity. The velocities discussed so far are expressed in the inertial reference, but for multi-body dynamics, it is sometimes convenient to introduce body-fixed coordinates. This coordinate frame remains attached to the center of mass and moves with the body. The advantage is that the inertial tensor is constant, unlike in the inertial frame where it varies with the configuration of the mechanism. 
-However, expressing absolute accelerations in the body frame requires additional terms (e.g., $a_X = \dot{v}_X - \omega v_Y$). While body frames are generally preferred to have a constant inertial tensor, in the planar case, inertial frames can be used without any problems.
+However, expressing absolute accelerations in the body frame requires additional terms (e.g., $a_x = \dot{v}_X - \omega v_Y$). While body frames are generally preferred to have a constant inertial tensor, in the planar case, inertial frames can be used without any problems.
+
+We can see the body dynamics as a "black box" with three ports (two for translation and one for rotation) that can be connected to the environment. The internal structure of the body is not relevant for the external behavior, which is fully characterized by the kinetic energy and the force/velocity relations at the ports. This is a powerful abstraction that allows us to model complex systems without needing to know all the internal details of each component.
+
+\begin{figure} [H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_13.png}
+  \caption{Black-box representation of a rigid body with three ports.}
+\end{figure}
+
 \end{insightbox}
 
 \paragraph{Connecting rigid bodies: joints.}
 Going back to the formulation in the inertial frame, to interconnect rigid bodies and obtain complex mechanisms, it is necessary to define joints that constrain motion in specific directions.
 A \textbf{rotational joint} constrains the two connected bodies to have the same position (zero relative linear velocity) while leaving angular velocity free. Any difference in angular velocity ($\omega_r = \omega_B - \omega_A$) means a torque exists.
+
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_14.png}
+\caption{Rotational joint connecting two bodies.}
+\end{figure}
+
+
 A \textbf{translational joint} constrains relative motion to one direction. Since velocities are in the inertial frame, this direction is not fixed and is related to an angle $\phi$. The relative velocities must be transformed into the direction of the joint.
 Both are represented by setting appropriate velocity-difference bonds to zero and using MTF elements for the direction transformation in the inertial frame. This is the basis for the bond graph modelling of robot manipulators and mechanisms.
 
-\figplaceholder{2-DOF planar manipulator bond graph, and slider-crank mechanism}{See slides 31--32, pack M03}
+
+\begin{figure} [H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_15.png}
+\caption{Translational joint connecting two bodies.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{figs/chapter3/3_16.png}
+\caption{Rotation of the relative velocity. Instead of dividing by $cos$ and $sin$, we use a trick with a MTF}
+\end{figure}
+
 
 \section{Hydraulic and acoustic circuits}
 

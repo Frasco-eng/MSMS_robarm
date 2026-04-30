@@ -1,13 +1,13 @@
-%══════════════════════════════════════════════════════════════════════
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Causality and System Equations}
 \label{ch:causality}
-%══════════════════════════════════════════════════════════════════════
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In the world of state-space equations, the very same system can be described with different (but equivalent) sets of differential equations. The whole order of the system equations will always be the same (equal to the order of the model). For instance, a system can be represented by a single nth-order differential equation in terms of one unknown variable, or $n$ first-order coupled differential equations in terms of $n$ unknown variables (system theory approach), or various combinations of unknowns and equations of appropriate orders obtained with the Lagrangian approach. 
 
 We aim for a unified and easier methodology: Bond Graphs! One reason for constructing bond graphs is that it is straightforward to derive system equations and to develop numerical simulations. We can also go from a bond graph directly to a simulation without first obtaining the equations of motion manually. The real virtue of bond graph modelling becomes apparent when one considers that all system models use the same symbols. One formulation and solution procedure is needed!
 
-Assigning causality to a bond graph is the step that transforms a structural description into a computational one. It decides which variables are inputs and which are outputs at every port, propagates these choices through the graph, and ultimately determines the mathematical character of the resulting model. The systematic procedure for doing this — the Sequential Causal Assignment Procedure (SCAP) — is the workhorse algorithm for deriving state-space equations from bond graphs.
+Assigning causality to a bond graph is the step that transforms a structural description into a computational one. It decides which variables are inputs and which are outputs at every port, propagates these choices through the graph, and ultimately determines the mathematical character of the resulting model. The systematic procedure for doing this, the Sequential Causal Assignment Procedure (SCAP), is the workhorse algorithm for deriving state-space equations from bond graphs.
 
 \section{The augmented bond graph}
 
