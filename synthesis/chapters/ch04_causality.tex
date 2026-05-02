@@ -5,7 +5,7 @@
 
 In the world of state-space equations, the very same system can be described with different (but equivalent) sets of differential equations. The whole order of the system equations will always be the same (equal to the order of the model). For instance, a system can be represented by a single nth-order differential equation in terms of one unknown variable, or $n$ first-order coupled differential equations in terms of $n$ unknown variables (system theory approach), or various combinations of unknowns and equations of appropriate orders obtained with the Lagrangian approach. 
 
-We aim for a unified and easier methodology: Bond Graphs! One reason for constructing bond graphs is that it is straightforward to derive system equations and to develop numerical simulations. We can also go from a bond graph directly to a simulation without first obtaining the equations of motion manually. The real virtue of bond graph modelling becomes apparent when one considers that all system models use the same symbols. One formulation and solution procedure is needed!
+One reason for constructing bond graphs is that it is straightforward to derive system equations and to develop numerical simulations. We can also go from a bond graph directly to a simulation without first obtaining the equations of motion manually. The real virtue of bond graph modelling becomes apparent when one considers that all system models use the same symbols. One formulation and solution procedure is needed!
 
 Assigning causality to a bond graph is the step that transforms a structural description into a computational one. It decides which variables are inputs and which are outputs at every port, propagates these choices through the graph, and ultimately determines the mathematical character of the resulting model. The systematic procedure for doing this, the Sequential Causal Assignment Procedure (SCAP), is the workhorse algorithm for deriving state-space equations from bond graphs.
 
@@ -28,10 +28,11 @@ Every element imposes constraints on the causalities of its bonds:
 \begin{itemize}[leftmargin=2em,itemsep=3pt]
   \item \textbf{Se}: must impose effort — the causal stroke is always \emph{away} from the Se.
   \item \textbf{Sf}: must impose flow — the causal stroke is always \emph{toward} the Sf.
-  \item \textbf{C (integral causality)}: flow is input, effort is output — stroke away from C. A capacitor in integral causality is used as a charge storage and for this it fills having its own voltage.
-  \item \textbf{C (derivative causality)}: effort is input, flow is output — stroke toward C. This is the \emph{non-preferred} form. A capacitor in derivative causality is used as a current generator to keep up lacks of voltage by discharging $I=C\dot{V}$.
-  \item \textbf{I (integral causality)}: effort is input, flow is output — stroke toward I. An inductor in integral causality is used as a momentum storage and for this it fills having its own current (speed).
+  \item \textbf{C (integral causality)}: flow is input, effort is output — stroke away from C. A capacitor in integral causality is used as a charge storage and for this it fills having its own voltage. $q$ is the state variable.
+  \item \textbf{C (derivative causality)}: effort is input, flow is output — stroke toward C. This is the \emph{non-preferred} form. A capacitor in derivative causality is used as a current generator to keep up lacks of voltage by discharging $I=C\dot{V}$. The state variable is $q$, but it is algebraically related to the rest of the system and does not contribute an independent state variable.
+  \item \textbf{I (integral causality)}: effort is input, flow is output — stroke toward I. An inductor in integral causality is used as a momentum storage and for this it fills having its own current (speed). $p$ is the state variable.
   \item \textbf{I (derivative causality)}: flow is input, effort is output — stroke away from I. Non-preferred. An inductor in derivative causality is used as a voltage generator to keep up lacks of current by discharging $V=L\dot{I}$.
+  The state variable is $p$, but it is algebraically related to the rest of the system and does not contribute an independent state variable.
   \item \textbf{R}: generally indifferent (either causality), unless the constitutive law is not invertible (e.g.\ Coulomb friction, which is not a bijection in $e$--$f$).
   \item \textbf{TF}: one port effort-in, the other effort-out (one stroke in, one out).
   \item \textbf{GY}: both ports effort-in, or both effort-out (both strokes on the same side).
@@ -87,22 +88,6 @@ The order of the system equals the number of energy storage elements in integral
   \item Substitute the co-energy variables last to obtain equations purely in state variables and inputs. This leads to explicit first-order equations.
 \end{enumerate}
 
-\figplaceholder{Example 1: Formulation of a simple 2-state system}{See slides 18-19, pack M04}
-
-\begin{mathbox}[Simple example: RC circuit]
-State variable: $q_2$ on C. Input: $e_1(t)$ from Se.\smallskip
-
-From the 0-junction: $e_2 = e_1 - e_4$ (0-jct, effort balance).\newline
-From the 1-junction: $e_4 = R_4 f_4 = R_4 f_2$ (R-element, effort-in causality, same flow on 1-jct).\newline
-Co-energy: $f_2 = \dot{q}_2$, and $e_2 = q_2/C_2$.\medskip
-
-Result: $\dot{q}_2 = f_2 = \frac{e_1 - q_2/C_2}{R_4}$ — the standard RC first-order equation.
-\end{mathbox}
-
-\paragraph{The 1-junction encodes KVL, the 0-junction encodes KCL.}
-Reading equations from a bond graph is essentially applying Kirchhoff's laws automatically: the 0-junction says ``efforts sum to zero around a node'' (I Kirchhoff); the 1-junction says ``flows sum to zero around a loop'' (V Kirchhoff). Causality tells you which variable is expressed in terms of the others.
-
-\figplaceholder{Example 3: System with a transformer and multiple states}{See slides 20-23, pack M04}
 
 \section{Algebraic loops}
 

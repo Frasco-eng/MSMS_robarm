@@ -230,67 +230,308 @@ Both are represented by setting appropriate velocity-difference bonds to zero an
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.25]{figs/chapter3/3_16.png}
+% \includegraphics[scale=0.25]{figs/chapter3/3_16.png}
 \caption{Rotation of the relative velocity. Instead of dividing by $cos$ and $sin$, we use a trick with a MTF}
 \end{figure}
 
 
 \section{Hydraulic and acoustic circuits}
 
-We now model some special but important classes of fluid-flow systems.
+\begin{itemize}
+  \item One category is \textbf{hydrostatic systems}. Typical examples are pumps, motors, pipes, pistons, valves, filters, and accumulators that use nearly incompressible fluids. These systems have high pressures and low fluid velocities so that the \textbf{static pressure dominates the dynamic pressure}. Pressure $P$ is effort, volume flow rate $Q$ is flow.
+  \item A second category involves compressible gases where the pressure deviations are small enough that the \textbf{acoustic approximation} applies. In this regime, the gas behaves linearly, sound waves can be described using simplified wave equations, and we can avoid considering thermodynamic effects. Pneumatic systems with large pressure variations need a more complicated modeling treatment.
+\end{itemize}
 
-One category is \textbf{hydrostatic systems}. Typical examples are pumps, motors, pipes, pistons, valves, filters, and accumulators that use nearly incompressible fluids. Such systems are found in machine tools, earth-moving equipment, power transmissions, and aircraft control surface servomechanisms. These systems have high pressures and low fluid velocities so that the static pressure dominates the dynamic pressure. Pressure is effort, volume flow rate $Q$ is flow.
+Acoustic approximation refers to a simplified model used for compressible gases, like air, when pressure variations are very small compared to the ambient pressure. In this regime, the gas behaves linearly, and sound waves can be described using simplified wave equations.
 
-A second category involves compressible gases where the pressure deviations are small enough that the \textbf{acoustic approximation} applies. In this regime, the gas behaves linearly, sound waves can be described using simplified wave equations, and we can avoid considering thermodynamic effects. Pneumatic systems with large pressure variations need a more complicated modeling treatment.
+\begin{equation*}
+  \frac{\partial ^2 p}{\partial t^2} = c^2 \nabla^2 p
+\end{equation*}
 
+Where $p$ is the acoustic pressure, and $c$ is the speed of sound in the medium.
+
+
+\subsection{Fluid Resistance}
+A 1-port fluid resistor relates a \textbf{pressure drop} $P_3 = P_1 - P_2$ to a volume flow rate. \textbf{The value of the resistance can be measured experimentally.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_17.png}
+  \caption{Fluid resistor connecting two fluid nodes.}
+\end{figure}
+
+\begin{equation*}
+  \begin{matrix}
+    Q_1 = Q_2 = Q_3 \\
+    P_3 = P_1 - P_2 = \Phi_R(Q_3)  = R_3 Q_3 \quad \text{(linear)} 
+  \end{matrix}
+\end{equation*}
+
+The Reynold number determines if the flow is laminar or turbulent and thus the relationship between pressure drop and flow rate
+
+\begin{equation*}
+  Re = \frac{4 \rho Q}{\pi d \mu}
+\end{equation*}
+
+\begin{itemize}
+  \item If the Reynolds number is low ($Re < 2000$), $P = R Q$, where $R$ is the linear resistance coefficient. This is the regime of laminar flow, where the fluid flows in parallel layers without turbulence.
+  \begin{equation*}
+    R = 128 \mu l / (\pi d^4)
+  \end{equation*}
+
+  \item If the Reynolds number is high ($Re > 5000$), the flow is turbulent, and the pressure drop is given by $P = a_t Q |Q|^{3/4}$, where $a_t$ is a turbulent resistance coefficient.
+  
+  \item For $2000 < Re < 5000$, the flow is in a transitional regime, and the relationship between pressure drop and flow rate is more complex, often requiring empirical data or more sophisticated models to accurately describe the behavior.
+
+\end{itemize}
+
+\subsubsection{Orifices}
+Short obstructions like orifices and valves are important cases where a pressure drop occurs over short lengths. For an orifice with a fixed area, the pressure drop is proportional to the square of the volume flow rate 
+
+\begin{equation*}
+  \Delta P = \frac{\rho Q|Q|}{2 C_d^2 A_0^2}
+\end{equation*}
+
+where the discharge coefficient $C_d$ depends on the geometry and nonidealities.
+
+\subsubsection{Valves}
+For valves, the area $A(x)$ depends on a position coordinate. The position of a mechanical part influences the hydraulic resistance, acting as a transducer linking the mechanical and hydrostatic domains. They can be modeled by variable-resistance elements modulated by a displacement $\dot{x}$.
+
+\begin{equation*}
+  \Delta P = \frac{\rho Q|Q|}{ 2 C_d^2(x) A_0^2(x)}
+\end{equation*}
+
+It's important to note that elecetrovalevs modeling is a challenging task.
+
+\subsection{Fluid Capacitance}
+A fluid capacitor imposes a relationship between a \textbf{pressure and the integral of the volume flow rate}. Essentially is the  volume of fluid.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_18.png}
+  \caption{Fluid capacitor.}
+\end{figure}
+
+\begin{equation*}
+  \begin{matrix}
+    P_3 = \Phi_C^{-1}(V_3) = \frac{V_3}{C} \\
+    V_3 = \int Q_3 dt
+  \end{matrix}
+\end{equation*}
+
+
+For a straight-walled water tank in a gravity field,
+
+\begin{equation*}
+  P_3 = \rho g h = \rho g \frac{V_3}{A_3}
+\end{equation*}
+\begin{equation*}
+  C_3 = \frac{A_3}{\rho g}
+\end{equation*}
+
+\begin{insightbox}[Fluid capacitance as "pressure inertia"]
+  The fluid capacitance can be thought as a "Pressure Inertia". Just as a mass resists changes in velocity, a fluid capacitor resists changes in pressure. The larger the capacitance, the more fluid volume is needed to produce a given pressure change, which is analogous to how a larger mass requires more force to achieve the same acceleration.
+\end{insightbox}
+
+
+\subsubsection{Fluid Compressibility}
+If and are not equal, represents the rate of compression of the fluid in the pipe. and $V_3$ represents the decrease in volume of the fluid in the segment.
+
+\begin{equation*}
+  \begin{matrix}
+    dP = - B \frac{dV}{V_0} \\
+    \Delta P = \frac{B}{V_0} \Delta V_3 \Longrightarrow C = \frac{V_0}{B}
+  \end{matrix}
+\end{equation*}
+
+\subsubsection{Elasticity of the vessel}
+In the other case, the fluid is incompressible, but the vessel containing it is elastic. The pressure change is related to the change in volume by the bulk modulus of the vessel material. The bulk modulus $B$ is defined as the ratio of the infinitesimal pressure increase to the resulting relative decrease in volume:
+
+The bulk modulus is expressed as:
+\begin{equation*}
+  B = -V_0 \frac{dP}{dV}
+\end{equation*}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_19.png}
+  \caption{Fluid capacitance due to vessel elasticity.}
+\end{figure}
+
+\begin{equation*}
+  \begin{matrix}
+    \sigma = \frac{r_0 P}{t_w} \longrightarrow \text{hoop stress} \\
+    \epsilon = \frac{\sigma}{E} = \frac{r_0 P}{t_w E} = \frac{\Delta r}{r_0} \longrightarrow \text{circumferential strain} \\
+  \end{matrix}
+\end{equation*}
+
+So the change in volume is:
+
+\begin{equation*}
+  \begin{matrix}
+    \Delta V = \Delta (\pi r^2 l) = \dots = \frac{2 r_0 V_0}{t_w E} P \\
+    P_3 = \frac{t_w E}{2 r_0 V_0} V_3 \Longrightarrow C = \frac{2 r_0 V_0}{t_w E}
+  \end{matrix}
+\end{equation*}
+
+\begin{insightbox}[Capacitance in parallel]
+  For cases in which both effect (fluid compressibility and vessel elasticity) contribute, the total capacitance is the sum of the individual capacitances, as they are in parallel. This is because both effects contribute to the overall change in volume for a given pressure change, and their contributions add together to determine the total capacitance of the system.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{figs/chapter3/3_20.png}
+    \caption{Parallel combination of fluid compressibility and vessel elasticity.}
+  \end{figure}
+
+  If both fluid compressibility and pipe elasticity contribute, an equivalent compliance can be constructed: $C_{eq} = V_0(\frac{1}{B} + \frac{2r_0}{t_w E})$.
+
+\end{insightbox}
+
+
+When fluid compliance cannot be modeled with linear behavior, nonlinear models are essential. An example is a gas accumulator with a rubber bladder containing compressed gas. Using the isentropic pressure-volume law 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_21.png}
+  \caption{Nonlinear fluid capacitor with isentropic behavior.}
+\end{figure}
+
+\begin{equation*}
+    P V^\gamma = const
+\end{equation*}
+
+The pressure is a nonlinear function of the volume: $P_3 = \frac{P_0 V_0^\gamma}{(V_0 - V)^\gamma}$.
+
+\subsection{Fluid Inertia}
+Fluid systems have inertia effects analogous to mechanical systems: fluid elements store kinetic energy. The inertia coefficient is related to the parameters of a pipe segment. 
+
+\begin{equation*}
+  p_{P_3} = \int P_3 d\tau = \int (P_1 - P_2) d\tau \leftrightarrow I_3 Q_3 = p_{P_3}
+\end{equation*}
+
+From Newton's law, a linear inertia coefficient for a pipe of constant cross-section $A$ and length $l$ is $I = \rho \frac{l}{A}$. For a pipe with a non-constant section, $I = \int_0^l \frac{\rho}{A(s)} ds$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_22.png}
+  \caption{Fluid inertia in a pipe segment.}
+\end{figure}
+
+\begin{insightbox}[Explaining the fluid inertia]
+  The fluid inertia is used to explain the phenomenon that happens when, for instance, a valve is suddenly closed. The fluid in the pipe has kinetic energy (a buildup of momentum), and when the valve is closed, the momentum cannot dissipate immediately, it has to keep flowing until it is dissipated.
+\end{insightbox}
+
+\subsubsection{Construction of Hydraulic Bond Graphs}
 For both, the construction procedure follows the same 0/1-junction rules as electrical circuits:
 \begin{enumerate}
   \item Indicate positive directions for fluid flows and pressures.
-  \item For each distinct absolute pressure introduce a 0-junction. Attach elements if they react to one of the absolute pressures. If necessary, include a 0-junction for atmospheric pressure (which can be eliminated if "gauge" pressures are used).
+  \item For each distinct absolute pressure introduce a 0-junction. Attach elements if they react to one of the absolute pressures. If necessary, include a 0-junction for atmospheric pressure (which can be eliminated if "gauge" pressures are used. Namely, it can be elimnated if all the compoents has a base, the atmospheric pressure).
   \item Insert R-, C-, and I-elements between appropriate 0-junctions using 1-junctions that establish pressure differences acting on the passive elements.
   \item Simplify the graph.
 \end{enumerate}
-
-\subsection{Fluid Resistance}
-A 1-port fluid resistor relates a pressure drop to a volume flow rate. The value of the resistance can be measured experimentally.
-A linear resistance can be assumed for a long, thin tube in which laminar flow (fluid flows in parallel layers, not turbulent) of an incompressible fluid develops: $R = 128 \mu l / (\pi d^4)$.
-If the Reynolds number is low ($Re < 2000$), $P = R Q$. If it is turbulent ($Re > 5000$), $P = a_t Q |Q|^{3/4}$.
-
-Short obstructions like orifices and valves are important cases where a pressure drop occurs over short lengths. For an orifice with a fixed area, the pressure drop is proportional to the square of the volume flow rate ($P = \rho Q|Q| / (2 C_d^2 A_0^2)$), where the discharge coefficient $C_d$ depends on the geometry and nonidealities.
-For valves, the area $A(x)$ depends on a position coordinate. The position of a mechanical part influences the hydraulic resistance, acting as a transducer linking the mechanical and hydrostatic domains. They can be modeled by variable-resistance elements modulated by a displacement $\dot{z}$.
-
-\subsection{Fluid Capacitance}
-A fluid capacitor imposes a relationship between a pressure and the integral of the volume flow rate (a volume of fluid).
-For a straight-walled water tank in a gravity field, $C = A / (\rho g)$ (linear).
-To model fluid compressibility in a rigid pipe, the bulk modulus $B$ is used: $C = V_0 / B$. For gases under the acoustic approximation, $C = V_0 / (\rho_0 c^2)$.
-Sometimes capacitance is due to the elasticity of the vessel containing the fluid. For a thin-walled pipe, using the hoop-stress formula, $C = 2r_0 V_0 / (t_w E)$.
-If both fluid compressibility and pipe elasticity contribute, an equivalent compliance can be constructed: $C_{eq} = V_0(1/B + 2r_0 / t_w E)$.
-
-When fluid compliance cannot be modeled with linear behavior, nonlinear models are essential. An example is a gas accumulator with a rubber bladder containing compressed gas. Using the isentropic pressure-volume law ($P V^\gamma = const$), the pressure is a nonlinear function of the volume: $P = P_0 V_0^\gamma / (V_0 - V)^\gamma$.
-
-\subsection{Fluid Inertia}
-Fluid systems have inertia effects analogous to mechanical systems: fluid elements store kinetic energy. The inertia coefficient is related to the parameters of a pipe segment. From Newton's law, a linear inertia coefficient for a pipe of constant cross-section $A$ and length $l$ is $I = \rho l / A$. For a pipe with a non-constant section, $I = \int_0^l \rho / A(s) ds$.
-
-\begin{warningbox}[Pseudo-bond graphs in hydraulics]
-In some hydraulic treatments, momentum $p_P = \int P\,dt$ and volume $V = \int Q\,dt$ are used as state variables, but the product of the chosen effort--flow pair may not equal power in non-standard formulations. Always verify that $e \cdot f$ has units of watts before coupling hydraulic submodels to other domains.
-\end{warningbox}
 
 \section{Transducers \& multi-energy domain models}
 
 Transducers are devices that couple subsystems of distinct energy domains. A major reason for studying bond graphs is that they provide a uniform and precise way to represent systems when several forms of power and energy are involved.
 
 \paragraph{Transformer transducers.} 
-An ideal transformer transducer, like a hydraulic ram (piston), converts mechanical power to hydraulic power: $F/A = P$ and $A V = Q$. This applies only to the ideal effects at the face of the piston. Real devices exhibit power losses and energy-storing mechanisms. The process consists of enriching the idealized model. On the mechanical side, we add a 1-junction with a resistor to include friction (which may be dry friction, $F_f = F_0 sgn(V)$, or linear, $F_f = bV$) and an I-element for the piston's mass. On the hydraulic side, a 0-junction and resistance represent leakage, and a C-element models fluid compliance (which may be nonlinear and depend on the nominal extension $x_0$). This complexity can lead to oscillatory phenomena that are damped by the resistance.
+An ideal transformer transducer, like a hydraulic ram (piston), converts mechanical power to hydraulic power.
 
-Positive displacement hydraulic pumps and motors consist of pistons moved by a shaft. With many pistons, the angular speed is related to the flow rate by a nearly constant coefficient: $P_B - P_A = T \tau$ and $T Q = \omega$. This is also modeled by a TF element.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_23.png}
+  \caption{Ideal transformer transducer (piston) connecting mechanical and hydraulic domains.}
+\end{figure}
+
+\begin{itemize}
+  \item Transformer is for the fact that the relation between the two domains is a linear scaling of effort and flow variables. 
+  \item Transducer is for the fact that it converts power from one domain to another.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_24.png}
+  \caption{Ideal transformer transducer (piston) with idealized power flow.}
+\end{figure}
+
+\begin{equation*}
+  \begin{matrix}
+    F = A P \\
+    V = \frac{Q}{A}
+  \end{matrix}
+\end{equation*}
+This applies only to the ideal effects at the face of the piston. Real devices exhibit power losses and energy-storing mechanisms. The process consists of enriching the idealized model. On the mechanical side, we add a 1-junction with a resistor to include friction (which may be dry friction, $F_f = F_0 sgn(V)$, or linear, $F_f = bV$) and an I-element for the piston's mass. On the hydraulic side, a 0-junction and resistance represent leakage, and a C-element models fluid compliance (which may be nonlinear and depend on the nominal extension $x_0$). This complexity can lead to oscillatory phenomena that are damped by the resistance.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_25.png}
+  \caption{Enriched transformer transducer model with losses and energy storage.}
+\end{figure}
+
+Positive displacement hydraulic pumps and motors consist of pistons moved by a shaft. With many pistons, the angular speed is related to the flow rate by a nearly constant coefficient: 
+\begin{equation*}
+  \begin{matrix}
+    P_B - P_A = T \tau \\
+    T Q = \omega
+  \end{matrix}
+\end{equation*}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_26.png}
+  \caption{Positive displacement hydraulic pump/motor model.}
+\end{figure}
+
+  \begin{insightbox}{Enriching the ideal transformer model}
+  The ideal transformer model captures the fundamental power conversion mechanism, but it does not account for real-world complexities such as friction, inertia, leakage, and compliance. By enriching the model with additional elements (resistors for losses, I-elements for inertia, C-elements for compliance), we can capture a more accurate representation of the system's behavior. The augmented model can exhibit also non linear phenomena.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{figs/chapter3/3_27.png}
+    \caption{Enriched transformer model with additional phenomena.}
+  \end{figure}
+\end{insightbox}
 
 \paragraph{Gyrator transducers.}
 Electromechanical transducers, such as rotary/linear motors or voice coils, use gyrators. A current-carrying conductor moving in a magnetic field experiences an induced voltage (Faraday's law, $e = BlV$) and produces a force (Lorentz force, $Bli = F$). The cross-coupling of effort to flow and flow to effort makes this a gyrator ($e/V = GY = F/i$).
 
-For a DC motor/generator with a commutator, the induced voltage is proportional to the angular speed, and the torque is proportional to the current: $e = T\omega$ and $T i = \tau$. A detailed model is developed by adding the winding resistance and inductance, and the rotor's inertia and friction to the basic GY element.
+For a DC motor/generator with a commutator, the induced voltage is proportional to the angular speed, and the torque is proportional to the current:
+
+\begin{equation*}
+  \begin{matrix}
+    e = T \omega \\
+    T i = \tau
+  \end{matrix}
+\end{equation*}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_28.png}
+  \caption{Gyrator transducer model for an electromechanical device.}
+\end{figure}
+
+A detailed model is developed by adding the winding resistance and inductance, and the rotor's inertia and friction to the basic GY element.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_29.png}
+  \caption{Enriched gyrator model with additional phenomena.}
+\end{figure}
+
+
 
 \paragraph{Modulated Transducers.}
-If the gain is time-dependent, MTF and MGY can model more complex power transducers. For example, an AC generator acts like a single piston/crank. The flux linkage depends on the angle $\theta$, leading to $e = (n B l_2 l_1 \cos\theta)\omega$ and $(n B l_2 l_1 \cos\theta)i = \tau$. This is modeled by a Modulated Gyrator (MGY). Alternatively, using the Lorentz force and the lever law, it can be modeled as a GY followed by a Modulated Transformer (MTF). 
-Similarly, the relation in a slider-crank mechanism between torque/angular speed and force/velocity is governed by a purely geometric transformation ($F \dot{x} = \tau \omega$ with $\dot{x} = f(\theta)\omega$). This is modeled as an ideal, power-conserving MTF with no inherent losses or energy storage.
+If the gain is time-dependent, MTF and MGY can model more complex power transducers. 
 
-The best model is the simplest one capable of demonstrating the aspects of the behavior that need to be understood. Extra loss and dynamic elements must be added with restraint.
+\begin{equation*}
+  \left\{\begin{matrix}
+    \lambda = n B l_2 l_1 \sin\theta \\
+    e = (n B l_2 l_1 \cos\theta) \omega \\
+    (n B l_2 l_1 \cos\theta) i = \tau
+  \end{matrix}\right.
+\end{equation*}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{figs/chapter3/3_30.png}
+  \caption{Modulated transformer and gyrator transducers.}
+\end{figure}
