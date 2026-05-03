@@ -45,9 +45,9 @@ These constraints mean that once any one element in a connected sub-graph gets i
 \section{The Sequential Causal Assignment Procedure (SCAP)}
 
 \begin{enumerate}[leftmargin=2em,label=\textbf{Step \arabic*.},itemsep=4pt]
-  \item \textbf{Assign source causalities.} For each Se and Sf, assign the only admissible causal form. Propagate the implications through all constraint elements (0, 1, TF, GY) which may be connected to it. 
+  \item \textbf{Assign source causalities.} For each Se and Sf, assign the only admissible causal form. Propagate the implications through all constrained elements (0, 1, TF, GY) which may be connected to it. 
   \item Repeat step 1 until all sources have been assigned the required causality.
-  \item \textbf{Assign storage elements (preferred causality).} For each C and I element not yet causally assigned, assign \emph{integral causality} (preferred). Propagate through constraint elements. 
+  \item \textbf{Assign storage elements (preferred causality).} For each C and I-element not yet causally assigned, assign \emph{integral causality} (preferred). Propagate through constraint elements. 
   \item Repeat step 3 until all storage elements have been assigned a causality. 
   \item \textbf{Assign R-elements (if still needed).} If bonds remain unassigned after steps 1--4, choose any unassigned R-element and assign an arbitrary causality to it, and extend the causal implications through the graph. Each such arbitrary assignment signals an \textbf{algebraic loop}. 
   \item Repeat step 5 until all R-elements have been used.
@@ -78,7 +78,7 @@ The state variables are:
   \item The \textbf{displacement $q$} on every C-element in \emph{integral} causality.
 \end{itemize}
 
-It is useful to indicate the \textbf{co-energy variables}: flows on the I-elements ($f = \Phi_I^{-1}(p)$) and efforts on the C-elements ($e = \Phi_C^{-1}(q)$). Co-energy variables appear in the initial formulation and then they are eliminated during the reduction process since they are function of the state.
+It is useful to indicate the \textbf{co-energy variables}: flows on the I-elements ($f = \Phi_I^{-1}(p)$) and efforts on the C-elements ($e = \Phi_C^{-1}(q)$). Co-energy variables appear in the initial formulation, and then they are eliminated during the reduction process since they are function of the state.
 
 The order of the system equals the number of energy storage elements in integral causality. The derivation procedure is systematic:
 
@@ -91,14 +91,14 @@ The order of the system equals the number of energy storage elements in integral
 
 \section{Algebraic loops}
 
-Talking about state-space equations formulation, in situations in which we do NOT have algebraic-loops and we have ALL storage energy elements in integral causality, the formulation is very straight-forward, obtaining explicit differential equations. Instead, when we have algebraic loops (we have encountered steps 5-6 of the SCAP) and/or we have some energy storage elements in derivative causality, the formulation is not anymore so immediate! 
+Talking about state-space equations formulation, in situations in which we do NOT have algebraic-loops, and we have ALL storage energy elements in integral causality, the formulation is very straight-forward, obtaining explicit differential equations. Instead, when we have algebraic loops (we have encountered steps 5-6 of the SCAP) and/or we have some energy storage elements in derivative causality, the formulation is not anymore so immediate! 
 
 An algebraic loop arises when a chain of elements forms a closed ring with no energy-storage element breaking it. In that loop, one variable (effort or flow) becomes algebraically related to itself (as well as to other inputs and co-energy state variables). Tracing around the loop brings you back to your starting point: $e_1 = F_1(e_2, f_2)$, $e_2 = F_2(e_3, f_3) \dots$ until we reach again the initial variable.
 
 The procedure for handling algebraic loops is to first make an arbitrary causal assignment on one of the causally unassigned bonds and then propagate the causal information as far as possible. If the causality completes after one arbitrary assignment, then there is one algebraic loop. The more loops involved, the more difficult the final formulation becomes.
 
 \begin{warningbox}[Cause of algebraic loops]
-Algebraic loops always arise from a \textbf{modelling simplification}. For example, two parallel dampers with no masses to separate them create an algebraic loop in force. In reality, there would be some small compliance or inertia in between; the idealisation of perfectly rigid connections removes it and creates the loop. 
+Algebraic loops always arise from a \textbf{modelling simplification}. For example, two parallel dampers with no masses to separate them create an algebraic loop in force. In reality, there would be some small compliance or inertia in between; the idealization of perfectly rigid connections removes it and creates the loop. 
 \end{warningbox}
 
 When SCAP is stuck on step 4, it is necessary to arbitrarily assign causality to one bond. It is recommended that when a resistance element is involved in the algebraic loop, the resistance element be chosen for the arbitrary assignment (step 5). It is customary to choose the variable that was arbitrarily selected to be the output from the R-element and the input to the rest of the system. 
@@ -107,14 +107,20 @@ In order to solve the algebraic loop, we have to collect all the equations invol
 
 For linear systems, this procedure will work for multiple loops, although solving by hand becomes formidable rather quickly. For nonlinear systems, it may not be possible to invert some of the algebraic relationships (e.g. Coulomb friction). When these inversions appear to be impossible, we HAVE TO eradicate the problem at the root by passing to less simplistic modelling assumptions!
 
-\figplaceholder{Algebraic Loop Example: Assigning arbitrary causality on an R-element}{See slides 26-29, pack M04}
-
 \section{Derivative causality}
 
 Another possible consequence of certain modelling assumptions is that, after sequential causal assignment, one or more energy storage elements are forced into derivative causality. 
+Storage elements in derivative causality are not dynamically independent of the remaining storage elements, and they do not contribute a state variable to the final equations. \textbf{The state equations become implicit}.
+Implicit state equations can be algebraically transformed to explicit ones, but this is not necessarily a simple task.
+\textbf{The derivative elements do still store energy!}
+
+
+
+
+
 When a C-element is forced to accept derivative causality (effort-in), it means that its effort (and hence its displacement $q = Ce$) is \emph{algebraically determined} by the rest of the system — it does not contribute an independent state variable to the final equations. This occurs when two C-elements are connected in a configuration that rigidly constrains their displacements (e.g.\ two springs rigidly connected without an intervening mass). The system order is reduced by one per derivative-causality C.
 
-Similarly for I-elements in derivative causality (flow-in): their momenta are algebraically determined. The independent state variables remain the energy variables in the energy storage elements with integral causality. (Note: The derivative elements do still store energy!).
+Similarly, for I-elements in derivative causality (flow-in): their momenta are algebraically determined. The independent state variables remain the energy variables in the energy storage elements with integral causality. (Note: The derivative elements do still store energy!).
 
 The true problem arises when formulating the equations. When we encounter a C/I element in derivative causality, we are guaranteed to end up with its power variable that is NOT the co-energy one ($\dot{q}$ for C-elements and $\dot{p}$ for I-elements). We end up with a double problem: we end up with the derivative of an energy variable, AND this energy variable is NOT a state one!
 
@@ -129,14 +135,13 @@ Given the dependent energy variable of a C/I element in derivative causality, it
     \item To get it in explicit form, further algebraic manipulations are required to isolate the derivatives of the state variables on the left side.
 \end{enumerate}
 
-\figplaceholder{Derivative Causality Example: Neglecting motor inertia}{See slides 34-36, pack M04}
 
 \paragraph{Handling Derivative Causality at the Root:}
-Derivative causality is ALWAYS caused by too simplistic modelling assumptions! It physically indicates an over-idealisation (e.g.\ perfectly rigid connections between compliant elements, or massless inertial elements). 
+Derivative causality is ALWAYS caused by too simplistic modelling assumptions! It physically indicates an over-idealization (e.g.\ perfectly rigid connections between compliant elements, or massless inertial elements). 
 
 It is always possible to revisit the modelling assumptions that resulted in the formulation problem and change these assumptions to yield a model that is virtually the same as the original one, but without the formulation problems. Introducing a new energy storage element (a tiny mass or compliance) restores integral causality and ordinary ODE structure. 
 
-There are some computational penalties that accompany very small added inertias or very stiff added compliances in a model (it introduces a fast time scale, making the system "stiff" for numerical solvers). However, for some systems, these penalties are a very small price to pay for eliminating formulation problems at the root.
+There are some computational penalties that accompany very small added inertias or very stiff added compliances in a model (it introduces a fast timescale, making the system "stiff" for numerical solvers). However, for some systems, these penalties are a very small price to pay for eliminating formulation problems at the root.
 
 \section{System order and physical meaning}
 

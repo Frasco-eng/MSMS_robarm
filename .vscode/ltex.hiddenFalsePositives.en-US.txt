@@ -1,0 +1,1 @@
+{"rule":"ANYMORE_ADVERB","sentence":"^\\QInstead, when we have algebraic loops (we have encountered steps 5-6 of the SCAP) and/or we have some energy storage elements in derivative causality, the formulation is not anymore so immediate!\\E$"}
