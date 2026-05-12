@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+ <Model version="5.1" build="5.1.6.14106">
+  <Sidops>
+<![CDATA[Transformation 408 168 description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>Transformation.emx</LibraryPath>
+    <TimeStamp>2026-5-12 22:05:55</TimeStamp>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <AllowLibraryUpdate>True</AllowLibraryUpdate>
+  </Description>
+</Information>'; type Submodel  ports   signal in T_prev [4,4];   signal in T_i [4,4];   signal out T_next [4,4];   signal out pose_abs [6,1];   signal in pos_rel [3,1]; end; implementation eqequations	T_next = T_prev * T_i;	pose_abs[1:3] = (T_next * [pos_rel;1])[1:3];	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);	implementation_end;]]>  </Sidops>
+ </Model>
+</Document>
