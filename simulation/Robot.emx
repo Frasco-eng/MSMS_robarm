@@ -8,13 +8,391 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\giuli\OneDrive - Alma Mater Studiorum Universit&agrave; di Bologna\GIULIO MAZZAROPPI\UNIVERSITA\Anno 5\MSMS\Exam\MSMS_robarm\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-17 13:02:10</TimeStamp>
+    <TimeStamp>2026-5-17 18:42:07</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   Demux 1392 472
+			specifications active 'outputs_6'
+				specification 'outputs_2'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal in input [2,1];
+   signal out output2;
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 color 0 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '2' 6 28 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   input 0 16 fixed;
+   output2 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2] = input;implementation_end;
+specification_end;
+				specification 'outputs_3'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal in input [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '3' 6 26 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   input 0 16 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3] = input;implementation_end;
+specification_end;
+				specification 'outputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal in input [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 32 fixed;
+   output4 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4] = input;implementation_end;
+specification_end;
+				specification 'outputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal in input [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5] = input;implementation_end;
+specification_end;
+				specification 'outputs_6'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal in input [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 1399 504 1399 440 color 0 width 2;
+   rectangle 1383 440 1399 504 color -1;
+   text '6' 1393 446 color 8421504 8;
+  terminals
+   output1 1399 496 fixed;
+   output2 1399 488 fixed;
+   output3 1399 480 fixed;
+   output4 1399 464 fixed;
+   output5 1399 456 fixed;
+   output6 1399 448 fixed;
+   input 1399 472 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6] = input;implementation_end;
+specification_end;
+				specification 'outputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal in input [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   input 0 32 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7] = input;implementation_end;
+specification_end;
+				specification 'outputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal in input [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 48 fixed;
+   output6 0 56 fixed;
+   output7 0 64 fixed;
+   output8 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8] = input;implementation_end;
+specification_end;
+				specification 'outputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal out output9;
+   signal in input [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   output8 0 64 fixed;
+   output9 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
+specification_end;
+			end;
+   GravityTerm 1272 -32
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>GravityTerm.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <TimeStamp>2026-5-17 18:41:50</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Equation'
+     ports
+      signal in T_1 [4,4];
+      signal in T_2 [4,4];
+      signal in T_3 [4,4];
+      signal in T_4 [4,4];
+      signal in T_5 [4,4];
+      signal in T_6 [4,4];
+      signal out tau_g [6,1];
+     parameters
+      real r_gp_1[3,1] = [0.0; -0.02561; 0.00193];
+      real r_gp_2[3,1] = [0.2125; 0.0; 0.11336];
+      real r_gp_3[3,1] = [0.15; 0.0; 0.0265];
+      real r_gp_4[3,1] = [0.0; -0.0018; 0.01634];
+      real r_gp_5[3,1] = [0.0; 0.0018; 0.01634];
+      real r_gp_6[3,1] = [0.0; 0.0; -0.001159];
+      real g[3,1] = [0.0; 0.0; -9.81];
+      real m_1 = 3.7;
+      real m_2 = 8.393;
+      real m_3 = 2.33;
+      real m_4 = 1.1219;
+      real m_5 = 1.1219;
+      real m_6 = 0.1879;
+    end;
+    implementation eq
+variables
+    real z_0[3,1];
+    real p_0[3,1];
+
+    real z_1[3,1]; real z_2[3,1]; real z_3[3,1]; 
+    real z_4[3,1]; real z_5[3,1]; real z_6[3,1];
+
+    real p_com_1[3,1]; real p_com_2[3,1]; real p_com_3[3,1];
+    real p_com_4[3,1]; real p_com_5[3,1]; real p_com_6[3,1];
+
+    real p_1[3,1]; real p_2[3,1]; real p_3[3,1];
+    real p_4[3,1]; real p_5[3,1]; real p_6[3,1];
+
+    real tau_1; real tau_2; real tau_3;
+    real tau_4; real tau_5; real tau_6;
+
+
+equations
+    z_0 = [0.0; 0.0; 1.0];
+    p_0 = [0.0; 0.0; 0.0];
+
+    p_1 = T_1[1:3,4];
+    p_2 = T_2[1:3,4];
+    p_3 = T_3[1:3,4];
+    p_4 = T_4[1:3,4];
+    p_5 = T_5[1:3,4];
+    p_6 = T_6[1:3,4];
+
+    p_com_1 = T_1[1:3,1:3] * r_gp_1 + p_1;
+    p_com_2 = T_2[1:3,1:3] * r_gp_2 + p_2;
+    p_com_3 = T_3[1:3,1:3] * r_gp_3 + p_3;
+    p_com_4 = T_4[1:3,1:3] * r_gp_4 + p_4;
+    p_com_5 = T_5[1:3,1:3] * r_gp_5 + p_5;
+    p_com_6 = T_6[1:3,1:3] * r_gp_6 + p_6;
+
+    z_1 = T_1[1:3,3];
+    z_2 = T_2[1:3,3];
+    z_3 = T_3[1:3,3];
+    z_4 = T_4[1:3,3];
+    z_5 = T_5[1:3,3];
+    z_6 = T_6[1:3,3];
+
+    tau_1 = transpose(g) * (m_1*cross(z_0, p_com_1 - p_0) + m_2*cross(z_0, p_com_2 - p_0) + m_3*cross(z_0, p_com_3 - p_0) + m_4*cross(z_0, p_com_4 - p_0) + m_5*cross(z_0, p_com_5 - p_0) + m_6*cross(z_0, p_com_6 - p_0));
+    tau_2 = transpose(g) * (m_2*cross(z_1, p_com_2 - p_1) + m_3*cross(z_1, p_com_3 - p_1) + m_4*cross(z_1, p_com_4 - p_1) + m_5*cross(z_1, p_com_5 - p_1) + m_6*cross(z_1, p_com_6 - p_1));
+    tau_3 = transpose(g) * (m_3*cross(z_2, p_com_3 - p_2) + m_4*cross(z_2, p_com_4 - p_2) + m_5*cross(z_2, p_com_5 - p_2) + m_6*cross(z_2, p_com_6 - p_2));
+    tau_4 = transpose(g) * (m_4*cross(z_3, p_com_4 - p_3) + m_5*cross(z_3, p_com_5 - p_3) + m_6*cross(z_3, p_com_6 - p_3));
+    tau_5 = transpose(g) * (m_5*cross(z_4, p_com_5 - p_4) + m_6*cross(z_4, p_com_6 - p_4));
+    tau_6 = transpose(g) * (m_6*cross(z_5, p_com_6 - p_5));
+
+    // Output mapping
+    tau_g = [tau_1; tau_2; tau_3; tau_4; tau_5; tau_6];implementation_end;
    HarmonicDrive 160 312
     description '<Information>
   <Description>
@@ -13390,9 +13768,9 @@ parameters
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
-	wrench_in.f[1:3] = wrench_com.f[1:3] - skew_rgp * wrench_com.f[4:6];
+	wrench_in.f[1:3] = wrench_com.f[1:3] + skew_rgp * wrench_com.f[4:6];
 	wrench_in.f[4:6] = wrench_com.f[4:6];
-	wrench_com.e[4:6] = wrench_in.e[4:6] + skew_rgp * wrench_in.e[1:3];
+	wrench_com.e[4:6] = wrench_in.e[4:6] - skew_rgp * wrench_in.e[1:3];
 	wrench_com.e[1:3] = wrench_in.e[1:3];
 implementation_end;
       i_com 376 120
@@ -14347,6 +14725,186 @@ implementation_end;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
+   MSe1 928 376
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 928 376 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   MSe2 696 376
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 696 376 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   MSe3 512 384
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 512 384 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   MSe4 344 384
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 344 384 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   MSe5 1144 368
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 1144 368 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   MSe6 152 384
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 152 384 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
    One 16 104
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
   <LibraryPath>Signal\Sources\One.emx</LibraryPath>
@@ -14370,6 +14928,120 @@ equations
 					 	0, 0, 1, 0;
 					 	0, 0, 0, 1
 					];implementation_end;
+   PlusMinus1 704 720
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 696 712 712 728 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus2 928 592
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 920 584 936 600 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus3 1144 448
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 1136 440 1152 456 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus4 520 856
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 512 848 528 864 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus5 336 1024
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 328 1016 344 1032 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus6 160 1216
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 152 1208 168 1224 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
    Se 1416 200
     description '<Information>
  <Description>
@@ -14399,7 +15071,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se1 160 464
+   Se1 160 1248
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14411,24 +15083,20 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 160 464 color 0 18 bold;
+      text 'Se' 160 1248 color 0 18 bold;
     end;
     implementation eq
 parameters
 	real effort = 0.1;
-variables
-	real flow;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
+
 implementation_end;
-   Se2 336 464
+   Se2 336 1064
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14440,24 +15108,19 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 336 464 color 0 18 bold;
+      text 'Se' 336 1064 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.00;
-variables
-	real flow;
+	real effort = 1;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
 implementation_end;
-   Se3 504 464
+   Se3 520 912
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14469,24 +15132,19 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 504 464 color 0 18 bold;
+      text 'Se' 520 912 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.00;
-variables
-	real flow;
+	real effort = 0;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
 implementation_end;
-   Se4 704 464
+   Se4 704 776
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14498,24 +15156,20 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 704 464 color 0 18 bold;
+      text 'Se' 704 776 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.00;
-variables
-	real flow;
+	real effort = 0;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
+
 implementation_end;
-   Se5 928 464
+   Se5 928 640
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14527,24 +15181,20 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 928 464 color 0 18 bold;
+      text 'Se' 928 640 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.00;
-variables
-	real flow;
+	real effort = 0;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
+
 implementation_end;
-   Se6 1136 472
+   Se6 1144 488
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -14556,22 +15206,17 @@ implementation_end;
 </Information>';
     type Se
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 1136 472 color 0 18 bold;
+      text 'Se' 1144 488 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.00;
-variables
-	real flow;
+	real effort = 0;
 equations
-	p.e = effort;
-	flow = p.f;
+	p = effort;
 implementation_end;
    Sf 16 192
     description '<Information>
@@ -14712,6 +15357,29 @@ implementation_end;
       ellipse 1019.7 99.7 1028.3 108.3 color -1;
      terminals
       input 1024 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter6 1216 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 1212.8 100.8 1219.2 107.2 color -1 fill 0;
+      ellipse 1211.7 99.7 1220.3 108.3 color -1;
+     terminals
+      input 1216 104 fixed;
     end;
     implementation eq
 equations
@@ -14958,6 +15626,12 @@ equations
 implementation_end;
   end;
   connections
+   Demux\output1 -> PlusMinus6\minus 1336 496 1336 1216;
+   Demux\output2 -> PlusMinus5\minus 1304 488 1304 1024;
+   Demux\output3 -> PlusMinus4\minus 1272 480 1272 856;
+   Demux\output4 -> PlusMinus1\minus 1240 464 1240 720;
+   Demux\output5 -> PlusMinus2\minus 1216 456 1216 592;
+   GravityTerm\tau_g -> Demux\input 1280 -96 1704 -96 1704 472;
    HarmonicDrive\harmonic_drive => Joint\actuator;
    HarmonicDrive1\harmonic_drive => Joint1\actuator;
    HarmonicDrive2\harmonic_drive => Joint2\actuator;
@@ -14981,30 +15655,50 @@ implementation_end;
    Link2\wrench_ipp => Joint3\twist_i;
    Link3\wrench_ipp => Joint4\twist_i;
    Link4\wrench_ipp => Joint5\twist_i;
-   Se1\p => HarmonicDrive\motor;
-   Se2\p => HarmonicDrive1\motor;
-   Se3\p => HarmonicDrive2\motor;
-   Se4\p => HarmonicDrive3\motor;
-   Se5\p => HarmonicDrive4\motor;
-   Se6\p => HarmonicDrive5\motor;
+   MSe1\p => HarmonicDrive4\motor;
+   MSe2\p => HarmonicDrive3\motor;
+   MSe3\p => HarmonicDrive2\motor;
+   MSe4\p => HarmonicDrive1\motor;
+   MSe5\effort <- PlusMinus3\output;
+   MSe5\p => HarmonicDrive5\motor;
+   MSe6\p => HarmonicDrive\motor;
+   PlusMinus1\output -> MSe2\effort;
+   PlusMinus1\plus <- Se4\p;
+   PlusMinus2\output -> MSe1\effort;
+   PlusMinus3\minus <- Demux\output6;
+   PlusMinus3\plus <- Se6\p;
+   PlusMinus4\output -> MSe3\effort;
+   PlusMinus5\output -> MSe4\effort;
+   PlusMinus5\plus <- Se2\p;
+   PlusMinus6\output -> MSe6\effort;
+   Se1\p -> PlusMinus6\plus;
+   Se3\p -> PlusMinus4\plus;
+   Se5\p -> PlusMinus2\plus;
    Sf\p => Joint\twist_i;
+   Splitter1\output -> GravityTerm\T_1 240 -40;
    Splitter1\output -> Link\T_next;
    Splitter1\output -> Transformation1\T_prev;
+   Splitter2\output -> GravityTerm\T_2 416 -24;
    Splitter2\output -> Link1\T_next;
    Splitter2\output -> Transformation2\T_prev;
+   Splitter3\output -> GravityTerm\T_3 600 -8 1240 -8;
    Splitter3\output -> Link2\T_next;
    Splitter3\output -> Transformation3\T_prev;
+   Splitter4\output -> GravityTerm\T_4 816 8 1272 8;
    Splitter4\output -> Link3\T_next;
    Splitter4\output -> Transformation4\T_prev;
+   Splitter5\output -> GravityTerm\T_5 1024 24 1304 24;
    Splitter5\output -> Link4\T_next;
    Splitter5\output -> Transformation5\T_prev;
+   Splitter6\output -> GravityTerm\T_6 1360 104 1360 -32;
+   Splitter6\output -> Link5\T_next;
    Transformation\T_next -> Splitter1\input;
    Transformation\T_prev <- One\identity;
    Transformation1\T_next -> Splitter2\input;
    Transformation2\T_next -> Splitter3\input;
    Transformation3\T_next -> Splitter4\input;
    Transformation4\T_next -> Splitter5\input;
-   Transformation5\T_next -> Link5\T_next;
+   Transformation5\T_next -> Splitter6\input 1216 104;
    ZeroJunction\p <= Link5\wrench_ipp;
    ZeroJunction\p <= Se\p;
   end;
@@ -15015,7 +15709,7 @@ Inverse dynamics (2h)
 
 Report(5h)
 
-Total: (17h)' 96 680 color 0 16;
+Total: (17h)' 32 680 color 0 16;
  implementation_end;
 ]]></Sidops>
  </Model>
@@ -15028,6 +15722,8 @@ Total: (17h)' 96 680 color 0 16;
 <ExpData>
  <VersionNumber>5.1</VersionNumber>
  <ModelProperties>
+  <ModelProperty section="processing" entry="showresult" value="1"/>
+  <ModelProperty section="processing" entry="debug_showresult" value="1"/>
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
@@ -15339,14 +16035,7 @@ Total: (17h)' 96 680 color 0 16;
    <VarName>Transformation1\pose_abs[1]</VarName>
    <VarName>Transformation1\pose_abs[2]</VarName>
    <VarName>Transformation1\pose_abs[3]</VarName>
-   <VarName>Transformation1\pose_abs[4]</VarName>
-   <VarName>Transformation1\pose_abs[5]</VarName>
-   <VarName>Transformation1\pose_abs[6]</VarName>
    <VarName>Joint\Integrate\output</VarName>
-   <VarName>Joint1\Integrate\output</VarName>
-   <VarName>Transformation\pose_abs[4]</VarName>
-   <VarName>Transformation\pose_abs[5]</VarName>
-   <VarName>Transformation\pose_abs[6]</VarName>
    <VarName>Transformation1\R_next[1,3]</VarName>
    <VarName>Transformation1\R_next[2,3]</VarName>
    <VarName>Transformation1\R_next[3,3]</VarName>
@@ -15440,6 +16129,17 @@ Total: (17h)' 96 680 color 0 16;
    <VarName>Transformation5\R_body[1,2]</VarName>
    <VarName>Transformation5\R_body[2,2]</VarName>
    <VarName>Transformation5\R_body[3,2]</VarName>
+   <VarName>Joint2\Integrate\output</VarName>
+   <VarName>Joint4\Integrate\output</VarName>
+   <VarName>Joint5\Integrate\output</VarName>
+   <VarName>Joint1\Integrate\output</VarName>
+   <VarName>GravityTerm\tau_g[1]</VarName>
+   <VarName>GravityTerm\tau_g[2]</VarName>
+   <VarName>GravityTerm\tau_g[3]</VarName>
+   <VarName>GravityTerm\tau_g[4]</VarName>
+   <VarName>GravityTerm\tau_g[5]</VarName>
+   <VarName>GravityTerm\tau_g[6]</VarName>
+   <VarName>Joint1\FlowSensor\p1.e</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -16053,36 +16753,36 @@ Total: (17h)' 96 680 color 0 16;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>32.5382104159128</Value>
+            <Value>-41.5033129918678</Value>
            </X>
            <Y>
-            <Value>2.29750327401429</Value>
+            <Value>-21.5918565438513</Value>
            </Y>
            <Z>
-            <Value>13.1739153473908</Value>
+            <Value>15.807016528989</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.954889607504467</Value>
+             <Value>0.833184873763628</Value>
             </X>
             <Y>
-             <Value>-0.153726907515544</Value>
+             <Value>0.485612110137249</Value>
             </Y>
             <Z>
-             <Value>-0.254074546906359</Value>
+             <Value>-0.264544598545378</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.250844692057641</Value>
+             <Value>0.228557268857942</Value>
             </X>
             <Y>
-             <Value>-0.0403832844207341</Value>
+             <Value>0.133211950682938</Value>
             </Y>
             <Z>
-             <Value>0.967184641527098</Value>
+             <Value>0.964373449990949</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -16107,13 +16807,13 @@ Total: (17h)' 96 680 color 0 16;
           <UseLookatPosition>true</UseLookatPosition>
           <LookatPosition>
            <X>
-            <Value>2.06327117793262</Value>
+            <Value>-2.73140611150302</Value>
            </X>
            <Y>
-            <Value>-2.60863256466109</Value>
+            <Value>1.00589803617914</Value>
            </Y>
            <Z>
-            <Value>5.06522207281655</Value>
+            <Value>3.49654641402332</Value>
            </Z>
           </LookatPosition>
           <UseAlwaysLookUp>true</UseAlwaysLookUp>
@@ -16341,25 +17041,25 @@ Total: (17h)' 96 680 color 0 16;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_next[1,3]</VariableName>
-             <Value>-0.18311378359794617</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,3]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877549409866333</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,3]</VariableName>
-             <Value>3.2679491823728313e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation\R_next[1,2]</VariableName>
-             <Value>5.984064443964598e-8</Value>
+             <Value>-5.098434385786277e-8</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,2]</VariableName>
-             <Value>3.2126936844179e-7</Value>
+             <Value>3.2279325523631996e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,2]</VariableName>
@@ -16394,44 +17094,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs[1]</VariableName>
-            <Value>-0.16115649736108742</Value>
+            <Value>0.02030937560178175</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs[2]</VariableName>
-            <Value>0.030017387426304037</Value>
+            <Value>0.003207672230887493</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs[3]</VariableName>
-            <Value>-0.30295391716851794</Value>
+            <Value>-0.33534334404715005</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_next[1,3]</VariableName>
-             <Value>-0.18311378359794617</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,3]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877549409866333</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,3]</VariableName>
-             <Value>3.2679491823728313e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation1\R_next[1,2]</VariableName>
-             <Value>-0.907018780708313</Value>
+             <Value>-0.9865983724594116</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,2]</VariableName>
-             <Value>0.1689443141222</Value>
+             <Value>-0.15583063662052155</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,2]</VariableName>
-             <Value>0.38571348786354065</Value>
+             <Value>-0.04837912321090698</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16607,11 +17307,11 @@ Total: (17h)' 96 680 color 0 16;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_body[1,3]</VariableName>
-             <Value>5.984064443964598e-8</Value>
+             <Value>-5.0984350963290126e-8</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,3]</VariableName>
-             <Value>3.2126936844179e-7</Value>
+             <Value>3.227932836580294e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,3]</VariableName>
@@ -16621,15 +17321,15 @@ Total: (17h)' 96 680 color 0 16;
            <YAxis>
             <X>
              <VariableName>Transformation\R_body[1,2]</VariableName>
-             <Value>-0.18311378359794617</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,2]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877549409866333</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,2]</VariableName>
-             <Value>3.2679491823728313e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16710,44 +17410,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs_com[1]</VariableName>
-            <Value>-0.18587685602588</Value>
+            <Value>0.04137117210852992</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs_com[2]</VariableName>
-            <Value>-0.10269999601490938</Value>
+            <Value>-0.13013924647331948</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs_com[3]</VariableName>
-            <Value>-0.3029538730512069</Value>
+            <Value>-0.335343299929839</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_body[1,3]</VariableName>
-             <Value>0.3791917562484741</Value>
+             <Value>-0.04778676480054855</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,3]</VariableName>
-             <Value>-0.07062914967536926</Value>
+             <Value>-0.007547464221715927</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,3]</VariableName>
-             <Value>0.9226186275482178</Value>
+             <Value>0.9988290667533875</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation1\R_body[1,2]</VariableName>
-             <Value>-0.18311378359794617</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,2]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877550005912781</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,2]</VariableName>
-             <Value>3.2782554626464844e-7</Value>
+             <Value>3.259629011154175e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16778,44 +17478,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs[1]</VariableName>
-            <Value>-0.2999497597662423</Value>
+            <Value>0.04450536340404081</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs[2]</VariableName>
-            <Value>0.055869336829551766</Value>
+            <Value>0.007029235601718702</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs[3]</VariableName>
-            <Value>-0.6689158954162394</Value>
+            <Value>-0.7268277145240257</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_next[1,3]</VariableName>
-             <Value>-0.18311378359794617</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,3]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877549409866333</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,3]</VariableName>
-             <Value>3.2679491823728313e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation2\R_next[1,2]</VariableName>
-             <Value>-0.9172064065933228</Value>
+             <Value>-0.9858269691467285</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,2]</VariableName>
-             <Value>0.17084188759326935</Value>
+             <Value>-0.15570880472660065</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,2]</VariableName>
-             <Value>0.35992446541786194</Value>
+             <Value>-0.06244976818561554</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16846,44 +17546,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs[1]</VariableName>
-            <Value>-0.31993662753114677</Value>
+            <Value>0.06153421591301534</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs[2]</VariableName>
-            <Value>-0.05143512541199226</Value>
+            <Value>-0.10078421755801606</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs[3]</VariableName>
-            <Value>-0.6689158597465764</Value>
+            <Value>-0.7268276788543627</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_next[1,3]</VariableName>
-             <Value>0.8843755125999451</Value>
+             <Value>0.9217588305473328</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,3]</VariableName>
-             <Value>-0.16472704708576202</Value>
+             <Value>0.1455891728401184</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,3]</VariableName>
-             <Value>-0.4367436170578003</Value>
+             <Value>0.3593945801258087</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_next[1,2]</VariableName>
-             <Value>-0.18311406672000885</Value>
+             <Value>0.15601301193237305</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,2]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877550005912781</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,2]</VariableName>
-             <Value>4.6938657760620117e-7</Value>
+             <Value>2.0489096641540527e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16914,44 +17614,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs[1]</VariableName>
-            <Value>-0.23623048677531705</Value>
+            <Value>0.14877868885541257</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs[2]</VariableName>
-            <Value>-0.06702654055062472</Value>
+            <Value>-0.0870042016541693</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs[3]</VariableName>
-            <Value>-0.7102536423883685</Value>
+            <Value>-0.6928109829140887</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_next[1,3]</VariableName>
-             <Value>-0.1820705085992813</Value>
+             <Value>-0.022234255447983742</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,3]</VariableName>
-             <Value>-0.9832830429077148</Value>
+             <Value>-0.9054696559906006</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,3]</VariableName>
-             <Value>0.002185004996135831</Value>
+             <Value>0.4238281548023224</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_next[1,2]</VariableName>
-             <Value>-0.8843755722045898</Value>
+             <Value>-0.9217588305473328</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,2]</VariableName>
-             <Value>0.16472673416137695</Value>
+             <Value>-0.14558947086334229</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,2]</VariableName>
-             <Value>0.4367436468601227</Value>
+             <Value>-0.3593944013118744</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -16982,44 +17682,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>-0.2512148900254807</Value>
+            <Value>0.14694880967002022</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>-0.14795073546091497</Value>
+            <Value>-0.16152435608999605</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>-0.7100738164785592</Value>
+            <Value>-0.6579299260919769</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>-0.1820705085992813</Value>
+             <Value>-0.022234255447983742</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>-0.9832830429077148</Value>
+             <Value>-0.9054696559906006</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>0.002185004996135831</Value>
+             <Value>0.4238281548023224</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>-0.8843487501144409</Value>
+             <Value>-0.9217590689659119</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.16472189128398895</Value>
+             <Value>-0.14558923244476318</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>0.4367997944355011</Value>
+             <Value>-0.3593939244747162</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -17100,44 +17800,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs_com[1]</VariableName>
-            <Value>-0.16390320387939772</Value>
+            <Value>0.022649575213642654</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs_com[2]</VariableName>
-            <Value>0.01527101148839144</Value>
+            <Value>-0.011608652069579948</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs_com[3]</VariableName>
-            <Value>-0.30295391226659446</Value>
+            <Value>-0.3353433391452267</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_body[1,3]</VariableName>
-             <Value>-0.3538387715816498</Value>
+             <Value>0.061685118824243546</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,3]</VariableName>
-             <Value>0.0659068152308464</Value>
+             <Value>0.009742672555148602</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,3]</VariableName>
-             <Value>-0.9329814910888672</Value>
+             <Value>-0.9980481266975403</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation2\R_body[1,2]</VariableName>
-             <Value>-0.18311376869678497</Value>
+             <Value>0.15601330995559692</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,2]</VariableName>
-             <Value>-0.9830917119979858</Value>
+             <Value>-0.9877550005912781</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,2]</VariableName>
-             <Value>3.315508081414009e-7</Value>
+             <Value>3.2689422369003296e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -17218,44 +17918,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs_com[1]</VariableName>
-            <Value>-0.3028154632112996</Value>
+            <Value>0.046946999830386756</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs_com[2]</VariableName>
-            <Value>0.04048394623437972</Value>
+            <Value>-0.008429124969906346</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs_com[3]</VariableName>
-            <Value>-0.6689159036467413</Value>
+            <Value>-0.7268276984282684</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_body[1,3]</VariableName>
-             <Value>0.8843755125999451</Value>
+             <Value>0.9217588305473328</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,3]</VariableName>
-             <Value>-0.16472704708576202</Value>
+             <Value>0.1455891728401184</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,3]</VariableName>
-             <Value>-0.4367436170578003</Value>
+             <Value>0.3593945801258087</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_body[1,2]</VariableName>
-             <Value>-0.18311406672000885</Value>
+             <Value>0.15601301193237305</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,2]</VariableName>
-             <Value>-0.9830917716026306</Value>
+             <Value>-0.9877550005912781</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,2]</VariableName>
-             <Value>4.6938657760620117e-7</Value>
+             <Value>2.0489096641540527e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -17336,44 +18036,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs_com[1]</VariableName>
-            <Value>-0.3202461646074439</Value>
+            <Value>0.06121159963340937</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs_com[2]</VariableName>
-            <Value>-0.05137750147155223</Value>
+            <Value>-0.10083520188185169</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs_com[3]</VariableName>
-            <Value>-0.668762999415405</Value>
+            <Value>-0.7269534537954936</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_body[1,3]</VariableName>
-             <Value>0.8843755722045898</Value>
+             <Value>0.9217588305473328</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,3]</VariableName>
-             <Value>-0.16472673416137695</Value>
+             <Value>0.14558947086334229</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,3]</VariableName>
-             <Value>-0.4367436170578003</Value>
+             <Value>0.3593944311141968</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_body[1,2]</VariableName>
-             <Value>-0.1820705235004425</Value>
+             <Value>-0.022234270349144936</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,2]</VariableName>
-             <Value>-0.9832830429077148</Value>
+             <Value>-0.9054697155952454</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,2]</VariableName>
-             <Value>0.0021850094199180603</Value>
+             <Value>0.4238281548023224</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -17454,44 +18154,44 @@ Total: (17h)' 96 680 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs_com[1]</VariableName>
-            <Value>-0.23646717844269508</Value>
+            <Value>0.14874978432393007</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs_com[2]</VariableName>
-            <Value>-0.06830480851397075</Value>
+            <Value>-0.0881813122345651</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs_com[3]</VariableName>
-            <Value>-0.7102508018818952</Value>
+            <Value>-0.6922600063178708</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_body[1,3]</VariableName>
-             <Value>0.8843487501144409</Value>
+             <Value>0.9217590689659119</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,3]</VariableName>
-             <Value>-0.16472189128398895</Value>
+             <Value>0.14558924734592438</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,3]</VariableName>
-             <Value>-0.4367997646331787</Value>
+             <Value>0.3593939542770386</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_body[1,2]</VariableName>
-             <Value>-0.1820705235004425</Value>
+             <Value>-0.022234253585338593</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,2]</VariableName>
-             <Value>-0.9832830429077148</Value>
+             <Value>-0.9054696559906006</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,2]</VariableName>
-             <Value>0.0021850168704986572</Value>
+             <Value>0.4238281548023224</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -17583,7 +18283,7 @@ Total: (17h)' 96 680 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.486223777936641</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -17591,18 +18291,46 @@ Total: (17h)' 96 680 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.5999999999999999</Minimum>
-      <Maximum>1.4000000000000001</Maximum>
+      <Minimum>-1.5</Minimum>
+      <Maximum>3.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>output</Label>
+      <Label>q_1</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.04</Minimum>
-      <Maximum>0.16</Maximum>
+      <Minimum>-1.6</Minimum>
+      <Maximum>0.4</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>output</Label>
+      <Label>q_2</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.6</Minimum>
+      <Maximum>0.4</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.6</Minimum>
+      <Maximum>0.4</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.6</Minimum>
+      <Maximum>0.4</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_5</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.6</Minimum>
+      <Maximum>0.4</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_6</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -17624,7 +18352,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint1\Integrate\output</VarName>
+       <VarName>Joint\Integrate\output</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17643,7 +18371,83 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint\Integrate\output</VarName>
+       <VarName>Joint1\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint2\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint4\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint4\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint5\Integrate\output</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -17725,7 +18529,7 @@ Total: (17h)' 96 680 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.486223777936641</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -17733,46 +18537,46 @@ Total: (17h)' 96 680 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-40.0</Minimum>
+      <Maximum>60.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[1]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[1]</Label>
      </Axis>
      <Axis>
-      <Minimum>-5.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[2]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[2]</Label>
      </Axis>
      <Axis>
-      <Minimum>-5.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[3]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[3]</Label>
      </Axis>
      <Axis>
-      <Minimum>-5.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[4]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[4]</Label>
      </Axis>
      <Axis>
-      <Minimum>-5.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[5]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[5]</Label>
      </Axis>
      <Axis>
-      <Minimum>-5.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[6]</Label>
+      <Scaling>2</Scaling>
+      <Label>tau_g[6]</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -17794,7 +18598,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[1]</VarName>
+       <VarName>GravityTerm\tau_g[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17813,7 +18617,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[2]</VarName>
+       <VarName>GravityTerm\tau_g[2]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17832,7 +18636,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[3]</VarName>
+       <VarName>GravityTerm\tau_g[3]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17851,7 +18655,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[4]</VarName>
+       <VarName>GravityTerm\tau_g[4]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17870,7 +18674,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[5]</VarName>
+       <VarName>GravityTerm\tau_g[5]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -17889,16 +18693,12 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation1\pose_abs[6]</VarName>
+       <VarName>GravityTerm\tau_g[6]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
      <ShowLegenda>true</ShowLegenda>
-     <Position>
-      <X>0.9344473007712082</X>
-      <Y>0.18243243243243243</Y>
-     </Position>
      <BorderPenColor>0</BorderPenColor>
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
@@ -17975,7 +18775,7 @@ Total: (17h)' 96 680 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.486223777936641</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -17983,46 +18783,11 @@ Total: (17h)' 96 680 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.3999999999999999</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-120.0</Minimum>
+      <Maximum>80.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[1]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[2]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[3]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[4]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[5]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>pose_abs[6]</Label>
+      <Scaling>2</Scaling>
+      <Label>p1.e</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -18044,102 +18809,7 @@ Total: (17h)' 96 680 color 0 16;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[1]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>6076255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>6076255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[2]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>12553035</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>12553035</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[3]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15086320</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[4]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15790150</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[5]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>1696255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>1696255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transformation\pose_abs[6]</VarName>
+       <VarName>Joint1\FlowSensor\p1.e</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -18167,7 +18837,7 @@ Total: (17h)' 96 680 color 0 16;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="3456" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00416667 0.0037037 0.997396 0.95
+0.00625 0.0037037 0.994792 0.943519
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -18255,10 +18925,10 @@ Total: (17h)' 96 680 color 0 16;
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>BDFMethod</Name>
-    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
-    <RelativeTolerance>1.0e-5</RelativeTolerance>
-    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
-    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <AbsoluteTolerance>0.001</AbsoluteTolerance>
+    <RelativeTolerance>0.001</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>0.001</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>0.001</AlgebraicRelativeTolerance>
     <UseInitialStepSize>true</UseInitialStepSize>
     <InitialStepSize>0.01</InitialStepSize>
     <UseMaximumStepSize>true</UseMaximumStepSize>
