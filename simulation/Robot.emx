@@ -7,14 +7,1718 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\cenni\Desktop\Automation_magistrale\3_Universit&agrave;\IV_semestre\MSMS\Project\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-16 12:41:38</TimeStamp>
+    <LibraryPath>C:\Users\giuli\OneDrive - Alma Mater Studiorum Universit&agrave; di Bologna\GIULIO MAZZAROPPI\UNIVERSITA\Anno 5\MSMS\Exam\MSMS_robarm\simulation\Robot.emx</LibraryPath>
+    <TimeStamp>2026-5-17 13:02:10</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   HarmonicDrive 160 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 7.0;
+      real T_2 = 25;
+      real k_2 = 25000.0;
+      real k_3 = 29000.0;
+      real k_1 = 16000.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
+   HarmonicDrive1 336 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 7.0;
+      real T_2 = 25;
+      real k_2 = 25000.0;
+      real k_3 = 29000.0;
+      real k_1 = 16000.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
+   HarmonicDrive2 512 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 7;
+      real T_2 = 25;
+      real k_2 = 25000.0;
+      real k_3 = 29000.0;
+      real k_1 = 16000.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
+   HarmonicDrive3 704 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 2.0;
+      real T_2 = 6.9;
+      real k_2 = 6100.0;
+      real k_3 = 7100.0;
+      real k_1 = 4700.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
+   HarmonicDrive4 928 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 2.0;
+      real T_2 = 6.9;
+      real k_2 = 6100.0;
+      real k_3 = 7100.0;
+      real k_1 = 4700.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
+   HarmonicDrive5 1136 312
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>HarmonicDrive.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>True</KeepParameterValues>
+    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>';
+    type 'Submodel-Graphical'
+     ports
+      power in motor;
+      power out harmonic_drive;
+     restrictions
+      causality fixed in motor;
+      causality fixed out harmonic_drive;
+     parameters
+      real J = 8.0e-6;
+      real N = -0.01;
+      real b_w = 6.4e-4;
+      real b_f_pos = 0.008;
+      real b_f_neg = -0.007;
+      real T_1 = 2.0;
+      real T_2 = 6.9;
+      real k_2 = 6100.0;
+      real k_3 = 7100.0;
+      real k_1 = 4700.0;
+    end;
+    implementation bg
+     submodels
+      C 408 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 408 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup k_1;
+	real oneup k_2;
+	real oneup k_3;
+	real oneup T_1;
+	real oneup T_2;
+variables
+	real phi_1;
+	real phi_2;
+equations
+	phi_1 = T_1 / k_1;
+	phi_2 = phi_1 + (T_2 - T_1) / k_2;
+	
+	state = int(p.f);
+	
+	if state <= phi_1 then
+		p.e = state * k_1;
+	elsif state < phi_2 then
+		p.e = (state - phi_1) * k_2 + T_1;
+	else
+		p.e = (state - phi_2) * k_3 + T_2;
+	end;
+
+implementation_end;
+      I 264 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+       type I
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 264 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup J;
+equations
+    state = int(p.e);
+    p.f = state / J;
+implementation_end;
+      plug motor 160 280;
+      plug harmonic_drive 624 280;
+      OneJunction 264 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction1 480 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 480 208 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      R 264 344
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 264 344 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_w;
+equations
+	p.e = b_w * p.f;
+implementation_end;
+      R1 560 208
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 560 208 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup b_f_pos;
+	real oneup b_f_neg;
+variables
+	real b_f_mean;
+	real b_f_off;
+equations
+	b_f_mean = (b_f_pos - b_f_neg) / 2;
+	b_f_off = b_f_pos + b_f_neg;
+	p.e = b_f_mean * 2 / 3.14159 * arctan(p.f) + b_f_off;
+implementation_end;
+      TF 360 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\TF.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:43:47</TimeStamp>
+</Description>
+</Information>';
+       type TF
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'TF' 360 280 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real oneup N;
+equations
+	p1.e = N * p2.e;
+	p2.f = N * p1.f;
+implementation_end;
+      ZeroJunction 480 280
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 480 280 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      motor => OneJunction\p;
+      OneJunction\p => I\p;
+      OneJunction\p => TF\p1;
+      OneJunction1\p => C\p;
+      OneJunction1\p => R1\p;
+      R\p <= OneJunction\p;
+      TF\p2 => ZeroJunction\p;
+      ZeroJunction\p => harmonic_drive;
+      ZeroJunction\p => OneJunction1\p;
+     end;
+    implementation_end;
    Joint 160 192
     description '<Information>
   <Description>
@@ -137,8 +1841,18 @@ variables
 	real skew_P [3,3];
 equations
 	angle = theta + theta_off_i;
-	R = [cos(angle), -sin(angle)*cos(alpha_i), sin(angle)*sin(alpha_i); sin(angle), cos(angle)*cos(alpha_i), -cos(angle)*sin(alpha_i); 0, sin(alpha_i), cos(alpha_i)];
-	P = [a_i * cos(angle); a_i * sin(angle); d_i];
+	R = [
+				cos(angle), -sin(angle)*cos(alpha_i), sin(angle)*sin(alpha_i);
+	 			sin(angle), cos(angle)*cos(alpha_i), -cos(angle)*sin(alpha_i); 
+				0, sin(alpha_i), cos(alpha_i)
+			];
+			
+	P = [
+				a_i * cos(angle); 
+				a_i * sin(angle);
+				d_i
+			];
+			
 	skew_P = [0, -P[3], P[2]; P[3], 0, -P[1]; -P[2], P[1], 0];
 	
 	twist_ipp.e[1:3] = transpose(R) * twist_i.e[1:3];
@@ -202,8 +1916,23 @@ equations
  end;
  implementation eq
 equations    
-	twist_i.e = [vel_i.e[1]; vel_i.e[2]; vel_i.e[3]; w_i.e[1]; w_i.e[2]; w_i.e[3]];    
-	twist_i.f = [vel_i.f[1]; vel_i.f[2]; vel_i.f[3]; w_i.f[1]; w_i.f[2]; w_i.f[3]];implementation_end;
+	twist_i.e = [
+						vel_i.e[1]; 
+						vel_i.e[2]; 
+						vel_i.e[3]; 
+						w_i.e[1]; 
+						w_i.e[2]; 
+						w_i.e[3]
+	];    
+	
+	twist_i.f = [
+						vel_i.f[1]; 
+						vel_i.f[2]; 
+						vel_i.f[3]; 
+						w_i.f[1]; 
+						w_i.f[2]; 
+						w_i.f[3]
+	];implementation_end;
 specification_end;
 							specification 'inputs_1'
 description '<Description>
@@ -617,8 +2346,17 @@ equations
  end;
  implementation eq
 equations
-	w_i.e = [w_xy.e[1]; w_xy.e[2]; w_z.e];
-	w_i.f = [w_xy.f[1]; w_xy.f[2]; w_z.f];implementation_end;
+	w_i.e = [
+					w_xy.e[1]; 
+					w_xy.e[2]; 
+					w_z.e
+	];
+	
+	w_i.f = [
+					w_xy.f[1]; 
+					w_xy.f[2]; 
+					w_z.f
+	];implementation_end;
 specification_end;
 							specification 'inputs_1'
 description '<Description>
@@ -1968,7 +3706,7 @@ implementation_end;
       real d_i = 0.0 {m};
       real a_i = -0.425 {m};
       real alpha_i = 0.0 {rad};
-      real theta_off_i = -1.570796 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -5824,7 +7562,7 @@ implementation_end;
       real d_i = 0.10915 {m};
       real a_i = 0 {m};
       real alpha_i = 1.570796 {rad};
-      real theta_off_i = -1.570796 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -11588,7 +13326,7 @@ implementation_end;
   <Description>
     <Version>5.1</Version>
     <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:14:45</TimeStamp>
+    <TimeStamp>2026-5-17 13:01:46</TimeStamp>
     <IsMainModel>1</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <AllowLibraryUpdate>True</AllowLibraryUpdate>
@@ -11598,6 +13336,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -11671,7 +13410,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -11682,6 +13421,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 512 8;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -11709,12 +13449,46 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se 512 104
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 512 104 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se\gravity => OneJunction\p;
+      T_next -> Se\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
@@ -11733,6 +13507,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -11740,7 +13515,7 @@ implementation_end;
       real m = 8.393;
       real J[3,3] = [0.0149, 0, 0; 0, 0.3564, 0; 0, 0, 0.3553];
       real twist_init[6,1] = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0];
-      real r_gp[3,1] = [0.0; 0.0; 0.0];
+      real r_gp[3,1] = [0.2125; 0.0; 0.11336];
     end;
     implementation bg
      submodels
@@ -11806,7 +13581,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -11817,6 +13592,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 504 8;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -11844,12 +13620,46 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se 504 88
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 504 88 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se\gravity => OneJunction\p;
+      T_next -> Se\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
@@ -11868,6 +13678,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -11875,7 +13686,7 @@ implementation_end;
       real m = 2.33;
       real J[3,3] = [0.0025, 0, 0.0034; 0, 0.0551, 0; 0.0034, 0, 0.0546];
       real twist_init[6,1] = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0];
-      real r_gp[3,1] = [0.15; 0; 0.0265];
+      real r_gp[3,1] = [0.15; 0.0; 0.0265];
     end;
     implementation bg
      submodels
@@ -11941,7 +13752,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -11952,6 +13763,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 512 24;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -11979,12 +13791,46 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se 520 112
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 520 112 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se\gravity => OneJunction\p;
+      T_next -> Se\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
@@ -12003,6 +13849,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -12076,7 +13923,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -12087,6 +13934,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 512 16;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -12114,12 +13962,46 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se1 520 112
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 520 112 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se1\gravity => OneJunction\p;
+      T_next -> Se1\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
@@ -12138,6 +14020,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -12211,7 +14094,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -12222,6 +14105,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 512 16;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -12249,12 +14133,46 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se 520 112
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 520 112 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se\gravity => OneJunction\p;
+      T_next -> Se\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
@@ -12273,6 +14191,7 @@ implementation_end;
      ports
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
+      signal in T_next [4,4];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -12346,7 +14265,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real oneup r_gp[3,1];
+	real global r_gp[3,1];
 	real skew_rgp [3,3] = [0, - r_gp[3],  r_gp[2];  r_gp[3], 0, - r_gp[1]; - r_gp[2], r_gp[1], 0];
 
 equations
@@ -12357,6 +14276,7 @@ equations
 implementation_end;
       plug wrench_i 264 88;
       plug wrench_ipp 264 288;
+      plug T_next 488 32;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -12384,16 +14304,50 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      Se 520 112
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+       type Se
+        ports
+         power out gravity [6,1];
+         signal in T_next [4,4];
+        restrictions
+         causality fixed out gravity;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 520 112 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m;
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;
+implementation_end;
      end;
      connections
       i_com\wrench_com => OneJunction\p;
       ipp_com\wrench_in => wrench_ipp;
       OneJunction\p => Body\wrench_com;
       OneJunction\p => ipp_com\wrench_com;
+      Se\gravity => OneJunction\p;
+      T_next -> Se\T_next;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
-   One 16 112
+   One 16 104
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
   <LibraryPath>Signal\Sources\One.emx</LibraryPath>
   <TimeStamp>2007-9-27 15:54:39</TimeStamp>
@@ -12405,12 +14359,17 @@ implementation_end;
     end;
     icon bg bottom
      figures
-      rectangle 0.1 96 31.9 128 color 0 fill 15132390;
-      text '1' 16 112 color 16711680 18 bold;
+      rectangle 0.1 88 31.9 120 color 0 fill 15132390;
+      text '1' 16 104 color 16711680 18 bold;
     end;
     implementation eq
 equations
-	identity = [1, 0, 0 ,0; 0, 1, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1];implementation_end;
+	identity = [
+						1, 0, 0 ,0;
+					 	0, 1, 0, 0;
+					 	0, 0, 1, 0;
+					 	0, 0, 0, 1
+					];implementation_end;
    Se 1416 200
     description '<Information>
  <Description>
@@ -12440,7 +14399,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se1 160 320
+   Se1 160 464
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -12458,18 +14417,18 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 160 320 color 0 18 bold;
+      text 'Se' 160 464 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real effort = 0.001;
+	real effort = 0.1;
 variables
 	real flow;
 equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se2 328 320
+   Se2 336 464
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -12487,36 +14446,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 328 320 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real effort = 0.00;
-variables
-	real flow;
-equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
-   Se3 504 320
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
-</Description>
-</Information>';
-    type Se
-     ports
-      power out p;
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 504 320 color 0 18 bold;
+      text 'Se' 336 464 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -12527,7 +14457,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se4 704 320
+   Se3 504 464
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -12545,7 +14475,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 704 320 color 0 18 bold;
+      text 'Se' 504 464 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -12556,7 +14486,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se5 928 320
+   Se4 704 464
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -12574,7 +14504,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 928 320 color 0 18 bold;
+      text 'Se' 704 464 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -12585,7 +14515,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Se6 1128 320
+   Se5 928 464
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -12603,7 +14533,36 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'Se' 1128 320 color 0 18 bold;
+      text 'Se' 928 464 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real effort = 0.00;
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   Se6 1136 472
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
+</Description>
+</Information>';
+    type Se
+     ports
+      power out p;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'Se' 1136 472 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -12642,6 +14601,121 @@ variables
 equations
 	p.f = flow;
 	effort = p.e;
+implementation_end;
+   Splitter1 240 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 236.8 100.8 243.2 107.2 color -1 fill 0;
+      ellipse 235.7 99.7 244.3 108.3 color -1;
+     terminals
+      input 240 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter2 416 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 412.8 100.8 419.2 107.2 color -1 fill 0;
+      ellipse 411.7 99.7 420.3 108.3 color -1;
+     terminals
+      input 416 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter3 600 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 596.8 100.8 603.2 107.2 color -1 fill 0;
+      ellipse 595.7 99.7 604.3 108.3 color -1;
+     terminals
+      input 600 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter4 816 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 812.8 100.8 819.2 107.2 color -1 fill 0;
+      ellipse 811.7 99.7 820.3 108.3 color -1;
+     terminals
+      input 816 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter5 1024 104
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [4,4];
+      signal knot in input [4,4];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 1020.8 100.8 1027.2 107.2 color -1 fill 0;
+      ellipse 1019.7 99.7 1028.3 108.3 color -1;
+     terminals
+      input 1024 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
 implementation_end;
    Transformation 160 104
     description '<Information>
@@ -12884,6 +14958,12 @@ equations
 implementation_end;
   end;
   connections
+   HarmonicDrive\harmonic_drive => Joint\actuator;
+   HarmonicDrive1\harmonic_drive => Joint1\actuator;
+   HarmonicDrive2\harmonic_drive => Joint2\actuator;
+   HarmonicDrive3\harmonic_drive => Joint3\actuator;
+   HarmonicDrive4\harmonic_drive => Joint4\actuator;
+   HarmonicDrive5\harmonic_drive => Joint5\actuator;
    Joint\T_i -> Transformation\T_i;
    Joint\twist_ipp => Link\wrench_i;
    Joint1\T_i -> Transformation1\T_i;
@@ -12901,32 +14981,41 @@ implementation_end;
    Link2\wrench_ipp => Joint3\twist_i;
    Link3\wrench_ipp => Joint4\twist_i;
    Link4\wrench_ipp => Joint5\twist_i;
-   Se1\p => Joint\actuator;
-   Se2\p => Joint1\actuator;
-   Se3\p => Joint2\actuator;
-   Se4\p => Joint3\actuator;
-   Se5\p => Joint4\actuator;
-   Se6\p => Joint5\actuator;
+   Se1\p => HarmonicDrive\motor;
+   Se2\p => HarmonicDrive1\motor;
+   Se3\p => HarmonicDrive2\motor;
+   Se4\p => HarmonicDrive3\motor;
+   Se5\p => HarmonicDrive4\motor;
+   Se6\p => HarmonicDrive5\motor;
    Sf\p => Joint\twist_i;
-   Transformation\T_next -> Transformation1\T_prev;
+   Splitter1\output -> Link\T_next;
+   Splitter1\output -> Transformation1\T_prev;
+   Splitter2\output -> Link1\T_next;
+   Splitter2\output -> Transformation2\T_prev;
+   Splitter3\output -> Link2\T_next;
+   Splitter3\output -> Transformation3\T_prev;
+   Splitter4\output -> Link3\T_next;
+   Splitter4\output -> Transformation4\T_prev;
+   Splitter5\output -> Link4\T_next;
+   Splitter5\output -> Transformation5\T_prev;
+   Transformation\T_next -> Splitter1\input;
    Transformation\T_prev <- One\identity;
-   Transformation1\T_next -> Transformation2\T_prev;
-   Transformation2\T_next -> Transformation3\T_prev;
-   Transformation3\T_next -> Transformation4\T_prev;
-   Transformation4\T_next -> Transformation5\T_prev;
+   Transformation1\T_next -> Splitter2\input;
+   Transformation2\T_next -> Splitter3\input;
+   Transformation3\T_next -> Splitter4\input;
+   Transformation4\T_next -> Splitter5\input;
+   Transformation5\T_next -> Link5\T_next;
    ZeroJunction\p <= Link5\wrench_ipp;
    ZeroJunction\p <= Se\p;
   end;
   figures
-   text 'Insert gravity (2h)
-Develop Harmonic drive (3h)
-PD + g (2h)
+   text 'PD + g (2h)
 Load (3h)
 Inverse dynamics (2h)
 
 Report(5h)
 
-Total: (17h)' 352 480 color 0 16;
+Total: (17h)' 96 680 color 0 16;
  implementation_end;
 ]]></Sidops>
  </Model>
@@ -12947,136 +15036,148 @@ Total: (17h)' 352 480 color 0 16;
     <Name>Link\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
+    <Value>0.0 -0.00193 -0.02561
+0.00193 0.0 -0.0
+0.02561 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 -0.00193 -0.02561
+0.00193 0.0 -0.0
+0.02561 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link1\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
+    <Value>0.0 -0.11336 0.0
+0.11336 0.0 -0.2125
+-0.0 0.2125 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link1\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link1\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 -0.11336 0.0
+0.11336 0.0 -0.2125
+-0.0 0.2125 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link2\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
+    <Value>0.0 -0.0265 0.0
+0.0265 0.0 -0.15
+-0.0 0.15 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link2\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link2\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 -0.0265 0.0
+0.0265 0.0 -0.15
+-0.0 0.15 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link3\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
+    <Value>0.0 -0.01634 -0.0018
+0.01634 0.0 -0.0
+0.0018 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link3\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link3\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 -0.01634 -0.0018
+0.01634 0.0 -0.0
+0.0018 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link4\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
+    <Value>0.0 -0.01634 0.0018
+0.01634 0.0 -0.0
+-0.0018 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link4\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
--0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link4\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 -0.01634 0.0018
+0.01634 0.0 -0.0
+-0.0018 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link5\i_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
+    <Value>0.0 0.001159 0.0
+-0.001159 0.0 -0.0
 -0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>Link5\ipp_com\skew_rgp</Name>
     <Rows>3</Rows>
     <Columns>3</Columns>
-    <Value>0.0 -0.0 0.0
-0.0 0.0 -0.0
+    <Value>0.0 0.001159 0.0
+-0.001159 0.0 -0.0
 -0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>Link5\r_gp</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Value>0.0 0.0 0.0</Value>
    </Variable>
   </Parameters>
   <Initials>
+   <Variable>
+    <Name>HarmonicDrive\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive1\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive1\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive2\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive2\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive3\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive3\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive4\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive4\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive5\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>HarmonicDrive5\I\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
    <Variable>
     <Name>Link\Body\dh_int_initial</Name>
     <Rows>3</Rows>
@@ -13952,36 +16053,36 @@ Total: (17h)' 352 480 color 0 16;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-1.6603632532019</Value>
+            <Value>32.5382104159128</Value>
            </X>
            <Y>
-            <Value>21.8183284114576</Value>
+            <Value>2.29750327401429</Value>
            </Y>
            <Z>
-            <Value>5.25618259719042</Value>
+            <Value>13.1739153473908</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.169633217671348</Value>
+             <Value>-0.954889607504467</Value>
             </X>
             <Y>
-             <Value>-0.980823536351043</Value>
+             <Value>-0.153726907515544</Value>
             </Y>
             <Z>
-             <Value>0.0959675049290133</Value>
+             <Value>-0.254074546906359</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.0163547621493272</Value>
+             <Value>-0.250844692057641</Value>
             </X>
             <Y>
-             <Value>0.094563642458561</Value>
+             <Value>-0.0403832844207341</Value>
             </Y>
             <Z>
-             <Value>0.995384468072517</Value>
+             <Value>0.967184641527098</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -14006,13 +16107,13 @@ Total: (17h)' 352 480 color 0 16;
           <UseLookatPosition>true</UseLookatPosition>
           <LookatPosition>
            <X>
-            <Value>2.16678390093148</Value>
+            <Value>2.06327117793262</Value>
            </X>
            <Y>
-            <Value>-0.310334370238706</Value>
+            <Value>-2.60863256466109</Value>
            </Y>
            <Z>
-            <Value>7.421335265639</Value>
+            <Value>5.06522207281655</Value>
            </Z>
           </LookatPosition>
           <UseAlwaysLookUp>true</UseAlwaysLookUp>
@@ -14240,11 +16341,11 @@ Total: (17h)' 352 480 color 0 16;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_next[1,3]</VariableName>
-             <Value>0.08864602446556091</Value>
+             <Value>-0.18311378359794617</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,3]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,3]</VariableName>
@@ -14254,11 +16355,11 @@ Total: (17h)' 352 480 color 0 16;
            <YAxis>
             <X>
              <VariableName>Transformation\R_next[1,2]</VariableName>
-             <Value>-2.8969065368755764e-8</Value>
+             <Value>5.984064443964598e-8</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,2]</VariableName>
-             <Value>-3.2550838113820646e-7</Value>
+             <Value>3.2126936844179e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,2]</VariableName>
@@ -14293,26 +16394,26 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs[1]</VariableName>
-            <Value>0.29208196420689436</Value>
+            <Value>-0.16115649736108742</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs[2]</VariableName>
-            <Value>-0.025994337674965284</Value>
+            <Value>0.030017387426304037</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs[3]</VariableName>
-            <Value>0.3967909563925086</Value>
+            <Value>-0.30295391716851794</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_next[1,3]</VariableName>
-             <Value>0.08864602446556091</Value>
+             <Value>-0.18311378359794617</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,3]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,3]</VariableName>
@@ -14322,15 +16423,15 @@ Total: (17h)' 352 480 color 0 16;
            <YAxis>
             <X>
              <VariableName>Transformation1\R_next[1,2]</VariableName>
-             <Value>-0.7209903001785278</Value>
+             <Value>-0.907018780708313</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,2]</VariableName>
-             <Value>0.06416530162096024</Value>
+             <Value>0.1689443141222</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,2]</VariableName>
-             <Value>0.6899679899215698</Value>
+             <Value>0.38571348786354065</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14365,13 +16466,13 @@ Total: (17h)' 352 480 color 0 16;
           <OverrideColor>true</OverrideColor>
           <MeshColor>
            <X>
-            <Value>1</Value>
+            <Value>148</Value>
            </X>
            <Y>
-            <Value>1</Value>
+            <Value>193</Value>
            </Y>
            <Z>
-            <Value>1</Value>
+            <Value>243</Value>
            </Z>
           </MeshColor>
           <Alpha>1.0</Alpha>
@@ -14388,7 +16489,7 @@ Total: (17h)' 352 480 color 0 16;
           </MeshColorMultipliers>
           <MeshColorOffsets>
           </MeshColorOffsets>
-          <Direct3DColorRange>true</Direct3DColorRange>
+          <Direct3DColorRange>false</Direct3DColorRange>
           <SpecularColor>
            <X>
             <Value>0.5</Value>
@@ -14445,13 +16546,13 @@ Total: (17h)' 352 480 color 0 16;
           <OverrideColor>true</OverrideColor>
           <MeshColor>
            <X>
-            <Value>1</Value>
+            <Value>255</Value>
            </X>
            <Y>
-            <Value>1</Value>
+            <Value>255</Value>
            </Y>
            <Z>
-            <Value>1</Value>
+            <Value>255</Value>
            </Z>
           </MeshColor>
           <Alpha>1.0</Alpha>
@@ -14468,7 +16569,7 @@ Total: (17h)' 352 480 color 0 16;
           </MeshColorMultipliers>
           <MeshColorOffsets>
           </MeshColorOffsets>
-          <Direct3DColorRange>true</Direct3DColorRange>
+          <Direct3DColorRange>false</Direct3DColorRange>
           <SpecularColor>
            <X>
             <Value>0.498039215686275</Value>
@@ -14506,11 +16607,11 @@ Total: (17h)' 352 480 color 0 16;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_body[1,3]</VariableName>
-             <Value>-2.8969065368755764e-8</Value>
+             <Value>5.984064443964598e-8</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,3]</VariableName>
-             <Value>-3.2550838113820646e-7</Value>
+             <Value>3.2126936844179e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,3]</VariableName>
@@ -14520,11 +16621,11 @@ Total: (17h)' 352 480 color 0 16;
            <YAxis>
             <X>
              <VariableName>Transformation\R_body[1,2]</VariableName>
-             <Value>0.08864602446556091</Value>
+             <Value>-0.18311378359794617</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,2]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,2]</VariableName>
@@ -14563,13 +16664,13 @@ Total: (17h)' 352 480 color 0 16;
           <OverrideColor>true</OverrideColor>
           <MeshColor>
            <X>
-            <Value>1</Value>
+            <Value>148</Value>
            </X>
            <Y>
-            <Value>1</Value>
+            <Value>193</Value>
            </Y>
            <Z>
-            <Value>1</Value>
+            <Value>243</Value>
            </Z>
           </MeshColor>
           <Alpha>1.0</Alpha>
@@ -14586,7 +16687,7 @@ Total: (17h)' 352 480 color 0 16;
           </MeshColorMultipliers>
           <MeshColorOffsets>
           </MeshColorOffsets>
-          <Direct3DColorRange>true</Direct3DColorRange>
+          <Direct3DColorRange>false</Direct3DColorRange>
           <SpecularColor>
            <X>
             <Value>0.5</Value>
@@ -14609,44 +16710,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs_com[1]</VariableName>
-            <Value>0.3040491763538894</Value>
+            <Value>-0.18587685602588</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs_com[2]</VariableName>
-            <Value>0.10847419334038741</Value>
+            <Value>-0.10269999601490938</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs_com[3]</VariableName>
-            <Value>0.39679100050981964</Value>
+            <Value>-0.3029538730512069</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_body[1,3]</VariableName>
-             <Value>-0.6872516870498657</Value>
+             <Value>0.3791917562484741</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,3]</VariableName>
-             <Value>0.061163146048784256</Value>
+             <Value>-0.07062914967536926</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,3]</VariableName>
-             <Value>-0.7238398790359497</Value>
+             <Value>0.9226186275482178</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation1\R_body[1,2]</VariableName>
-             <Value>0.08864602446556091</Value>
+             <Value>-0.18311378359794617</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,2]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,2]</VariableName>
-             <Value>3.2410028438789595e-7</Value>
+             <Value>3.2782554626464844e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14677,26 +16778,26 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs[1]</VariableName>
-            <Value>0.5921102392761803</Value>
+            <Value>-0.2999497597662423</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs[2]</VariableName>
-            <Value>-0.052695684867143454</Value>
+            <Value>0.055869336829551766</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs[3]</VariableName>
-            <Value>0.14553384760338084</Value>
+            <Value>-0.6689158954162394</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_next[1,3]</VariableName>
-             <Value>0.08864602446556091</Value>
+             <Value>-0.18311378359794617</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,3]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,3]</VariableName>
@@ -14706,15 +16807,15 @@ Total: (17h)' 352 480 color 0 16;
            <YAxis>
             <X>
              <VariableName>Transformation2\R_next[1,2]</VariableName>
-             <Value>0.6380317807197571</Value>
+             <Value>-0.9172064065933228</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,2]</VariableName>
-             <Value>-0.05678276717662811</Value>
+             <Value>0.17084188759326935</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,2]</VariableName>
-             <Value>0.7679135203361511</Value>
+             <Value>0.35992446541786194</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14745,44 +16846,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs[1]</VariableName>
-            <Value>0.6017859519120656</Value>
+            <Value>-0.31993662753114677</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs[2]</VariableName>
-            <Value>0.056024612616750964</Value>
+            <Value>-0.05143512541199226</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs[3]</VariableName>
-            <Value>0.14553388327304378</Value>
+            <Value>-0.6689158597465764</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_next[1,3]</VariableName>
-             <Value>0.8110394477844238</Value>
+             <Value>0.8843755125999451</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,3]</VariableName>
-             <Value>-0.07217943668365479</Value>
+             <Value>-0.16472704708576202</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,3]</VariableName>
-             <Value>0.5805214047431946</Value>
+             <Value>-0.4367436170578003</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_next[1,2]</VariableName>
-             <Value>0.08864574879407883</Value>
+             <Value>-0.18311406672000885</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,2]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,2]</VariableName>
-             <Value>1.4156104555240745e-7</Value>
+             <Value>4.6938657760620117e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14813,44 +16914,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs[1]</VariableName>
-            <Value>0.6785508364934627</Value>
+            <Value>-0.23623048677531705</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs[2]</VariableName>
-            <Value>0.04919282899667003</Value>
+            <Value>-0.06702654055062472</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs[3]</VariableName>
-            <Value>0.20048023645296986</Value>
+            <Value>-0.7102536423883685</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_next[1,3]</VariableName>
-             <Value>0.41146811842918396</Value>
+             <Value>-0.1820705085992813</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,3]</VariableName>
-             <Value>0.7757752537727356</Value>
+             <Value>-0.9832830429077148</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,3]</VariableName>
-             <Value>-0.4784001410007477</Value>
+             <Value>0.002185004996135831</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_next[1,2]</VariableName>
-             <Value>-0.8110393285751343</Value>
+             <Value>-0.8843755722045898</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,2]</VariableName>
-             <Value>0.07217967510223389</Value>
+             <Value>0.16472673416137695</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,2]</VariableName>
-             <Value>-0.5805215239524841</Value>
+             <Value>0.4367436468601227</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14881,44 +16982,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>0.7124146630722423</Value>
+            <Value>-0.2512148900254807</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>0.11303913459355308</Value>
+            <Value>-0.14795073546091497</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>0.1611079046567483</Value>
+            <Value>-0.7100738164785592</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>0.41146811842918396</Value>
+             <Value>-0.1820705085992813</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>0.7757752537727356</Value>
+             <Value>-0.9832830429077148</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>-0.4784001410007477</Value>
+             <Value>0.002185004996135831</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>-0.6813137531280518</Value>
+             <Value>-0.8843487501144409</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.6104558706283569</Value>
+             <Value>0.16472189128398895</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>0.40392470359802246</Value>
+             <Value>0.4367997944355011</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -14999,44 +17100,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs_com[1]</VariableName>
-            <Value>0.2934116544454493</Value>
+            <Value>-0.16390320387939772</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs_com[2]</VariableName>
-            <Value>-0.011053389784370548</Value>
+            <Value>0.01527101148839144</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs_com[3]</VariableName>
-            <Value>0.39679096129443203</Value>
+            <Value>-0.30295391226659446</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_body[1,3]</VariableName>
-             <Value>0.7648904323577881</Value>
+             <Value>-0.3538387715816498</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,3]</VariableName>
-             <Value>-0.06807226687669754</Value>
+             <Value>0.0659068152308464</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,3]</VariableName>
-             <Value>-0.6405534744262695</Value>
+             <Value>-0.9329814910888672</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation2\R_body[1,2]</VariableName>
-             <Value>0.08864601701498032</Value>
+             <Value>-0.18311376869678497</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,2]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917119979858</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,2]</VariableName>
-             <Value>3.2782554626464844e-7</Value>
+             <Value>3.315508081414009e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -15071,13 +17172,13 @@ Total: (17h)' 352 480 color 0 16;
           <OverrideColor>true</OverrideColor>
           <MeshColor>
            <X>
-            <Value>1</Value>
+            <Value>148</Value>
            </X>
            <Y>
-            <Value>1</Value>
+            <Value>193</Value>
            </Y>
            <Z>
-            <Value>1</Value>
+            <Value>243</Value>
            </Z>
           </MeshColor>
           <Alpha>1.0</Alpha>
@@ -15094,22 +17195,22 @@ Total: (17h)' 352 480 color 0 16;
           </MeshColorMultipliers>
           <MeshColorOffsets>
           </MeshColorOffsets>
-          <Direct3DColorRange>true</Direct3DColorRange>
+          <Direct3DColorRange>false</Direct3DColorRange>
           <SpecularColor>
            <X>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </X>
            <Y>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Y>
            <Z>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Z>
           </SpecularColor>
           <EmissiveColor>
           </EmissiveColor>
           <ShininessPower>
-           <Value>15</Value>
+           <Value>14.298713684082</Value>
           </ShininessPower>
           <OverrideQuality>false</OverrideQuality>
           <ShowReferenceFrame>false</ShowReferenceFrame>
@@ -15117,44 +17218,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs_com[1]</VariableName>
-            <Value>0.5934975742066447</Value>
+            <Value>-0.3028154632112996</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs_com[2]</VariableName>
-            <Value>-0.03710729810676055</Value>
+            <Value>0.04048394623437972</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs_com[3]</VariableName>
-            <Value>0.1455338704557406</Value>
+            <Value>-0.6689159036467413</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_body[1,3]</VariableName>
-             <Value>0.8110394477844238</Value>
+             <Value>0.8843755125999451</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,3]</VariableName>
-             <Value>-0.07217943668365479</Value>
+             <Value>-0.16472704708576202</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,3]</VariableName>
-             <Value>0.5805214047431946</Value>
+             <Value>-0.4367436170578003</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_body[1,2]</VariableName>
-             <Value>0.08864574879407883</Value>
+             <Value>-0.18311406672000885</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,2]</VariableName>
-             <Value>0.996063232421875</Value>
+             <Value>-0.9830917716026306</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,2]</VariableName>
-             <Value>1.4156104555240745e-7</Value>
+             <Value>4.6938657760620117e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -15235,44 +17336,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs_com[1]</VariableName>
-            <Value>0.6015021008764388</Value>
+            <Value>-0.3202461646074439</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs_com[2]</VariableName>
-            <Value>0.05604989950370449</Value>
+            <Value>-0.05137750147155223</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs_com[3]</VariableName>
-            <Value>0.14533068592098897</Value>
+            <Value>-0.668762999415405</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_body[1,3]</VariableName>
-             <Value>0.8110393285751343</Value>
+             <Value>0.8843755722045898</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,3]</VariableName>
-             <Value>-0.07217969000339508</Value>
+             <Value>-0.16472673416137695</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,3]</VariableName>
-             <Value>0.5805215835571289</Value>
+             <Value>-0.4367436170578003</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_body[1,2]</VariableName>
-             <Value>0.41146811842918396</Value>
+             <Value>-0.1820705235004425</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,2]</VariableName>
-             <Value>0.7757753133773804</Value>
+             <Value>-0.9832830429077148</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,2]</VariableName>
-             <Value>-0.47840017080307007</Value>
+             <Value>0.0021850094199180603</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -15307,13 +17408,13 @@ Total: (17h)' 352 480 color 0 16;
           <OverrideColor>true</OverrideColor>
           <MeshColor>
            <X>
-            <Value>1</Value>
+            <Value>148</Value>
            </X>
            <Y>
-            <Value>1</Value>
+            <Value>193</Value>
            </Y>
            <Z>
-            <Value>1</Value>
+            <Value>243</Value>
            </Z>
           </MeshColor>
           <Alpha>1.0</Alpha>
@@ -15330,22 +17431,22 @@ Total: (17h)' 352 480 color 0 16;
           </MeshColorMultipliers>
           <MeshColorOffsets>
           </MeshColorOffsets>
-          <Direct3DColorRange>true</Direct3DColorRange>
+          <Direct3DColorRange>false</Direct3DColorRange>
           <SpecularColor>
            <X>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </X>
            <Y>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Y>
            <Z>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Z>
           </SpecularColor>
           <EmissiveColor>
           </EmissiveColor>
           <ShininessPower>
-           <Value>15</Value>
+           <Value>14.298713684082</Value>
           </ShininessPower>
           <OverrideQuality>false</OverrideQuality>
           <ShowReferenceFrame>false</ShowReferenceFrame>
@@ -15353,44 +17454,44 @@ Total: (17h)' 352 480 color 0 16;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs_com[1]</VariableName>
-            <Value>0.6790857450542453</Value>
+            <Value>-0.23646717844269508</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs_com[2]</VariableName>
-            <Value>0.050201336861505366</Value>
+            <Value>-0.06830480851397075</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs_com[3]</VariableName>
-            <Value>0.1998583162666383</Value>
+            <Value>-0.7102508018818952</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_body[1,3]</VariableName>
-             <Value>0.6813138127326965</Value>
+             <Value>0.8843487501144409</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,3]</VariableName>
-             <Value>-0.6104558706283569</Value>
+             <Value>-0.16472189128398895</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,3]</VariableName>
-             <Value>-0.40392473340034485</Value>
+             <Value>-0.4367997646331787</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_body[1,2]</VariableName>
-             <Value>0.41146811842918396</Value>
+             <Value>-0.1820705235004425</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,2]</VariableName>
-             <Value>0.7757753133773804</Value>
+             <Value>-0.9832830429077148</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,2]</VariableName>
-             <Value>-0.47840017080307007</Value>
+             <Value>0.0021850168704986572</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -15482,7 +17583,7 @@ Total: (17h)' 352 480 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>50.0</Maximum>
+      <Maximum>0.486223777936641</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -15490,8 +17591,8 @@ Total: (17h)' 352 480 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
+      <Minimum>-0.5999999999999999</Minimum>
+      <Maximum>1.4000000000000001</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>output</Label>
@@ -15624,7 +17725,7 @@ Total: (17h)' 352 480 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>50.0</Maximum>
+      <Maximum>0.486223777936641</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -15632,8 +17733,8 @@ Total: (17h)' 352 480 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>pose_abs[1]</Label>
@@ -15874,7 +17975,7 @@ Total: (17h)' 352 480 color 0 16;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>50.0</Maximum>
+      <Maximum>0.486223777936641</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -15882,8 +17983,8 @@ Total: (17h)' 352 480 color 0 16;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
+      <Minimum>-0.3999999999999999</Minimum>
+      <Maximum>1.6</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>pose_abs[1]</Label>
@@ -16064,9 +18165,9 @@ Total: (17h)' 352 480 color 0 16;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+  <WindowRectangles virtualDesktopWidth="3456" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
--0.00208333 -0.0037037 1.00208 1.0037
+0.00416667 0.0037037 0.997396 0.95
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
