@@ -3,23 +3,81 @@
 \label{chap:link}
 %=============================================================
 
-\section{Physical Description}
+\section{Ports Description}
 
-Each link of the UR5 is modelled as a rigid body characterised by:
-\begin{itemize}
-  \item a mass $m$,
-  \item an inertia tensor $J \in \mathbb{R}^{3\times3}$ expressed in the link frame,
-  \item the position of the centre of mass $r_{Gp}$ with respect to the link's proximal joint frame origin.
-\end{itemize}
-Numerical values for the UR5, taken from \cite{Macchelli2026}, are listed in \cref{tab:link_params}.
+Each link of the UR5 is modelled as a rigid body characterised as follows: 
+\begin{center}
 
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+ 
+% --- Box dimensions ---
+\def\boxW{4.5}    % width of the black box
+\def\boxH{1.7}    % height of the black box (taller to fit two inputs)
+\def\arrowLen{2}  % length of arrows
+\def\strokeH{0.2} % half-height of causal stroke
+ 
+% --- Black box (white fill, black border) ---
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+ 
+% --- Title ---
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+    {Link};
+ 
+% --- Horizontal rule below title ---
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
+ 
+% --- Parameters ---
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
+    {$J$, $m$, $r_{GP}$};
+ 
+\def\yOne{0.5}
+ 
+\draw[->, line width=1pt]
+    (-\arrowLen, \yOne) -- (0, \yOne);
+ 
+\node[above, font=\small]       at (-\arrowLen/2,  \yOne + 0.05) {$T_0^i$};
+
+\def\yTwo{-0.5}
+ 
+\draw[->, line width=1pt]
+    (-\arrowLen, \yTwo) -- (0, \yTwo);
+ 
+\draw[line width=1pt]
+    (0, \yTwo - \strokeH) -- (0, \yTwo + \strokeH);
+ 
+\node[above, font=\small]       at (-\arrowLen/2,  \yTwo + 0.05) {$P_{in}$};
+ 
+\def\yOut{0}
+ 
+\draw[->, line width=1pt]
+    (\boxW, \yOut) -- (\boxW + \arrowLen, \yOut);
+ 
+% Causal stroke at the tail (x=\boxW, where the arrow leaves the box)
+\draw[line width=1pt]
+    (\boxW, \yOut - \strokeH) -- (\boxW, \yOut + \strokeH);
+ 
+\node[above, font=\small]       at (\boxW + \arrowLen/2,  \yOut + 0.05) {$P_{out}$};
+ 
+\end{tikzpicture}
+\end{center}
+
+Both ports are effort-in flow-out, while the signal port is used to transform the gravity vector from the inertial frame to the body frame of the link.
+
+\subsection{Parameters}
+Numerical values for the UR5 are listed in \cref{tab:link_params}.
 \begin{table}[H]
   \centering
   \caption{UR5 link masses, centres of gravity, and diagonal inertia components.}
   \label{tab:link_params}
   \begin{tabular}{@{}ccccc@{}}
     \toprule
-    Link & $m$ [kg] & $r_{Gp,x}$ [m] & $r_{Gp,y}$ [m] & $r_{Gp,z}$ [m] \\
+    Link & $m$ [kg] & $r_{GP,x}$ [m] & $r_{GP,y}$ [m] & $r_{GP,z}$ [m] \\
     \midrule
     1 & 3.700  &  0.0000 & $-$0.02561 &  0.00193 \\
     2 & 8.393  &  0.2125 &  0.0000   &  0.11336 \\
@@ -31,11 +89,36 @@ Numerical values for the UR5, taken from \cite{Macchelli2026}, are listed in \cr
   \end{tabular}
 \end{table}
 
+For what concerns the inertias, matrices for each link are listed below:
+\begin{align}
+  J_1 &= \begin{bmatrix}
+    0.0067 & 0 & 0 \\
+    0 & 0.0064 & 0 \\
+    0 & 0 & 0.0067
+  \end{bmatrix} \text{ kg m}^2, \\
+  J_2 &= \begin{bmatrix}
+    0.0149 & 0 & 0 \\
+    0 & 0.3564 & 0 \\
+    0 & 0 & 0.3553
+  \end{bmatrix} \text{ kg m}^2, \\
+  J_3 &= \begin{bmatrix}
+    0.0025 & 0 & 0.0034 \\
+    0 & 0.0551 & 0 \\
+    0.0034 & 0 & 0.0546
+  \end{bmatrix} \text{ kg m}^2, \\
+  J_4 &= \begin{bmatrix}
+    0.0012 & 0 & 0 \\
+    0 & 0.0012 & 0 \\
+    0 & 0 & 0.0009
+   \end{bmatrix} \text{ kg m}^2, \\
+   J_5 &= J_4, \qquad J_6 = 0.001 \cdot \mathbf{I}.
+\end{align}
+
 \section{Ports and parameters}
 
 \section{Equations of Motion}
 
-The Newton--Euler equations for link $i$, written in the body frame attached to the link, are given by \cref{eq:newton,eq:euler}.
+The Newton--Euler equations for link $i$, written in the body frame attached to the link, are given by.
 Denoting the generalised momentum as
 \begin{equation}
   p_{\text{lin}} = m\,v_G, \qquad h_{\text{ang}} = J\,\omega,
@@ -48,20 +131,25 @@ one obtains the state-space form that 20-sim integrates directly:
   \omega &= J^{-1} h_{\text{ang}}.
 \end{align}
 
+\subsection{Body Submodel}
+The Body submodel is an I-element that integrates the Newton--Euler equations. It is an effort-in flow-out element, meaning that it receives the total wrench acting on the body and outputs the linear and angular velocities at the centre of mass.
+For these reasons it is connected to a one junction that sums all efforts, after transforming them to the CoM via the MTF elements, and outputs the body velocity that is fed back to the MTFs for the velocity shift.
+The submodel implements the equations of motion as described above.
+
 \section{Bond-Graph Structure}
 
 The \texttt{Link} sub-model exposes two \emph{power ports} of dimension six:
 \begin{itemize}
-  \item \texttt{wrench\_i}: the wrench applied at the proximal joint (input, integral causality).
-  \item \texttt{wrench\_ipp}: the wrench at the distal joint (input, integral causality).
+  \item \texttt{wrench\_i}: the power applied seen from reference frame of the i-th link. It is seen as the one exiting from joint $i$ and entering link $i$.
+  \item \texttt{wrench\_ipp}: it is also seen as the one exiting from link $i$ and entering joint $i+1$. It is the wrench applied by the link on the next joint.
 \end{itemize}
 It also receives a signal input \texttt{T\_next}, the homogeneous transformation, used to orient gravity.
 
 Internally the model contains:
 \begin{enumerate}
-  \item Two \textbf{MTF} elements (\texttt{i\_com} and \texttt{ipp\_com}) that shift the reference from the joint origins to the centre of mass via \cref{eq:vel_shift,eq:torque_shift}.
+  \item Two \textbf{MTF} elements (\texttt{i\_com} and \texttt{ipp\_com}) that shift the reference from the joint origins to the centre of mass.
   \item A \textbf{1-junction} that enforces the common-velocity constraint at the centre of mass and sums all efforts.
-  \item The \textbf{Body} I-element that integrates the Newton--Euler equations.
+  \item The \textbf{Body} I-element that integrates the Newton--Euler equations described above.
   \item A \textbf{MSe} element that injects the gravitational wrench.
 \end{enumerate}
 
@@ -74,8 +162,6 @@ To express it in the body frame of link $i$, the rotation matrix $R_i \in SO(3)$
 \end{equation}
 This wrench is injected at the 1-junction so that it acts on the body mass.
 
-\subsection{Body sub-model}
-
 \subsection{MTF Equations}
 
 For a displacement vector $r_{Gp} \in \mathbb{R}^3$ from the joint origin to the CoM:
@@ -87,19 +173,17 @@ These equations are implemented as a modulated transformer in 20-sim, where the 
 
 \subsection{Causality Assignment}
 
-Both power ports carry \emph{fixed integral causality} (the effort is known, the flow is computed).
+Both power ports carry \emph{fixed integral causality}.
 This means:
 \begin{itemize}
   \item Efforts (forces/torques at the joints) are \emph{given} by the connected joints.
   \item Velocities (flows) are \emph{computed} by the body integrator.
 \end{itemize}
 The 1-junction has one element with \emph{effort-out} causality (the Body I-element) and all others with \emph{effort-in} causality (the two MTF connections and the MSe source).
-The \emph{constraint}: MTF elements with fixed causality on both sides impose a \emph{causality conflict} unless the effort-output side is consistently identified --- this is resolved by stipulating that the Body is the unique element on the 1-junction that imposes effort.
 
-\begin{placeholder}[FIGURE PLACEHOLDER -- Link Bond-Graph Diagram]
+\begin{figure}[H]
   \centering
-  \vspace{3cm}
-  \textit{Insert here the bond-graph diagram of the \texttt{Link} sub-model, showing the two MTF elements connecting the proximal and distal joint ports to the 1-junction, the Body I-element, and the MSe gravity source.
-  Causality strokes should be clearly indicated on each half-bond.}
-  \vspace{3cm}
-\end{placeholder}
+  \includegraphics[width=0.8\textwidth]{chapter_link/figs/link.png}
+  \label{Link bond-graph}
+  \caption{Bond-graph diagram of the \texttt{Link} sub-model.}
+\end{figure}

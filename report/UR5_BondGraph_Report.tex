@@ -5,7 +5,6 @@
 \documentclass[12pt,a4paper,oneside]{report}
 
 %--- packages ------------------------------------------------
-\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{geometry}
@@ -20,10 +19,10 @@
 \usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{tcolorbox}
@@ -32,13 +31,16 @@
 \usepackage{titlesec}
 \usepackage{cleveref}
 \usepackage{titling}
+\usepackage{mathtools}
 
 %--- page style ---------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\nouppercase{\leftmark}}
-\fancyhead[R]{\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[C]{\thepage}
+\renewcommand{\footrulewidth}{0.0pt}
+\renewcommand{\headrulewidth}{0.0pt}
+
+
 
 %--- placeholder box style -----------------------------------
 \newtcolorbox{placeholder}[1][]{

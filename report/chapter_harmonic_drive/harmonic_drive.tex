@@ -3,11 +3,11 @@
 \label{chap:harmonic}
 %=============================================================
 
-\section{Motivation}
+\section{Introduction}
 
-Real robotic joints are not directly driven: a gearbox with a high reduction ratio sits between the motor shaft and the output link.
+Robotic joints are not directly driven: a gearbox with a high reduction ratio sits between the motor shaft and the output link.
 In the UR5, \emph{harmonic-drive} (strain-wave) gearboxes are used.
-These components exhibit several non-ideal characteristics that significantly affect the closed-loop performance:
+These components exhibit several non-ideal characteristics that introduce dynamic effects that affect the closed-loop performance:
 \begin{enumerate}
   \item High gear ratio with near-zero backlash.
   \item Non-linear torsional stiffness (the flex-spline deforms elastically).
@@ -16,7 +16,60 @@ These components exhibit several non-ideal characteristics that significantly af
   \item Motor rotor inertia reflected through the gear ratio.
 \end{enumerate}
 
-The harmonic drive datasheets (HFUS-14 and HFUS-20 series, see \cref{tab:hd14,tab:hd20}) supply the rated and peak torques, maximum speeds, and moment-of-inertia values used to set the model parameters.
+\section{Ports \& Parameters}
+The \texttt{HarmonicDrive} sub-model's port structure is as follows:
+
+\begin{center}
+
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+ 
+\def\boxW{4.5}    % width of the black box
+\def\boxH{2.2}    % increased height to comfortably fit multi-line parameters
+\def\arrowLen{2}  % length of arrows
+\def\strokeH{0.2} % half-height of causal stroke
+ 
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+ 
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.2)
+    {HarmonicDrive};
+ 
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.7) -- (\boxW - 0.15, \boxH/2 - 0.7);
+ 
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.8)
+    {$J, N, k_1, k_2, k_3$ \\ $T_1, T_2, b_w, b_{f,+}, b_{f,-}$};
+
+% --- Central Input Arrow (Pin) ---
+\def\yCentral{0}
+ 
+\draw[->, line width=1pt]
+    (-\arrowLen, \yCentral) -- (0, \yCentral);
+ 
+\draw[line width=1pt]
+    (0, \yCentral - \strokeH) -- (0, \yCentral + \strokeH);
+ 
+\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$P_{in}$};
+ 
+ 
+\draw[->, line width=1pt]
+    (\boxW, \yCentral) -- (\boxW + \arrowLen, \yCentral);
+ 
+\draw[line width=1pt]
+    (\boxW, \yCentral - \strokeH) -- (\boxW, \yCentral + \strokeH);
+ 
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$P_{out}$};
+ 
+\end{tikzpicture}
+\end{center}
+
+The input port \texttt{motor} receives the motor torque and angular velocity (effort-in, flow-out), while the output port \texttt{harmonic\_drive} provides the joint torque and output shaft velocity (effort-out, flow-in).
+The datasheets (HFUS-14 and HFUS-20 series, see \cref{tab:hd14,tab:hd20}) supply the rated and peak torques, maximum speeds, and moment-of-inertia values used to set the model parameters. They are both useful as the first three 
+joints of the UR5 use HFUS-20, while the last three joints use HFUS-14.
 
 \begin{table}[H]
   \centering
@@ -50,26 +103,24 @@ The harmonic drive datasheets (HFUS-14 and HFUS-20 series, see \cref{tab:hd14,ta
   \end{tabular}
 \end{table}
 
-\section{Ports and Parameters}
-
 
 \section{Bond-Graph Structure}
 
 The \texttt{HarmonicDrive} sub-model has:
 \begin{itemize}
-  \item \texttt{motor}: scalar power port input (motor torque + angular velocity).
-  \item \texttt{harmonic\_drive}: scalar power port output (joint torque + output shaft velocity).
+  \item \texttt{motor}: scalar power port input.
+  \item \texttt{harmonic\_drive}: scalar power port output.
 \end{itemize}
 
 The topology is shown schematically in the bond graph below.
 The key elements are:
 
-\paragraph{Motor inertia (I element).}
-The rotor inertia $J_{\text{rotor}}$ (default $8\times10^{-6}$~kg\,m$^2$) stores kinetic energy of the motor shaft:
+\paragraph{Gearbox inertia (I element).}
+The harmonic drive inertia $J_{\text{rotor}}$ stores kinetic energy:
 \begin{equation}
   J\,\dot{\omega}_m = \tau_m - \tau_{\text{friction}} - \tau_{\text{elastic}}/N,
 \end{equation}
-where $\omega_m$ is the motor angular velocity and $N$ is the gear ratio (stored as negative to account for sign convention, default $N=-0.01$, i.e.\ ratio of 100).
+where $\omega_m$ is the motor angular velocity and $N$ is the gear ratio (negative due to sign convention, default $N=-0.01$, i.e.\ ratio of 100).
 
 \paragraph{Gear ratio (TF element).}
 The transformer element with ratio $N$ enforces:
@@ -97,10 +148,10 @@ where $\varphi = \int(\omega_{\text{out}} - \omega_{\text{load}})\,dt$ is the el
 \paragraph{Asymmetric Coulomb friction at output shaft (R element).}
 Friction at the output shaft is modelled as a smooth approximation to the sign function:
 \begin{equation}
-  \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan(\omega) + (b_{f,+}+b_{f,-}),
+  \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan(\omega - \omega_0) + \frac{b_{f,+}+b_{f,-}}{2},
 \end{equation}
-with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm.
-This formulation avoids numerical stiffness introduced by a discontinuous sign function while faithfully capturing the asymmetry.
+with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm, and $\omega_0$ set to shift the friction characteristics to make zero friction coincide with zero velocity.
+This formulation avoids discontinuities in the origin and ensures numerical stability of the integration.
 
 \subsection{Causality Assignment}
 
@@ -112,13 +163,9 @@ Within the sub-model:
   \item The 0-junction at the output shaft is the sum point for the elastic and Coulomb friction torques.
   \item The C element is in integral causality: $\dot{\varphi} = f_C$, $e_C = \tau_s(\varphi)$.
 \end{itemize}
-The non-linear C element breaks the direct algebraic loop that would exist if a linear C were used in derivative causality.
 
-\begin{placeholder}[FIGURE PLACEHOLDER -- Harmonic Drive Bond-Graph Diagram]
+
+\begin{figure}[H]
   \centering
-  \vspace{3cm}
-  \textit{Insert here the bond-graph diagram of the \texttt{HarmonicDrive} sub-model.
-  Show the 1-junction at the motor shaft (connecting the motor source, the I-element for rotor inertia, the R-element for viscous damping, and the TF for gear ratio), the 0-junction at the output shaft (connecting the elastic C-element, the asymmetric friction R1-element, and the harmonic\_drive output port), and the inner 1-junction coupling the two.
-  Causality strokes should be clearly indicated.}
-  \vspace{3cm}
-\end{placeholder}
+  \includegraphics[width=1.0\textwidth]{chapter_harmonic_drive/figs/harmonic_drive.png}
+\end{figure}

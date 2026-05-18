@@ -23,64 +23,27 @@ The reference joint angles and PD gains used in the test are summarised in \cref
     \toprule
     Joint & $q^*$ [rad] & $\dot{q}^*$ [rad/s] & $K_p$ [Nm/rad] & $K_d$ [Nm\,s/rad] \\
     \midrule
-    1 & 0.0   & 0 & 100 & 20 \\
-    2 & $-\pi/4$ & 0 & 200 & 30 \\
-    3 & $\pi/3$  & 0 & 150 & 25 \\
-    4 & 0.0   & 0 & 80  & 15 \\
-    5 & $\pi/6$  & 0 & 80  & 15 \\
-    6 & 0.0   & 0 & 50  & 10 \\
+    1 & 0.0   & 0 & 10 & 1 \\
+    2 & $-\pi/4$ & 0 & 10 & 1 \\
+    3 & $-\pi/2$  & 0 & 10 & 1 \\
+    4 & 0.0   & 0 & 10  & 1 \\
+    5 & 0.0   & 0 & 10  & 1 \\
+    6 & 0.0   & 0 & 10  & 1 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \section{3-D Animation}
 
-\Cref{fig:anim1,fig:anim2,fig:anim3} show three snapshots from the 3-D animation: the initial configuration ($t=0$~s), mid-motion ($t\approx1.5$~s), and the final settled configuration ($t=5$~s).
+\Cref{fig:anim} shows the animation of the UR5 robot reaching its target configuration.
 
 \begin{figure}[H]
   \centering
-  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t = 0$ s (Initial Configuration)]
-    \centering
-    \vspace{3.5cm}
-    \textit{Screenshot of the 20-sim 3-D animation at $t=0$~s.
-    The robot is in its home position: all joint angles are zero.
-    The arm hangs vertically.
-    The payload (red sphere) is visible at the end-effector.}
-    \vspace{3.5cm}
-  \end{placeholder}
-  \caption{3-D animation snapshot at $t=0$~s: initial (home) configuration.}
-  \label{fig:anim1}
+  \includegraphics[width=0.8\textwidth]{chapter_results_conclusions/figs/stl2.png}
+  \caption{3-D animation from rest to target configuration.}
+  \label{fig:anim}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t \approx 1.5$ s (Mid-Motion)]
-    \centering
-    \vspace{3.5cm}
-    \textit{Screenshot of the 20-sim 3-D animation at $t \approx 1.5$~s.
-    Joints~2, 3, and 5 are visibly in motion; the arm is transitioning towards the target posture.
-    Transient oscillation due to harmonic-drive compliance is evident.}
-    \vspace{3.5cm}
-  \end{placeholder}
-  \caption{3-D animation snapshot at $t\approx1.5$~s: mid-motion transient.}
-  \label{fig:anim2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t = 5$ s (Final Settled Configuration)]
-    \centering
-    \vspace{3.5cm}
-    \textit{Screenshot of the 20-sim 3-D animation at $t=5$~s.
-    The arm has reached the target joint angles.
-    The payload hangs at rest at the desired end-effector position.}
-    \vspace{3.5cm}
-  \end{placeholder}
-  \caption{3-D animation snapshot at $t=5$~s: steady-state configuration.}
-  \label{fig:anim3}
-\end{figure}
-
-\textbf{TODO: mettere video}
 
 \section{Joint Position Tracking}
 
@@ -155,6 +118,7 @@ The close match between the steady-state commanded torque and the analytically p
 Peak deflections occur during the transient and are bounded well within the rated torque limits of the selected HFUS-14/HFUS-20 units.
 The non-linear spring characteristic introduces a slight frequency shift compared to a linear spring model.
 
+\section{Position of the End-Effector}
 
 %=============================================================
 \section{Conclusions}
@@ -163,9 +127,10 @@ The non-linear spring characteristic introduces a slight frequency shift compare
 A complete bond-graph model of the UR5 six-degree-of-freedom robot manipulator has been presented and validated.
 Starting from the fundamental Newton--Euler equations of a rigid body expressed in terms of twists and wrenches, a hierarchical set of reusable 20-sim sub-models --- \texttt{Link}, \texttt{Joint}, \texttt{Transformation}, \texttt{HarmonicDrive}, \texttt{PD}, and \texttt{GravityTerm} --- was developed.
 
+\textbf{TODO - Review this BULLCRAP}
 The following aspects deserve particular emphasis:
 \begin{itemize}
-  \item The \textbf{modulated transformer} (MTF) is the central bond-graph element for both the change-of-reference-point in the Link model and the DH transformation in the Joint model.
+  \item The \textbf{Modulated transformer} (MTF) is the central bond-graph element for both the change-of-reference-point in the Link model and the DH transformation in the Joint model.
   \item \textbf{Causality assignment} is the most challenging design step: the dual fixed-causality constraint on the Joint power ports propagates through the chain and must be resolved without derivative causality by ensuring that the I-elements in the Link bodies are the only sources of differential equations.
   \item The \textbf{non-linear harmonic drive} C-element avoids the algebraic loop problem that would arise with a linear spring in derivative causality.
   \item The \textbf{GravityTerm} block, while signal-only, is critical for controller stability: without feedforward compensation, the PD controller cannot hold arbitrary postures.
@@ -173,3 +138,6 @@ The following aspects deserve particular emphasis:
 \end{itemize}
 
 Future extensions could include: flexible link dynamics modelled with additional C-I chain elements; joint-space friction identification via parameter estimation; and extension to the complete UR10 or UR16e platforms using the same sub-model library.
+
+\textbf{TODO - Rivedere codice e rimuovere parti inutilizzate, risolvere bfd is not making progress, rifare i nomi dei joints e dei link, riordinare.}
+

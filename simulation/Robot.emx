@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\cenni\Desktop\Automation_magistrale\3_Universit&agrave;\IV_semestre\MSMS\Project\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-18 18:50:39</TimeStamp>
+    <TimeStamp>2026-5-18 23:48:21</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -16966,6 +16966,38 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
+   MSe 1360 144
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out gravity [6,1];
+      signal in T_next [4,4];
+     restrictions
+      causality fixed out gravity;
+     parameters
+      real m_load = 1.0;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 1360 144 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m_load;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;implementation_end;
    MSe1 928 328
     description '<Information>
  <Description>
@@ -17887,39 +17919,6 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   Se1 1360 144
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
-</Description>
-</Information>';
-    type Se
-     ports
-      power out gravity [6,1];
-      signal in T_next [4,4];
-     restrictions
-      causality fixed out gravity;
-     parameters
-      real m_load = 1.0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 1360 144 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real effort[3,1] = [0; 0; -9.81];
-variables
-	real flow[6,1];
-equations
-	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m_load;
-	gravity.e[4:6] = [0; 0; 0];
-	flow = gravity.f;
-implementation_end;
    Sf 16 192
     description '<Information>
  <Description>
@@ -18387,6 +18386,7 @@ implementation_end;
    Link2\wrench_ipp => Joint3\twist_i;
    Link3\wrench_ipp => Joint4\twist_i;
    Link4\wrench_ipp => Joint5\twist_i;
+   MSe\gravity => OneJunction\p;
    MSe1\p => HarmonicDrive4\motor;
    MSe2\p => HarmonicDrive3\motor;
    MSe3\p => HarmonicDrive2\motor;
@@ -18400,7 +18400,6 @@ implementation_end;
    PD3\tau -> MSe2\effort;
    PD4\tau -> MSe1\effort;
    PD5\tau -> MSe5\effort;
-   Se1\gravity => OneJunction\p;
    Sf\p => Joint\twist_i;
    Splitter1\output -> GravityTerm\T_1 240 -40;
    Splitter1\output -> Link\T_next;
@@ -18420,7 +18419,7 @@ implementation_end;
    Splitter6\output -> Link5\T_next;
    Splitter6\output -> Splitter7\input;
    Splitter7\output -> GravityTerm\T_6 1360 104 1360 -32;
-   Splitter7\output -> Se1\T_next;
+   Splitter7\output -> MSe\T_next;
    Transformation\T_next -> Splitter1\input;
    Transformation\T_prev <- One\identity;
    Transformation1\T_next -> Splitter2\input;
@@ -18963,24 +18962,24 @@ implementation_end;
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.45749568939209</Value>
+             <Value>0.457495704067041</Value>
             </X>
             <Y>
-             <Value>-0.762492835521698</Value>
+             <Value>-0.762492859979951</Value>
             </Y>
             <Z>
-             <Value>-0.45749568939209</Value>
+             <Value>-0.457495704067041</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.235379606485367</Value>
+             <Value>0.235379603289675</Value>
             </X>
             <Y>
-             <Value>-0.392299354076385</Value>
+             <Value>-0.392299348750231</Value>
             </Y>
             <Z>
-             <Value>0.88921183347702</Value>
+             <Value>0.889211821404405</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -19397,36 +19396,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-6.44504170082108</Value>
+            <Value>-2.13207315695177</Value>
            </X>
            <Y>
-            <Value>-9.32473700363092</Value>
+            <Value>-11.3313732524205</Value>
            </Y>
            <Z>
-            <Value>8.82242906089219</Value>
+            <Value>6.43477425940502</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.304357382206665</Value>
+             <Value>-0.0472046481611727</Value>
             </X>
             <Y>
-             <Value>0.846664912590958</Value>
+             <Value>0.971707882930105</Value>
             </Y>
             <Z>
-             <Value>-0.436491820866842</Value>
+             <Value>-0.231420637462333</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.14765842679808</Value>
+             <Value>-0.0112289532652938</Value>
             </X>
             <Y>
-             <Value>0.410757945694408</Value>
+             <Value>0.231148064080733</Value>
             </Y>
             <Z>
-             <Value>0.899708229952592</Value>
+             <Value>0.972853782991203</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -19685,29 +19684,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_next[1,3]</VariableName>
-             <Value>0.0019334083190187812</Value>
+             <Value>0.023549550006459252</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,3]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.999722670891476</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,3]</VariableName>
-             <Value>3.267948898155737e-7</Value>
+             <Value>3.2679490244837443e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation\R_next[1,2]</VariableName>
-             <Value>-6.318279788253278e-10</Value>
+             <Value>-7.69587238380568e-9</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_next[2,2]</VariableName>
-             <Value>3.2679429295967566e-7</Value>
+             <Value>3.2670428140589215e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_next[3,2]</VariableName>
-             <Value>1.0</Value>
+             <Value>0.9999999999999467</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -19738,44 +19737,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs[1]</VariableName>
-            <Value>-0.29655802612280124</Value>
+            <Value>-0.2578521441097849</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs[2]</VariableName>
-            <Value>-5.732693474640707e-4</Value>
+            <Value>-0.0060738760198033774</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs[3]</VariableName>
-            <Value>0.3935896300364718</Value>
+            <Value>0.42694647727518986</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_next[1,3]</VariableName>
-             <Value>0.0019334083190187812</Value>
+             <Value>0.023549550006459252</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,3]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.999722670891476</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,3]</VariableName>
-             <Value>3.267948898155737e-7</Value>
+             <Value>3.2679490244837443e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation1\R_next[1,2]</VariableName>
-             <Value>0.7163060903549194</Value>
+             <Value>0.7945736165696092</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_next[2,2]</VariableName>
-             <Value>0.001385142793878913</Value>
+             <Value>0.01871723940921719</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_next[3,2]</VariableName>
-             <Value>0.6977849006652832</Value>
+             <Value>0.6068792571841533</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -19951,29 +19950,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>Transformation\R_body[1,3]</VariableName>
-             <Value>-6.318279788253278e-10</Value>
+             <Value>-7.69587238380568e-9</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,3]</VariableName>
-             <Value>3.2679429295967566e-7</Value>
+             <Value>3.267042529841827e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,3]</VariableName>
-             <Value>1.0</Value>
+             <Value>0.9999999999999467</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation\R_body[1,2]</VariableName>
-             <Value>0.0019334083190187812</Value>
+             <Value>0.023549550006459252</Value>
             </X>
             <Y>
              <VariableName>Transformation\R_body[2,2]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.999722670891476</Value>
             </Y>
             <Z>
              <VariableName>Transformation\R_body[3,2]</VariableName>
-             <Value>3.2679491823728313e-7</Value>
+             <Value>3.2679490244837443e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20054,44 +20053,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation1\pose_abs_com[1]</VariableName>
-            <Value>-0.29629701599627317</Value>
+            <Value>-0.25467295486732294</Value>
            </X>
            <Y>
             <VariableName>Transformation1\pose_abs_com[2]</VariableName>
-            <Value>-0.13557301702764274</Value>
+            <Value>-0.14103643659029103</Value>
            </Y>
            <Z>
             <VariableName>Transformation1\pose_abs_com[3]</VariableName>
-            <Value>0.3935896741537828</Value>
+            <Value>0.4269465213925009</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation1\R_body[1,3]</VariableName>
-             <Value>0.6977835893630981</Value>
+             <Value>0.6067109079834204</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,3]</VariableName>
-             <Value>0.0013488690601661801</Value>
+             <Value>0.014291472666742267</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,3]</VariableName>
-             <Value>-0.7163073420524597</Value>
+             <Value>-0.7947940789556432</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation1\R_body[1,2]</VariableName>
-             <Value>0.001933408435434103</Value>
+             <Value>0.023549545824896014</Value>
             </X>
             <Y>
              <VariableName>Transformation1\R_body[2,2]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.9997226709899776</Value>
             </Y>
             <Z>
              <VariableName>Transformation1\R_body[3,2]</VariableName>
-             <Value>3.2677783678991545e-7</Value>
+             <Value>3.2596287641140607e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20122,44 +20121,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs[1]</VariableName>
-            <Value>-0.01654499419118971</Value>
+            <Value>0.05470721361857722</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs[2]</VariableName>
-            <Value>-3.1799036862585573e-5</Value>
+            <Value>0.0012888755030083417</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs[3]</VariableName>
-            <Value>0.66827576230086</Value>
+            <Value>0.6638272495735789</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_next[1,3]</VariableName>
-             <Value>0.0019334083190187812</Value>
+             <Value>0.023549550006459252</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,3]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.999722670891476</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,3]</VariableName>
-             <Value>3.267948898155737e-7</Value>
+             <Value>3.2679490244837443e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation2\R_next[1,2]</VariableName>
-             <Value>0.7002820372581482</Value>
+             <Value>0.6037351107431359</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_next[2,2]</VariableName>
-             <Value>0.0013537004124373198</Value>
+             <Value>0.014221372587887872</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_next[3,2]</VariableName>
-             <Value>-0.7138651013374329</Value>
+             <Value>-0.7970581337755045</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20190,44 +20189,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs[1]</VariableName>
-            <Value>-0.016333962670370916</Value>
+            <Value>0.0572776469949826</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs[2]</VariableName>
-            <Value>-0.10918159503161444</Value>
+            <Value>-0.10783085402490813</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs[3]</VariableName>
-            <Value>0.6682757979705231</Value>
+            <Value>0.6638272852432419</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_next[1,3]</VariableName>
-             <Value>-0.6988245248794556</Value>
+             <Value>-0.5958942175191397</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,3]</VariableName>
-             <Value>-0.0013512087753042579</Value>
+             <Value>-0.014036997222069608</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,3]</VariableName>
-             <Value>0.7152918577194214</Value>
+             <Value>0.8029402494807691</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_next[1,2]</VariableName>
-             <Value>0.0019336368422955275</Value>
+             <Value>0.023549745475726573</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_next[2,2]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.9997226662870179</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_next[3,2]</VariableName>
-             <Value>9.307405690606174e-8</Value>
+             <Value>6.519257677308167e-8</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20258,44 +20257,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs[1]</VariableName>
-            <Value>-0.08247770619832322</Value>
+            <Value>8.762617911897947e-4</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs[2]</VariableName>
-            <Value>-0.10930948694267939</Value>
+            <Value>-0.10915945581663328</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs[3]</VariableName>
-            <Value>0.7359781711620704</Value>
+            <Value>0.7398255816813041</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_next[1,3]</VariableName>
-             <Value>6.361927953548729e-4</Value>
+             <Value>0.028592593765748672</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,3]</VariableName>
-             <Value>-0.9999989867210388</Value>
+             <Value>-0.9995841313257735</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,3]</VariableName>
-             <Value>-0.0012670261785387993</Value>
+             <Value>0.0037453949652287086</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_next[1,2]</VariableName>
-             <Value>0.6988245248794556</Value>
+             <Value>0.5958941533104954</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_next[2,2]</VariableName>
-             <Value>0.0013508821139112115</Value>
+             <Value>0.014036668356750598</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_next[3,2]</VariableName>
-             <Value>-0.7152919173240662</Value>
+             <Value>-0.8029403028817338</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20326,44 +20325,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>-0.08242534753021062</Value>
+            <Value>0.00322943232307607</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>-0.19160940422716433</Value>
+            <Value>-0.1914252298000286</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>0.7358738949096805</Value>
+            <Value>0.7401338276937277</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>6.361927953548729e-4</Value>
+             <Value>0.028592593765748672</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>-0.9999989867210388</Value>
+             <Value>-0.9995841313257735</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>-0.0012670261785387993</Value>
+             <Value>0.0037453949652287086</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>0.6986604928970337</Value>
+             <Value>0.5958118932256627</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.001350980717688799</Value>
+             <Value>0.014034085665583023</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>-0.7154521346092224</Value>
+             <Value>-0.8030013899928083</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20444,44 +20443,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation2\pose_abs_com[1]</VariableName>
-            <Value>-0.29652902499763145</Value>
+            <Value>-0.2574989008606225</Value>
            </X>
            <Y>
             <VariableName>Transformation2\pose_abs_com[2]</VariableName>
-            <Value>-0.015573241311928363</Value>
+            <Value>-0.021069716083190894</Value>
            </Y>
            <Z>
             <VariableName>Transformation2\pose_abs_com[3]</VariableName>
-            <Value>0.3935896349383952</Value>
+            <Value>0.4269464821771133</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation2\R_body[1,3]</VariableName>
-             <Value>0.7138636708259583</Value>
+             <Value>0.7968371098608937</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,3]</VariableName>
-             <Value>0.0013804214540868998</Value>
+             <Value>0.018770559651937628</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,3]</VariableName>
-             <Value>0.7002833485603333</Value>
+             <Value>0.6039025471372772</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation2\R_body[1,2]</VariableName>
-             <Value>0.001933408435434103</Value>
+             <Value>0.023549549548120358</Value>
             </X>
             <Y>
              <VariableName>Transformation2\R_body[2,2]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.9997226709022721</Value>
             </Y>
             <Z>
              <VariableName>Transformation2\R_body[3,2]</VariableName>
-             <Value>3.268360160291195e-7</Value>
+             <Value>3.287568441382767e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20562,44 +20561,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation3\pose_abs_com[1]</VariableName>
-            <Value>-0.016514757703405596</Value>
+            <Value>0.055075745867463874</Value>
            </X>
            <Y>
             <VariableName>Transformation3\pose_abs_com[2]</VariableName>
-            <Value>-0.015681769827735295</Value>
+            <Value>-0.01435678472535929</Value>
            </Y>
            <Z>
             <VariableName>Transformation3\pose_abs_com[3]</VariableName>
-            <Value>0.6682757892711735</Value>
+            <Value>0.6638272792220181</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation3\R_body[1,3]</VariableName>
-             <Value>-0.6988245248794556</Value>
+             <Value>-0.5958942175191397</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,3]</VariableName>
-             <Value>-0.0013512087753042579</Value>
+             <Value>-0.014036997222069608</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,3]</VariableName>
-             <Value>0.7152918577194214</Value>
+             <Value>0.8029402494807691</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation3\R_body[1,2]</VariableName>
-             <Value>0.0019336368422955275</Value>
+             <Value>0.023549745475726573</Value>
             </X>
             <Y>
              <VariableName>Transformation3\R_body[2,2]</VariableName>
-             <Value>-0.999998152256012</Value>
+             <Value>-0.9997226662870179</Value>
             </Y>
             <Z>
              <VariableName>Transformation3\R_body[3,2]</VariableName>
-             <Value>9.307405690606174e-8</Value>
+             <Value>6.519257677308167e-8</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20680,44 +20679,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation4\pose_abs_com[1]</VariableName>
-            <Value>-0.01608937405859548</Value>
+            <Value>0.05748621084960227</Value>
            </X>
            <Y>
             <VariableName>Transformation4\pose_abs_com[2]</VariableName>
-            <Value>-0.10918115315402527</Value>
+            <Value>-0.10782597210846744</Value>
            </Y>
            <Z>
             <VariableName>Transformation4\pose_abs_com[3]</VariableName>
-            <Value>0.6680254457852036</Value>
+            <Value>0.6635462562654498</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation4\R_body[1,3]</VariableName>
-             <Value>-0.6988245248794556</Value>
+             <Value>-0.595894220253436</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,3]</VariableName>
-             <Value>-0.0013508819974958897</Value>
+             <Value>-0.014036670392254005</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,3]</VariableName>
-             <Value>0.7152918577194214</Value>
+             <Value>0.8029402531651086</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation4\R_body[1,2]</VariableName>
-             <Value>6.361927953548729e-4</Value>
+             <Value>0.028592593765748672</Value>
             </X>
             <Y>
              <VariableName>Transformation4\R_body[2,2]</VariableName>
-             <Value>-0.9999989867210388</Value>
+             <Value>-0.9995841313257735</Value>
             </Y>
             <Z>
              <VariableName>Transformation4\R_body[3,2]</VariableName>
-             <Value>-0.0012670262949541211</Value>
+             <Value>0.0037453949652287086</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20798,44 +20797,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs_com[1]</VariableName>
-            <Value>-0.08247687914767259</Value>
+            <Value>9.134321641114492e-4</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs_com[2]</VariableName>
-            <Value>-0.11060948563611597</Value>
+            <Value>-0.11045891518696636</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs_com[3]</VariableName>
-            <Value>0.7359765240280716</Value>
+            <Value>0.7398304506948661</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_body[1,3]</VariableName>
-             <Value>-0.6986604928970337</Value>
+             <Value>-0.5958118547801775</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,3]</VariableName>
-             <Value>-0.001350980601273477</Value>
+             <Value>-0.014034086163977694</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,3]</VariableName>
-             <Value>0.7154520750045776</Value>
+             <Value>0.8030014185099219</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_body[1,2]</VariableName>
-             <Value>6.36192737147212e-4</Value>
+             <Value>0.028592595626771296</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_body[2,2]</VariableName>
-             <Value>-0.9999989867210388</Value>
+             <Value>-0.9995841312690512</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_body[3,2]</VariableName>
-             <Value>-0.0012670261785387993</Value>
+             <Value>0.0037453958963387405</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20914,44 +20913,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>-0.08242534753021062</Value>
+            <Value>0.00322943232307607</Value>
            </X>
            <Y>
             <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>-0.19160940422716433</Value>
+            <Value>-0.1914252298000286</Value>
            </Y>
            <Z>
             <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>0.7358738949096805</Value>
+            <Value>0.7401338276937277</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>6.361927953548729e-4</Value>
+             <Value>0.028592593765748672</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>-0.9999989867210388</Value>
+             <Value>-0.9995841313257735</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>-0.0012670261785387993</Value>
+             <Value>0.0037453949652287086</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>0.6986604928970337</Value>
+             <Value>0.5958118932256627</Value>
             </X>
             <Y>
              <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.001350980717688799</Value>
+             <Value>0.014034085665583023</Value>
             </Y>
             <Z>
              <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>-0.7154521346092224</Value>
+             <Value>-0.8030013899928083</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -21043,7 +21042,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>3.7882586735524235</Maximum>
+      <Maximum>2.6099508785080334</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21289,7 +21288,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>3.7882586735524235</Maximum>
+      <Maximum>2.6099508785080334</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21539,7 +21538,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>3.7882586735524235</Maximum>
+      <Maximum>2.6099508785080334</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21746,9 +21745,6 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>

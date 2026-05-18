@@ -3,103 +3,152 @@
 \label{chap:pd}
 %=============================================================
 
-\section{Control Objective}
+\section{Manipulator Dynamics and Control Objective}
 
-The objective of the controller is to drive the vector of joint positions
-$q = [q_1,\ldots,q_6]^T \in \mathbb{R}^6$
-to a desired constant configuration $q^* \in \mathbb{R}^6$, compensating for the gravitational torque so that the equilibrium is exact regardless of the robot posture.
+The equations of motion of an $n$-link robot manipulator can be written in the joint space as a set of nonlinear, coupled differential equations:
+\begin{equation}
+  M(q)\ddot{q} + C(q,\dot{q})\dot{q} + D\dot{q} + g(q) = \tau
+  \label{eq:manipulator_dyn}
+\end{equation}
+where $n=6$ for the UR5 manipulator. The terms appearing in \cref{eq:manipulator_dyn} represent:
+\begin{itemize}
+  \item $q \in \mathbb{R}^{6\times1}$ is the vector of joint positions (angular displacements) $[\text{rad}]$.
+  \item $\dot{q} \in \mathbb{R}^{6\times1}$ is the vector of joint velocities $[\text{rad/s}]$.
+  \item $\ddot{q} \in \mathbb{R}^{6\times1}$ is the vector of joint accelerations $[\text{rad/s}^2]$.
+  \item $M(q) = M(q)^\top \succeq 0 \in \mathbb{R}^{6\times6}$ is the joint-space inertia matrix $[\text{kg}\cdot\text{m}^2]$.
+  \item $C(q,\dot{q}) \in \mathbb{R}^{6\times6}$ is the matrix accounting for Coriolis and centrifugal forces $[\text{kg}\cdot\text{m}^2/\text{s}]$.
+  \item $D = D^\top \succeq 0 \in \mathbb{R}^{6\times6}$ is the matrix of viscous friction coefficients $[\text{kg}\cdot\text{m}^2/\text{s}]$.
+  \item $g(q) \in \mathbb{R}^{6\times1}$ is the vector of generalized torques due to gravity $[\text{N}\cdot\text{m}]$.
+  \item $\tau \in \mathbb{R}^{6\times1}$ is the vector of generalized torques applied by the joint actuators $[\text{N}\cdot\text{m}]$.
+\end{itemize}
 
-\textbf{TODO: A cosa serve implementare un controllo}
-
+The control objective is to globally asymptotically stabilize the joint position vector $q$ to a desired constant target configuration $q^* \in \mathbb{R}^{6\times1}$. Since the target configuration is stationary, the reference velocity profile is identically zero.
 
 \section{Control Law}
 
-The control torque applied to each joint is:
+To fulfill the control objective, the centralized control torque vector $\tau$ is chosen as:
 \begin{equation}
-  \tau_i = K_{p,i}(q_i^* - q_i) + K_{d,i}(\dot{q}_i^* - \dot{q}_i) + \tau_{g,i}(q),
-  \label{eq:pd_law}
+  \tau = K_p (q^* - q) - K_d \dot{q} + g(q)
+  \label{eq:pd_control_law}
 \end{equation}
 where:
 \begin{itemize}
-  \item $K_{p,i}$ is the proportional gain,
-  \item $K_{d,i}$ is the derivative gain,
-  \item $\tau_{g,i}(q)$ is the gravity compensation torque for joint $i$ (see \cref{chap:gravity}).
+  \item $K_p = K_p^\top \succeq 0 \in \mathbb{R}^{6\times6} $ is the matrix containing the proportional gains $[\text{N}\cdot\text{m/rad}]$.
+  \item $K_d = K_d^\top \succeq 0 \in \mathbb{R}^{6\times6}$ is the matrix containing the derivative gains $[\text{N}\cdot\text{m}\cdot\text{s/rad}]$.
 \end{itemize}
-In vector form, with the gain row-vector $K = [K_p^T, K_d^T]$ and the extended state error $e = [q^*-q;\;\dot{q}^*-\dot{q}]$:
-\begin{equation}
-  \tau = K\,e + \tau_g.
-  \label{eq:pd_vec}
-\end{equation}
-For a constant reference ($\dot{q}^* = 0$), the derivative term acts as pure damping injection.
+The control law consists of a proportional action tracking the regulation error, a derivative action acting directly on the measured joint velocity $\dot{q}$ to inject damping, and a nonlinear feedforward term providing compensation for the gravitational torques.
 
 \section{Bond-Graph Implementation}
 
-Each \texttt{PD} block controls \emph{one joint}.
-It receives:
+Each \texttt{PD} block within the 20-sim library acts as a single-joint decentralized execution unit. It processes continuous signal flows and converts them into an output command. The block maps the control law component-wise for a single joint index $i$:
+\begin{equation}
+  \tau_i = K_{p,i}(q_i^* - q_i) - K_{d,i}\dot{q}_i + \tau_{g,i}
+\end{equation}
+The sub-model handles the following external interfaces:
 \begin{itemize}
-  \item the signal \texttt{Q} = $[q_i, \dot{q}_i]^T$ from the joint,
-  \item the gravity torque \texttt{gravity} = $\tau_{g,i}$ from the \texttt{GravityTerm} block.
+  \item It receives the vector signal \texttt{Q} = $[q_i, \dot{q}_i]^T$ from the physical \texttt{Joint} block.
+  \item It receives the scalar gravity feedforward signal \texttt{gravity} = $\tau_{g,i}$ from the centralized computing unit.
+  \item It outputs the scalar signal \texttt{tau} directed to the effort source modulating the joint's actuator.
 \end{itemize}
-It outputs a scalar signal \texttt{tau} which is fed to the \texttt{actuator} port of the joint (or, when the harmonic drive is present, to the motor effort source).
 
-Internally the block implements \cref{eq:pd_law} using:
+The signal processing sequence within the block is structured as follows:
 \begin{enumerate}
-  \item A \textbf{Constant} block outputting $q^*_{\text{ref}} = [q_i^*;\;0]^T$.
-  \item A \textbf{PlusMinus} subtractor computing the error $e = q^*_{\text{ref}} - Q$.
-  \item A \textbf{Gain} block multiplying by $K = [K_p, K_d]$.
-  \item A second \textbf{PlusMinus} block subtracting the gravity term from the PD output:
-    \begin{equation}
-      \tau = K\,e - \tau_g.
-    \end{equation}
-    Note the subtraction sign: the gravity term is computed with the convention that gravity is a load torque to be cancelled, so the compensation adds it with the appropriate sign.
+  \item A local \textbf{Constant} block defines the reference configuration parameter $q_i^*$.
+  \item A \textbf{PlusMinus} junction computes the scalar tracking position error $e_i = q_i^* - q_i$.
+  \item A \textbf{Gain} block multiplies the error vector $[e_i, \, -\dot{q}_i]^T$ by the localized parameters matrix $K_i = [K_{p,i}, \, K_{d,i}]$ to construct the tracking control action.
+  \item A final summation node adds the signal coming from the gravity feedforward line, routing the definitive scalar command $\tau_i$ to the output port.
 \end{enumerate}
 
-\begin{placeholder}[FIGURE PLACEHOLDER -- PD + Gravity Compensation Block Diagram]
+\begin{figure}[H]
   \centering
-  \vspace{2.5cm}
-  \textit{Insert here the signal-flow block diagram of the \texttt{PD} sub-model.
-  Show the constant reference block, the subtraction node producing the error $e = q^* - Q$, the gain matrix $K$ producing $K\,e$, and the second summation node where the gravity feedforward $\tau_g$ is added.
-  Also indicate the signal connections to and from the joint state port \texttt{Q} and the gravity signal \texttt{gravity}.}
-  \vspace{2.5cm}
-\end{placeholder}
+  \includegraphics[width=1.0\textwidth]{chapter_pd_g/figs/pd_g.png}
+  \caption{Internal structure of the \texttt{PD} sub-model in 20-sim.}
+  \label{fig:pd_block}
+\end{figure}
 
-\section{Gravity compensation}
+\section{Gravity Compensation}
+
 \subsection{Closed-Form Gravity Torque}
 
-The gravity torque at joint $i$ is derived from the potential energy of all links $j \geq i$:
+The gravitational vector $g(q)$ is generated from the potential energy distribution of the multi-body system. For any joint $i$, the required static torque $\tau_{g,i}$ is determined by accumulating the moments produced by all subsequent links $j \geq i$. 
+
+To handle variable tool configurations, the mass profile of the final link is adjusted to incorporate the mass of the end-effector payload: $m_6' = m_6 + m_{\text{load}}$. The generalized gravity torque is evaluated through the vector cross-product equation:
 \begin{equation}
   \tau_{g,i} = \sum_{j=i}^{6} m_j\, g^T \left(z_{i-1} \times (p_{G,j}^0 - p_{i-1}^0)\right),
   \label{eq:gravity}
 \end{equation}
 where:
 \begin{itemize}
-  \item $g = [0,0,-9.81]^T$ m/s$^2$ is the gravity vector in the world frame,
-  \item $z_{i-1}$ is the unit vector along the $z$-axis of frame $i-1$ expressed in world coordinates (the third column of the rotation part of $H_{i-1}$),
-  \item $p_{G,j}^0$ is the position of the centre of mass of link $j$ in world coordinates,
-  \item $p_{i-1}^0$ is the origin of frame $i-1$ in world coordinates.
+  \item $g = [0, \, 0, \, -9.81]^T \in \mathbb{R}^{3\times1}$ is the static acceleration gravity vector defined in the base reference frame.
+  \item $z_{i-1} \in \mathbb{R}^{3\times1}$ is the orientation vector of the joint actuation axis, extracted as the third column of the homogeneous transformation matrix $T_{i-1}$.
+  \item $p_{G,j}^0 \in \mathbb{R}^{3\times1}$ is the coordinates vector specifying the absolute position of the center of mass of link $j$.
+  \item $p_{i-1}^0 \in \mathbb{R}^{3\times1}$ is the absolute position vector of the origin of coordinate frame $i-1$.
 \end{itemize}
 
 \subsection{Implementation in the GravityTerm Block}
 
-The \texttt{GravityTerm} block receives the six absolute transformations $H_1$ through $H_6$ as signal inputs (each $4\times4$) and outputs the six gravity compensation torques $\tau_g \in \mathbb{R}^6$.
+The \texttt{GravityTerm} block coordinates the computation of the feedforward variables across all joints. It operates entirely as a mathematical \emph{signal} block, meaning it contains no power bonds and does not impose causality constraints during the model resolution.
 
-For each joint $i$, the positions $p_j^0$ and $p_{G,j}^0$ are computed as:
+The structural transformations $T_1$ through $T_6$ enter the block as $4\times4$ matrices from the kinematic transformation chain. For each link index $j$, the translation parameters and spatial vectors are mapped according to the following operations:
 \begin{align}
-  p_j^0      &= H_j[1\!:\!3,4], \\
-  p_{G,j}^0  &= H_j[1\!:\!3,1\!:\!3]\,r_{Gp,j} + p_j^0,
+  p_j^0     &= T_j[1\!:\!3, \, 4], \\
+  p_{G,j}^0 &= T_j[1\!:\!3, \, 1\!:\!3]\cdot r_{\text{gp},j} + p_j^0, \\
+  z_j       &= T_j[1\!:\!3, \, 3].
 \end{align}
-and the joint axis direction is:
-\begin{equation}
-  z_{i-1} = H_{i-1}[1\!:\!3,3].
-\end{equation}
-The torque \eqref{eq:gravity} is then evaluated numerically.
+The block computes the individual scalar outputs \texttt{tau\_1} through \texttt{tau\_6} executing the vector additions defined in \cref{eq:gravity}. The outputs are packed into the vector signal \texttt{tau\_g} $\in \mathbb{R}^{6\times1}$ and forwarded to the respective controllers.
 
-The \texttt{GravityTerm} block is a pure \emph{signal} block: it has no power ports and does not participate in the causality analysis of the bond graph.
-Its outputs feed the six \texttt{PD} sub-models.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+ 
+% --- Box dimensions ---
+\def\boxW{4.5}    
+\def\boxH{5.5}    % Tall box to fit 6 inputs + parameters
+\def\arrowLen{1.5}  
+ 
+% --- Black box ---
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+ 
+% --- Title ---
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+    {GravityTerm};
+ 
+% --- Horizontal rule ---
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
+ 
+% --- Parameters ---
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
+    {$r_{gp,1\dots6}$, $g$,\\ $m_{1\dots5}$, $m_6 + m_{load}$};
+ 
+% ==========================================
+% INPUT PORTS (Left Side - Signals)
+% ==========================================
 
-\begin{placeholder}[FIGURE PLACEHOLDER -- GravityTerm Signal Block Diagram]
-  \centering
-  \vspace{2cm}
-  \textit{Insert here a signal-flow diagram of the \texttt{GravityTerm} block showing the six $4\times4$ transformation matrices arriving as inputs, the intermediate computations of $p_j^0$, $p_{G,j}^0$, $z_{i-1}$, and the cross-product summation producing each $\tau_{g,i}$.}
-  \vspace{2cm}
-\end{placeholder}
+\def\startY{1.2}
+\def\stepY{-0.6}
+
+\foreach \i in {1,...,6} {
+    \pgfmathsetmacro{\yPos}{\startY + (\i-1)*\stepY}
+    \draw[->, line width=1pt] (-\arrowLen, \yPos) -- (0, \yPos);
+    \node[above, font=\small] at (-\arrowLen/2, \yPos) {\texttt{T\_\i}};
+}
+ 
+% ==========================================
+% OUTPUT PORT (Right Side - Signal)
+% ==========================================
+
+\def\yOut{0}
+\draw[->, line width=1pt]
+    (\boxW, \yOut) -- (\boxW + \arrowLen, \yOut);
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yOut) {\texttt{tau\_g}};
+ 
+\end{tikzpicture}
+\caption{Signal interface of the \texttt{GravityTerm} sub-model in 20-sim.}
+\label{fig:gravity_term}
+\end{figure}
