@@ -9,4 +9,6 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.lot
+*.lof
 

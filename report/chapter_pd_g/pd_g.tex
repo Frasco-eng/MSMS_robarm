@@ -1,0 +1,105 @@
+%=============================================================
+\chapter{The PD Controller Sub-Model}
+\label{chap:pd}
+%=============================================================
+
+\section{Control Objective}
+
+The objective of the controller is to drive the vector of joint positions
+$q = [q_1,\ldots,q_6]^T \in \mathbb{R}^6$
+to a desired constant configuration $q^* \in \mathbb{R}^6$, compensating for the gravitational torque so that the equilibrium is exact regardless of the robot posture.
+
+\textbf{TODO: A cosa serve implementare un controllo}
+
+
+\section{Control Law}
+
+The control torque applied to each joint is:
+\begin{equation}
+  \tau_i = K_{p,i}(q_i^* - q_i) + K_{d,i}(\dot{q}_i^* - \dot{q}_i) + \tau_{g,i}(q),
+  \label{eq:pd_law}
+\end{equation}
+where:
+\begin{itemize}
+  \item $K_{p,i}$ is the proportional gain,
+  \item $K_{d,i}$ is the derivative gain,
+  \item $\tau_{g,i}(q)$ is the gravity compensation torque for joint $i$ (see \cref{chap:gravity}).
+\end{itemize}
+In vector form, with the gain row-vector $K = [K_p^T, K_d^T]$ and the extended state error $e = [q^*-q;\;\dot{q}^*-\dot{q}]$:
+\begin{equation}
+  \tau = K\,e + \tau_g.
+  \label{eq:pd_vec}
+\end{equation}
+For a constant reference ($\dot{q}^* = 0$), the derivative term acts as pure damping injection.
+
+\section{Bond-Graph Implementation}
+
+Each \texttt{PD} block controls \emph{one joint}.
+It receives:
+\begin{itemize}
+  \item the signal \texttt{Q} = $[q_i, \dot{q}_i]^T$ from the joint,
+  \item the gravity torque \texttt{gravity} = $\tau_{g,i}$ from the \texttt{GravityTerm} block.
+\end{itemize}
+It outputs a scalar signal \texttt{tau} which is fed to the \texttt{actuator} port of the joint (or, when the harmonic drive is present, to the motor effort source).
+
+Internally the block implements \cref{eq:pd_law} using:
+\begin{enumerate}
+  \item A \textbf{Constant} block outputting $q^*_{\text{ref}} = [q_i^*;\;0]^T$.
+  \item A \textbf{PlusMinus} subtractor computing the error $e = q^*_{\text{ref}} - Q$.
+  \item A \textbf{Gain} block multiplying by $K = [K_p, K_d]$.
+  \item A second \textbf{PlusMinus} block subtracting the gravity term from the PD output:
+    \begin{equation}
+      \tau = K\,e - \tau_g.
+    \end{equation}
+    Note the subtraction sign: the gravity term is computed with the convention that gravity is a load torque to be cancelled, so the compensation adds it with the appropriate sign.
+\end{enumerate}
+
+\begin{placeholder}[FIGURE PLACEHOLDER -- PD + Gravity Compensation Block Diagram]
+  \centering
+  \vspace{2.5cm}
+  \textit{Insert here the signal-flow block diagram of the \texttt{PD} sub-model.
+  Show the constant reference block, the subtraction node producing the error $e = q^* - Q$, the gain matrix $K$ producing $K\,e$, and the second summation node where the gravity feedforward $\tau_g$ is added.
+  Also indicate the signal connections to and from the joint state port \texttt{Q} and the gravity signal \texttt{gravity}.}
+  \vspace{2.5cm}
+\end{placeholder}
+
+\section{Gravity compensation}
+\subsection{Closed-Form Gravity Torque}
+
+The gravity torque at joint $i$ is derived from the potential energy of all links $j \geq i$:
+\begin{equation}
+  \tau_{g,i} = \sum_{j=i}^{6} m_j\, g^T \left(z_{i-1} \times (p_{G,j}^0 - p_{i-1}^0)\right),
+  \label{eq:gravity}
+\end{equation}
+where:
+\begin{itemize}
+  \item $g = [0,0,-9.81]^T$ m/s$^2$ is the gravity vector in the world frame,
+  \item $z_{i-1}$ is the unit vector along the $z$-axis of frame $i-1$ expressed in world coordinates (the third column of the rotation part of $H_{i-1}$),
+  \item $p_{G,j}^0$ is the position of the centre of mass of link $j$ in world coordinates,
+  \item $p_{i-1}^0$ is the origin of frame $i-1$ in world coordinates.
+\end{itemize}
+
+\subsection{Implementation in the GravityTerm Block}
+
+The \texttt{GravityTerm} block receives the six absolute transformations $H_1$ through $H_6$ as signal inputs (each $4\times4$) and outputs the six gravity compensation torques $\tau_g \in \mathbb{R}^6$.
+
+For each joint $i$, the positions $p_j^0$ and $p_{G,j}^0$ are computed as:
+\begin{align}
+  p_j^0      &= H_j[1\!:\!3,4], \\
+  p_{G,j}^0  &= H_j[1\!:\!3,1\!:\!3]\,r_{Gp,j} + p_j^0,
+\end{align}
+and the joint axis direction is:
+\begin{equation}
+  z_{i-1} = H_{i-1}[1\!:\!3,3].
+\end{equation}
+The torque \eqref{eq:gravity} is then evaluated numerically.
+
+The \texttt{GravityTerm} block is a pure \emph{signal} block: it has no power ports and does not participate in the causality analysis of the bond graph.
+Its outputs feed the six \texttt{PD} sub-models.
+
+\begin{placeholder}[FIGURE PLACEHOLDER -- GravityTerm Signal Block Diagram]
+  \centering
+  \vspace{2cm}
+  \textit{Insert here a signal-flow diagram of the \texttt{GravityTerm} block showing the six $4\times4$ transformation matrices arriving as inputs, the intermediate computations of $p_j^0$, $p_{G,j}^0$, $z_{i-1}$, and the cross-product summation producing each $\tau_{g,i}$.}
+  \vspace{2cm}
+\end{placeholder}

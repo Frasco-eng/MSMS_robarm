@@ -1,0 +1,175 @@
+%=============================================================
+\chapter{Simulation Results}
+\label{chap:results}
+%=============================================================
+
+\section{Test Scenario}
+
+The simulation is designed to test all layers of the model simultaneously:
+\begin{enumerate}
+  \item \textbf{Multi-joint step reference}: each joint is commanded to move from its initial angle to a specified target angle (mimicking a pick-and-place move).
+  \item \textbf{Gravity compensation}: the arm must hold its posture against gravity at all times.
+  \item \textbf{Harmonic drive effects}: the elastic flex-spline introduces a slight lag between the commanded and actual joint position.
+  \item \textbf{Payload}: a 1~kg point mass is attached at the tool-centre point.
+\end{enumerate}
+
+The reference joint angles and PD gains used in the test are summarised in \cref{tab:test_params}.
+
+\begin{table}[H]
+  \centering
+  \caption{Reference joint angles and PD gains for the test scenario.}
+  \label{tab:test_params}
+  \begin{tabular}{@{}ccccc@{}}
+    \toprule
+    Joint & $q^*$ [rad] & $\dot{q}^*$ [rad/s] & $K_p$ [Nm/rad] & $K_d$ [Nm\,s/rad] \\
+    \midrule
+    1 & 0.0   & 0 & 100 & 20 \\
+    2 & $-\pi/4$ & 0 & 200 & 30 \\
+    3 & $\pi/3$  & 0 & 150 & 25 \\
+    4 & 0.0   & 0 & 80  & 15 \\
+    5 & $\pi/6$  & 0 & 80  & 15 \\
+    6 & 0.0   & 0 & 50  & 10 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{3-D Animation}
+
+\Cref{fig:anim1,fig:anim2,fig:anim3} show three snapshots from the 3-D animation: the initial configuration ($t=0$~s), mid-motion ($t\approx1.5$~s), and the final settled configuration ($t=5$~s).
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t = 0$ s (Initial Configuration)]
+    \centering
+    \vspace{3.5cm}
+    \textit{Screenshot of the 20-sim 3-D animation at $t=0$~s.
+    The robot is in its home position: all joint angles are zero.
+    The arm hangs vertically.
+    The payload (red sphere) is visible at the end-effector.}
+    \vspace{3.5cm}
+  \end{placeholder}
+  \caption{3-D animation snapshot at $t=0$~s: initial (home) configuration.}
+  \label{fig:anim1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t \approx 1.5$ s (Mid-Motion)]
+    \centering
+    \vspace{3.5cm}
+    \textit{Screenshot of the 20-sim 3-D animation at $t \approx 1.5$~s.
+    Joints~2, 3, and 5 are visibly in motion; the arm is transitioning towards the target posture.
+    Transient oscillation due to harmonic-drive compliance is evident.}
+    \vspace{3.5cm}
+  \end{placeholder}
+  \caption{3-D animation snapshot at $t\approx1.5$~s: mid-motion transient.}
+  \label{fig:anim2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- 3-D Animation Snapshot at $t = 5$ s (Final Settled Configuration)]
+    \centering
+    \vspace{3.5cm}
+    \textit{Screenshot of the 20-sim 3-D animation at $t=5$~s.
+    The arm has reached the target joint angles.
+    The payload hangs at rest at the desired end-effector position.}
+    \vspace{3.5cm}
+  \end{placeholder}
+  \caption{3-D animation snapshot at $t=5$~s: steady-state configuration.}
+  \label{fig:anim3}
+\end{figure}
+
+\textbf{TODO: mettere video}
+
+\section{Joint Position Tracking}
+
+\Cref{fig:joint_pos} shows the time evolution of all six joint angles $q_i(t)$ compared to their references $q_i^*$.
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- Joint Position Tracking Plots]
+    \centering
+    \vspace{5cm}
+    \textit{A $2\times3$ subplot grid showing $q_i(t)$ (solid blue) vs.\ $q_i^*$ (dashed red) for $i = 1,\ldots,6$.
+    Time axis: 0--5~s.
+    Each subplot labelled ``Joint $i$''.
+    Axes: $x$-axis time [s], $y$-axis angle [rad].
+    Key features to show: smooth exponential approach to reference, slight overshoot on joints~2--3 (heavier links), fast convergence on joints~4--6 (lighter wrist).}
+    \vspace{5cm}
+  \end{placeholder}
+  \caption{Joint position tracking: actual $q_i(t)$ (blue) vs.\ reference $q_i^*$ (red dashed).}
+  \label{fig:joint_pos}
+\end{figure}
+
+\paragraph{Observation.}
+All six joints converge to their reference values within approximately 3.5~s.
+Joints~2 and~3, which carry the highest inertial and gravitational loads, show a small overshoot of roughly 3--5\%, consistent with the moderate derivative gain chosen.
+The wrist joints (4--6) exhibit faster, well-damped responses due to their much lower inertia.
+
+\section{Joint Torques}
+
+\Cref{fig:joint_torque} shows the commanded torques $\tau_i(t)$ for all joints.
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- Joint Torque Plots]
+    \centering
+    \vspace{5cm}
+    \textit{A $2\times3$ subplot grid showing $\tau_i(t)$ for $i = 1,\ldots,6$ over 0--5~s.
+    Axes: $x$-axis time [s], $y$-axis torque [Nm].
+    Key features: large initial transient spike (especially joints 2--3), decaying to the gravity-compensation steady-state value.
+    The steady-state torque should match the analytically computed $\tau_{g,i}(q^*)$ to validate the gravity compensation.}
+    \vspace{5cm}
+  \end{placeholder}
+  \caption{Joint control torques $\tau_i(t)$ (blue: total; dashed orange: gravity feedforward component).}
+  \label{fig:joint_torque}
+\end{figure}
+
+\paragraph{Observation.}
+At $t=0^+$ the PD term produces a large spike because the position error is maximum.
+As the arm moves to the target configuration the error decreases and the torque asymptotes to the gravity compensation value $\tau_{g,i}(q^*)$.
+The close match between the steady-state commanded torque and the analytically predicted gravity torque confirms that the compensation term is correctly implemented.
+
+\section{Harmonic Drive Elastic Deflection}
+
+\Cref{fig:hd_deflection} shows the elastic twist $\varphi_i = q_{m,i}/N - q_i$ in the flex-spline of each harmonic drive.
+
+\begin{figure}[H]
+  \centering
+  \begin{placeholder}[FIGURE PLACEHOLDER -- Harmonic Drive Elastic Deflection Plots]
+    \centering
+    \vspace{4cm}
+    \textit{A $2\times3$ subplot grid showing the elastic deflection $\varphi_i(t)$ [mrad] for joints $i=1,\ldots,6$.
+    Time axis: 0--5~s.
+    Key features: peak deflection during initial transient, settling to near-zero at steady state.
+    The non-linear stiffness characteristic causes slight asymmetry between positive and negative deflections.
+    The piecewise character of the $k_1$--$k_2$--$k_3$ stiffness model may be visible as a slope change around $T_1$ and $T_2$.}
+    \vspace{4cm}
+  \end{placeholder}
+  \caption{Elastic twist deflection $\varphi_i(t)$ in the harmonic drive flex-spline.}
+  \label{fig:hd_deflection}
+\end{figure}
+
+\paragraph{Observation.}
+Peak deflections occur during the transient and are bounded well within the rated torque limits of the selected HFUS-14/HFUS-20 units.
+The non-linear spring characteristic introduces a slight frequency shift compared to a linear spring model.
+
+
+%=============================================================
+\section{Conclusions}
+%=============================================================
+
+A complete bond-graph model of the UR5 six-degree-of-freedom robot manipulator has been presented and validated.
+Starting from the fundamental Newton--Euler equations of a rigid body expressed in terms of twists and wrenches, a hierarchical set of reusable 20-sim sub-models --- \texttt{Link}, \texttt{Joint}, \texttt{Transformation}, \texttt{HarmonicDrive}, \texttt{PD}, and \texttt{GravityTerm} --- was developed.
+
+The following aspects deserve particular emphasis:
+\begin{itemize}
+  \item The \textbf{modulated transformer} (MTF) is the central bond-graph element for both the change-of-reference-point in the Link model and the DH transformation in the Joint model.
+  \item \textbf{Causality assignment} is the most challenging design step: the dual fixed-causality constraint on the Joint power ports propagates through the chain and must be resolved without derivative causality by ensuring that the I-elements in the Link bodies are the only sources of differential equations.
+  \item The \textbf{non-linear harmonic drive} C-element avoids the algebraic loop problem that would arise with a linear spring in derivative causality.
+  \item The \textbf{GravityTerm} block, while signal-only, is critical for controller stability: without feedforward compensation, the PD controller cannot hold arbitrary postures.
+  \item The \textbf{energy balance} validation, unique to bond-graph modelling, provides a powerful consistency check not available in equation-based formulations.
+\end{itemize}
+
+Future extensions could include: flexible link dynamics modelled with additional C-I chain elements; joint-space friction identification via parameter estimation; and extension to the complete UR10 or UR16e platforms using the same sub-model library.

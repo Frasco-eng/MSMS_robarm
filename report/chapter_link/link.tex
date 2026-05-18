@@ -1,0 +1,105 @@
+%=============================================================
+\chapter{The Link Sub-Model}
+\label{chap:link}
+%=============================================================
+
+\section{Physical Description}
+
+Each link of the UR5 is modelled as a rigid body characterised by:
+\begin{itemize}
+  \item a mass $m$,
+  \item an inertia tensor $J \in \mathbb{R}^{3\times3}$ expressed in the link frame,
+  \item the position of the centre of mass $r_{Gp}$ with respect to the link's proximal joint frame origin.
+\end{itemize}
+Numerical values for the UR5, taken from \cite{Macchelli2026}, are listed in \cref{tab:link_params}.
+
+\begin{table}[H]
+  \centering
+  \caption{UR5 link masses, centres of gravity, and diagonal inertia components.}
+  \label{tab:link_params}
+  \begin{tabular}{@{}ccccc@{}}
+    \toprule
+    Link & $m$ [kg] & $r_{Gp,x}$ [m] & $r_{Gp,y}$ [m] & $r_{Gp,z}$ [m] \\
+    \midrule
+    1 & 3.700  &  0.0000 & $-$0.02561 &  0.00193 \\
+    2 & 8.393  &  0.2125 &  0.0000   &  0.11336 \\
+    3 & 2.330  &  0.1500 &  0.0000   &  0.02650 \\
+    4 & 1.1219 &  0.0000 & $-$0.00180 &  0.01634 \\
+    5 & 1.1219 &  0.0000 &  0.00180  &  0.01634 \\
+    6 & 0.1879 &  0.0000 &  0.0000   & $-$0.001159 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Ports and parameters}
+
+\section{Equations of Motion}
+
+The Newton--Euler equations for link $i$, written in the body frame attached to the link, are given by \cref{eq:newton,eq:euler}.
+Denoting the generalised momentum as
+\begin{equation}
+  p_{\text{lin}} = m\,v_G, \qquad h_{\text{ang}} = J\,\omega,
+\end{equation}
+one obtains the state-space form that 20-sim integrates directly:
+\begin{align}
+  \dot{p}_{\text{lin}} &= f^{\text{ext}} + m\,\omega \times v_G, \\
+  \dot{h}_{\text{ang}} &= \tau^{\text{ext}} + \omega \times J\omega, \\
+  v_G &= p_{\text{lin}} / m, \\
+  \omega &= J^{-1} h_{\text{ang}}.
+\end{align}
+
+\section{Bond-Graph Structure}
+
+The \texttt{Link} sub-model exposes two \emph{power ports} of dimension six:
+\begin{itemize}
+  \item \texttt{wrench\_i}: the wrench applied at the proximal joint (input, integral causality).
+  \item \texttt{wrench\_ipp}: the wrench at the distal joint (input, integral causality).
+\end{itemize}
+It also receives a signal input \texttt{T\_next}, the homogeneous transformation, used to orient gravity.
+
+Internally the model contains:
+\begin{enumerate}
+  \item Two \textbf{MTF} elements (\texttt{i\_com} and \texttt{ipp\_com}) that shift the reference from the joint origins to the centre of mass via \cref{eq:vel_shift,eq:torque_shift}.
+  \item A \textbf{1-junction} that enforces the common-velocity constraint at the centre of mass and sums all efforts.
+  \item The \textbf{Body} I-element that integrates the Newton--Euler equations.
+  \item A \textbf{MSe} element that injects the gravitational wrench.
+\end{enumerate}
+
+\subsection{Gravity Source (MSe)}
+
+The gravitational force in the inertial frame is $f_g = [0,\,0,\,-mg]^T$.
+To express it in the body frame of link $i$, the rotation matrix $R_i \in SO(3)$ extracted from \texttt{T\_next} is used:
+\begin{equation}
+  f_g^{\text{body}} = R_i^T \begin{pmatrix}0\\0\\-mg\end{pmatrix}, \qquad \tau_g^{\text{body}} = \mathbf{0}.
+\end{equation}
+This wrench is injected at the 1-junction so that it acts on the body mass.
+
+\subsection{Body sub-model}
+
+\subsection{MTF Equations}
+
+For a displacement vector $r_{Gp} \in \mathbb{R}^3$ from the joint origin to the CoM:
+\begin{align}
+  v_G &= v_{\text{joint}} + \omega \times r_{Gp}, \\
+  \tau_{\text{joint}} &= \tau_G + r_{Gp} \times f_G.
+\end{align}
+These equations are implemented as a modulated transformer in 20-sim, where the modulation matrix is $[r_{Gp}]_\times$.
+
+\subsection{Causality Assignment}
+
+Both power ports carry \emph{fixed integral causality} (the effort is known, the flow is computed).
+This means:
+\begin{itemize}
+  \item Efforts (forces/torques at the joints) are \emph{given} by the connected joints.
+  \item Velocities (flows) are \emph{computed} by the body integrator.
+\end{itemize}
+The 1-junction has one element with \emph{effort-out} causality (the Body I-element) and all others with \emph{effort-in} causality (the two MTF connections and the MSe source).
+The \emph{constraint}: MTF elements with fixed causality on both sides impose a \emph{causality conflict} unless the effort-output side is consistently identified --- this is resolved by stipulating that the Body is the unique element on the 1-junction that imposes effort.
+
+\begin{placeholder}[FIGURE PLACEHOLDER -- Link Bond-Graph Diagram]
+  \centering
+  \vspace{3cm}
+  \textit{Insert here the bond-graph diagram of the \texttt{Link} sub-model, showing the two MTF elements connecting the proximal and distal joint ports to the 1-junction, the Body I-element, and the MSe gravity source.
+  Causality strokes should be clearly indicated on each half-bond.}
+  \vspace{3cm}
+\end{placeholder}

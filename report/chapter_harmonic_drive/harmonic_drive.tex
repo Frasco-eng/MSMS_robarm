@@ -1,0 +1,124 @@
+%=============================================================
+\chapter{The Harmonic Drive Sub-Model}
+\label{chap:harmonic}
+%=============================================================
+
+\section{Motivation}
+
+Real robotic joints are not directly driven: a gearbox with a high reduction ratio sits between the motor shaft and the output link.
+In the UR5, \emph{harmonic-drive} (strain-wave) gearboxes are used.
+These components exhibit several non-ideal characteristics that significantly affect the closed-loop performance:
+\begin{enumerate}
+  \item High gear ratio with near-zero backlash.
+  \item Non-linear torsional stiffness (the flex-spline deforms elastically).
+  \item Viscous friction at the input shaft.
+  \item Asymmetric Coulomb friction (static friction differs for positive and negative rotation).
+  \item Motor rotor inertia reflected through the gear ratio.
+\end{enumerate}
+
+The harmonic drive datasheets (HFUS-14 and HFUS-20 series, see \cref{tab:hd14,tab:hd20}) supply the rated and peak torques, maximum speeds, and moment-of-inertia values used to set the model parameters.
+
+\begin{table}[H]
+  \centering
+  \caption{HFUS-14 harmonic drive specifications (selected entries).}
+  \label{tab:hd14}
+  \begin{tabular}{@{}lcc@{}}
+    \toprule
+    Parameter & Ratio 50 & Ratio 100 \\
+    \midrule
+    Repeated peak torque $T_p$ [Nm] & 18 & 28 \\
+    Average torque $T_a$ [Nm]       & 6.9 & 11 \\
+    Rated torque $T_r$ [Nm]         & 5.4 & 7.8 \\
+    Moment of inertia $J$ [$10^{-4}$ kg\,m$^2$] & \multicolumn{2}{c}{0.033--0.091} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{HFUS-20 harmonic drive specifications (selected entries).}
+  \label{tab:hd20}
+  \begin{tabular}{@{}lcc@{}}
+    \toprule
+    Parameter & Ratio 80 & Ratio 100 \\
+    \midrule
+    Repeated peak torque $T_p$ [Nm] & 74 & 82 \\
+    Average torque $T_a$ [Nm]       & 47 & 49 \\
+    Rated torque $T_r$ [Nm]         & 34 & 40 \\
+    Moment of inertia $J$ [$10^{-4}$ kg\,m$^2$] & \multicolumn{2}{c}{0.193--0.404} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Ports and Parameters}
+
+
+\section{Bond-Graph Structure}
+
+The \texttt{HarmonicDrive} sub-model has:
+\begin{itemize}
+  \item \texttt{motor}: scalar power port input (motor torque + angular velocity).
+  \item \texttt{harmonic\_drive}: scalar power port output (joint torque + output shaft velocity).
+\end{itemize}
+
+The topology is shown schematically in the bond graph below.
+The key elements are:
+
+\paragraph{Motor inertia (I element).}
+The rotor inertia $J_{\text{rotor}}$ (default $8\times10^{-6}$~kg\,m$^2$) stores kinetic energy of the motor shaft:
+\begin{equation}
+  J\,\dot{\omega}_m = \tau_m - \tau_{\text{friction}} - \tau_{\text{elastic}}/N,
+\end{equation}
+where $\omega_m$ is the motor angular velocity and $N$ is the gear ratio (stored as negative to account for sign convention, default $N=-0.01$, i.e.\ ratio of 100).
+
+\paragraph{Gear ratio (TF element).}
+The transformer element with ratio $N$ enforces:
+\begin{equation}
+  \tau_m = N \, \tau_{\text{out}}, \qquad \omega_{\text{out}} = N \, \omega_m.
+\end{equation}
+
+\paragraph{Torsional stiffness (C element -- non-linear).}
+The flex-spline introduces a piecewise-linear torsional compliance parameterised by three stiffness zones:
+\begin{equation}
+  \tau_s(\varphi) =
+  \begin{cases}
+    k_1\,\varphi & \text{if } \varphi \leq \varphi_1 = T_1/k_1, \\
+    k_2(\varphi-\varphi_1) + T_1 & \text{if } \varphi_1 < \varphi < \varphi_2, \\
+    k_3(\varphi-\varphi_2) + T_2 & \text{if } \varphi \geq \varphi_2,
+  \end{cases}
+\end{equation}
+where $\varphi = \int(\omega_{\text{out}} - \omega_{\text{load}})\,dt$ is the elastic twist of the flex-spline, and $k_1 = 4700$, $k_2 = 6100$, $k_3 = 7100$~Nm/rad, $T_1 = 2$~Nm, $T_2 = 6.9$~Nm.
+
+\paragraph{Viscous friction at motor shaft (R element).}
+\begin{equation}
+  \tau_{\text{visc}} = b_w\,\omega_m, \qquad b_w = 6.4\times10^{-4}\;\text{Nm\,s/rad}.
+\end{equation}
+
+\paragraph{Asymmetric Coulomb friction at output shaft (R element).}
+Friction at the output shaft is modelled as a smooth approximation to the sign function:
+\begin{equation}
+  \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan(\omega) + (b_{f,+}+b_{f,-}),
+\end{equation}
+with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm.
+This formulation avoids numerical stiffness introduced by a discontinuous sign function while faithfully capturing the asymmetry.
+
+\subsection{Causality Assignment}
+
+The \texttt{motor} port is fixed \emph{effort-in}: the motor torque source imposes effort.
+The \texttt{harmonic\_drive} port is fixed \emph{effort-out}: the transmission output imposes torque on the joint.
+Within the sub-model:
+\begin{itemize}
+  \item The 1-junction at the motor shaft has the I-element as the \emph{effort-out} element (integral causality), and the TF and R elements as effort-in elements.
+  \item The 0-junction at the output shaft is the sum point for the elastic and Coulomb friction torques.
+  \item The C element is in integral causality: $\dot{\varphi} = f_C$, $e_C = \tau_s(\varphi)$.
+\end{itemize}
+The non-linear C element breaks the direct algebraic loop that would exist if a linear C were used in derivative causality.
+
+\begin{placeholder}[FIGURE PLACEHOLDER -- Harmonic Drive Bond-Graph Diagram]
+  \centering
+  \vspace{3cm}
+  \textit{Insert here the bond-graph diagram of the \texttt{HarmonicDrive} sub-model.
+  Show the 1-junction at the motor shaft (connecting the motor source, the I-element for rotor inertia, the R-element for viscous damping, and the TF for gear ratio), the 0-junction at the output shaft (connecting the elastic C-element, the asymmetric friction R1-element, and the harmonic\_drive output port), and the inner 1-junction coupling the two.
+  Causality strokes should be clearly indicated.}
+  \vspace{3cm}
+\end{placeholder}

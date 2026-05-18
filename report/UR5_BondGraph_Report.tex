@@ -1,0 +1,105 @@
+%=============================================================
+%  Bond-Graph Modelling of the UR5 Robot Manipulator
+%  with PD + Gravity-Compensation Control
+%=============================================================
+\documentclass[12pt,a4paper,oneside]{report}
+
+%--- packages ------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{cleveref}
+\usepackage{titling}
+
+%--- page style ---------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\leftmark}}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%--- placeholder box style -----------------------------------
+\newtcolorbox{placeholder}[1][]{
+  enhanced, breakable,
+  colback=gray!10, colframe=gray!60,
+  fonttitle=\bfseries\small,
+  title={#1},
+  halign title=center,
+  top=6pt, bottom=6pt,
+  left=6pt, right=6pt,
+}
+
+
+%=============================================================
+\begin{document}
+%=============================================================
+
+
+
+\thispagestyle{empty}                                                 
+\begin{center}                                                            
+    \vspace{5mm}
+    {\LARGE UNIVERSIT\`A DI BOLOGNA} \\                       
+      \vspace{5mm}
+\end{center}
+\begin{center}
+  \includegraphics[scale=.27]{figs/logo_unibo}
+\end{center}
+\begin{center}
+      \vspace{5mm}
+      {\Large Master's Degree in Automation Engineering} \\
+      \vspace{20mm}
+      {\LARGE Modeling and Simulation of Mechatronic Systems} \\
+      \vspace{5mm}{\Large\textbf{UR5 ROBOT BOND GRAPH MODEL}} \\                 
+      \vspace{15mm}
+\end{center}
+
+
+\begin{center}
+      {\large Giulio Mazzaroppi, Francesco Cenni, Giacomo Pezzolati} \\
+\end{center}
+
+
+\begin{center}
+\vfill
+      {\large Academic year \@25/26} \\
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+
+
+\tableofcontents
+
+\include{chapter_link/link}
+\include{chapter_joint/joint}
+\include{chapter_transformation/transformation}
+\include{chapter_harmonic_drive/harmonic_drive}
+\include{chapter_pd_g/pd_g}
+\include{chapter_robot/robot}
+\include{chapter_results_conclusions/results_conclusions}
+
+\end{document}

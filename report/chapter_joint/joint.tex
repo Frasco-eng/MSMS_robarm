@@ -1,0 +1,116 @@
+%=============================================================
+\chapter{The Joint Sub-Model}
+\label{chap:joint}
+%=============================================================
+
+\section{Physical Description}
+
+Each of the six joints of the UR5 is a revolute joint.
+In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
+\begin{enumerate}
+  \item Performing the DH frame transformation between the inbound and outbound twist ports.
+  \item Extracting the scalar joint velocity $\dot{q}_i$ and position $q_i$.
+  \item Receiving the scalar actuator torque $\tau_i$ and transmitting it to the mechanical chain.
+\end{enumerate}
+
+\section{Ports and Parameters}
+
+\begin{table}[H]
+  \centering
+  \caption{\texttt{Joint} sub-model ports.}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Port & Type & Description \\
+    \midrule
+    \texttt{twist\_i}    & power in  (fixed-out causality) & Twist of frame $i-1$ \\
+    \texttt{twist\_ipp}  & power out (fixed-out causality) & Twist of frame $i$ \\
+    \texttt{actuator}    & power in  (fixed-in causality)  & Actuator scalar torque bond \\
+    \texttt{T\_i}        & signal out $[4\times4]$         & DH homogeneous transformation $H_i^{i-1}$ \\
+    \texttt{Q}           & signal out $[2\times1]$         & Joint state $[q_i,\;\dot{q}_i]^T$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+DH parameters stored in the \texttt{Joint} sub-model are $d_i$, $a_i$, $\alpha_i$, and the offset $\tilde{q}_i$.
+These are set for each of the six joints according to \cref{tab:dh_params}.
+
+\begin{table}[H]
+  \centering
+  \caption{UR5 Denavit--Hartenberg parameters.}
+  \label{tab:dh_params}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Joint & $d_i$ [m] & $a_i$ [m] & $\alpha_i$ [rad] & $\tilde{q}_i$ [rad] \\
+    \midrule
+    Base   (1) & 0.089159 &  0.0       & $\pi/2$   & 0 \\
+    Shoulder(2)& 0.0      & $-$0.425   & 0         & 0 \\
+    Elbow  (3) & 0.0      & $-$0.39225 & 0         & 0 \\
+    Wrist1 (4) & 0.10915  &  0.0       & $\pi/2$   & 0 \\
+    Wrist2 (5) & 0.09465  &  0.0       & $-\pi/2$  & 0 \\
+    Wrist3 (6) & 0.0823   &  0.0       & 0         & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{The MTF Element as a DH Transformer}
+
+The core of the \texttt{Joint} model is an MTF element that implements the DH transformation.
+Given the joint angle $\theta_i = q_i + \tilde{q}_i$ and the stored parameters, the rotation matrix $R_i$ and translation $P_i$ are computed as follows (matching \cref{eq:dh}):
+\begin{align}
+  R_i &= \begin{pmatrix}
+    \cos\theta_i & -\sin\theta_i\cos\alpha_i &  \sin\theta_i\sin\alpha_i \\
+    \sin\theta_i &  \cos\theta_i\cos\alpha_i & -\cos\theta_i\sin\alpha_i \\
+    0            &  \sin\alpha_i             &  \cos\alpha_i
+  \end{pmatrix}, \\[6pt]
+  P_i &= \begin{pmatrix}
+    a_i\cos\theta_i \\ a_i\sin\theta_i \\ d_i
+  \end{pmatrix}.
+\end{align}
+The MTF enforces power continuity by transforming twists and wrenches:
+\begin{align}
+  \tau_{\text{ipp}} &= R_i^T \tau_i, \\
+  f_{\text{ipp}}    &= R_i^T f_i - R_i^T (P_i \times \tau_i), \\
+  \omega_i          &= R_i\,\omega_{\text{ipp}}, \\
+  v_i               &= P_i \times R_i\,\omega_{\text{ipp}} + R_i\,v_{\text{ipp}}.
+\end{align}
+
+\section{Joint Kinematics and Constraint Elements}
+
+The joint variable $q_i$ (position) and $\dot{q}_i$ (velocity) are extracted from the power flow:
+\begin{itemize}
+  \item A \textbf{FlowSensor} reads the scalar rotational velocity $\dot{q}_i = \omega_z$ on the $z$-axis of frame $i-1$.
+  \item An \textbf{Integrator} computes $q_i = \int \dot{q}_i\,dt$.
+\end{itemize}
+The joint imposes the revolute constraint: only rotation about $z$ is free.
+This is achieved via:
+\begin{itemize}
+  \item A \textbf{ZeroJunction} for the $xy$-components of angular velocity (all equal and constrained to zero).
+  \item A \textbf{ZeroJunction} for the $z$-component (free to rotate, actuated).
+  \item A \textbf{0-junction} and constraint element (\texttt{Vel\_constr}, \texttt{Omega\_constr}) for translational and rotational velocities, enforcing that the joint is purely revolute.
+\end{itemize}
+
+\textbf{TODO: SPIEGARE MEGLIO CONSTRAINTS E REVOLUTE PAIR}
+
+
+\section{Causality Assignment and Complexity}
+
+The joint sub-model presents the most complex causality situation in the entire robot model:
+\begin{itemize}
+  \item The inbound port \texttt{twist\_i} has \emph{fixed effort-out} causality: the joint \emph{imposes} force/torque on the previous link and \emph{receives} velocity from it.
+  \item The outbound port \texttt{twist\_ipp} has \emph{fixed effort-out} causality as well: the joint imposes force/torque on the next link.
+  \item The MTF has a \emph{causality constraint}: the two sides must have opposite causality (one effort-in, one effort-out).
+  \item The constraint elements (\texttt{Vel\_constr} for translational DoFs, \texttt{Omega\_constr} for $xy$-rotation) set effort from flow via an algebraic constraint equation, implying \emph{derivative causality} on the constrained directions.
+  \item The \texttt{actuator} port has \emph{fixed-in causality}: the motor effort is imposed externally, so the 0-junction for $q_z$ has \emph{one effort-in} element (the actuator).
+\end{itemize}
+
+The combination of fixed causality on both external power ports and the internal MTF constraint means that \emph{no free integral causality} can be assigned to the internal inertia elements of the joint body; instead, these joints rely on the inertia of the connected links.
+This is the correct physical interpretation: the joint itself has zero inertia in this model.
+
+\begin{placeholder}[FIGURE PLACEHOLDER -- Joint Bond-Graph Diagram]
+  \centering
+  \vspace{3cm}
+  \textit{Insert here the bond-graph diagram of the \texttt{Joint} sub-model.
+  Show: the two power ports \texttt{twist\_i} and \texttt{twist\_ipp}, the central MTF implementing the DH transformation, the PowerDemux/PowerMux elements decomposing the 6-D twist into translational and rotational components, the 0-junctions and constraint blocks enforcing the revolute constraint, the FlowSensor and integrator extracting $\dot{q}_i$ and $q_i$, and the actuator bond.
+  Causality strokes must be clearly marked.}
+  \vspace{3cm}
+\end{placeholder}
