@@ -8,13 +8,145 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\cenni\Desktop\Automation_magistrale\3_Universit&agrave;\IV_semestre\MSMS\Project\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-18 23:48:21</TimeStamp>
+    <TimeStamp>2026-5-20 00:14:38</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   Actuator_1 136 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 136 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   Actuator_2 328 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 328 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   Actuator_3 520 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 520 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   Actuator_4 712 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 712 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   Actuator_5 904 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 904 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
+   Actuator_6 1096 344
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+     parameters
+      real N = -0.01;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 1096 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort * N;
+	flow = p.f;
+implementation_end;
    Demux 1392 408
 			specifications active 'outputs_6'
 				specification 'outputs_2'
@@ -306,7 +438,7 @@ equations
 	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
 specification_end;
 			end;
-   End_eff_constr 1312 248
+   End_eff_constr 1344 272
     description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Equation'
      ports
@@ -319,17 +451,32 @@ specification_end;
 equations
 	constraint(p.f) = p.e; // it has the effect of a gripper
  implementation_end;
-   GravityTerm 1272 -40
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>GravityTerm.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <TimeStamp>2026-5-17 18:41:50</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   g 1384 152
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MSe.emx</LibraryPath><TimeStamp>2011-11-29 16:12:33</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type MSe
+     ports
+      power out gravity [6,1];
+      signal in T_next [4,4];
+     restrictions
+      causality fixed out gravity;
+     parameters
+      real m_load = 1.0;
+    end;
+    icon bg ellipse right
+     figures
+      text 'MSe' 1384 152 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real effort[3,1] = [0; 0; -9.81];
+variables
+	real flow[6,1];
+equations
+	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m_load;
+	gravity.e[4:6] = [0; 0; 0];
+	flow = gravity.f;implementation_end;
+   GravityCompensation 1264 -56
+    description '<Information><Description><Version>5.1</Version><LibraryPath>GravityTerm.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2026-5-17 18:41:50</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Equation'
      ports
       signal in T_1 [4,4];
@@ -407,17 +554,29 @@ equations
 
     // Output mapping
     tau_g = [tau_1; tau_2; tau_3; tau_4; tau_5; tau_6];implementation_end;
-   HarmonicDrive 168 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Ground 48 192
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Sf.emx</LibraryPath><TimeStamp>2011-11-29 16:38:03</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Sf
+     ports
+      power out p [6,1];
+     restrictions
+      causality fixed in p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'Sf' 48 192 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real flow [6,1] = [0;0;0;0;0;0] ;
+variables
+	real effort[6,1];
+equations
+	p.f = flow;
+	effort = p.e;
+implementation_end;
+   HarmonicDrive_1 136 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -693,17 +852,8 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   HarmonicDrive1 344 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   HarmonicDrive_2 328 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -978,17 +1128,8 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   HarmonicDrive2 520 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   HarmonicDrive_3 520 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -1264,17 +1405,8 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   HarmonicDrive3 712 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   HarmonicDrive_4 712 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -1549,17 +1681,8 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   HarmonicDrive4 936 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   HarmonicDrive_5 904 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -1834,17 +1957,8 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   HarmonicDrive5 1144 272
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>HarmonicDrive.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-17 11:52:56</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   HarmonicDrive_6 1096 272
+    description '<Information><Description><Version>5.1</Version><LibraryPath>HarmonicDrive.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-17 11:52:56</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in motor;
@@ -2119,7 +2233,7 @@ implementation_end;
       ZeroJunction\p => OneJunction1\p;
      end;
     implementation_end;
-   I 1400 192
+   I 1424 192
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -2140,7 +2254,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'I' 1400 192 color 0 18 bold;
+      text 'I' 1424 192 color 0 18 bold;
     end;
     implementation eq
 
@@ -2152,17 +2266,27 @@ equations
 	dh = p.e[4:6] - cross(p.f[4:6], J_load*p.f[4:6]);
 	p.f[1:3] = int(dp) / m_load;
 	p.f[4:6] = inverse(J_load) * int(dh);implementation_end;
-   Joint 160 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 15:25:51</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Identity 48 104
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\One.emx</LibraryPath><TimeStamp>2007-9-27 15:54:39</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type One
+     ports
+      signal out identity [4,4];
+    end;
+    icon bg bottom
+     figures
+      rectangle 32.1 88 63.9 120 color 0 fill 15132390;
+      text '1' 48 104 color 16711680 18 bold;
+    end;
+    implementation eq
+equations
+	identity = [
+						1, 0, 0 ,0;
+					 	0, 1, 0, 0;
+					 	0, 0, 1, 0;
+					 	0, 0, 0, 1
+					];implementation_end;
+   Joint_1 136 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 15:25:51</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -4455,17 +4579,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Joint1 328 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:55:03</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Joint_2 328 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:55:03</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -6758,17 +6873,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Joint2 512 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:55:03</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Joint_3 520 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:55:03</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -9061,17 +9167,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Joint3 712 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:55:03</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Joint_4 712 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:55:03</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -11364,17 +11461,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Joint4 928 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:55:03</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Joint_5 904 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:55:03</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -13667,17 +13755,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Joint5 1128 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Joint.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:55:03</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Joint_6 1096 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:55:03</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       power in twist_i [6,1];
@@ -15970,17 +16049,8 @@ implementation_end;
       ZeroJunction2\p => PowerMux1\w_z;
      end;
     implementation_end;
-   Link 248 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-18 15:26:02</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_1 232 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-18 15:26:02</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16136,17 +16206,8 @@ implementation_end;
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
-   Link1 408 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-12 23:58:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_2 424 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-12 23:58:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16302,17 +16363,8 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
-   Link2 608 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:14:45</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_3 616 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-14 16:14:45</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16468,17 +16520,8 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
-   Link3 816 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:14:45</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_4 808 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-14 16:14:45</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16634,17 +16677,8 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
-   Link4 1032 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:14:45</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_5 1000 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-14 16:14:45</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16800,17 +16834,8 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
-   Link5 1240 192
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Link.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:14:45</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Link_6 1192 192
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Link.emx</LibraryPath><TimeStamp>2026-5-14 16:14:45</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       power in wrench_i [6,1];
@@ -16966,242 +16991,7 @@ implementation_end;
       wrench_ipp <= ipp_com\wrench_out;
      end;
     implementation_end;
-   MSe 1360 144
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out gravity [6,1];
-      signal in T_next [4,4];
-     restrictions
-      causality fixed out gravity;
-     parameters
-      real m_load = 1.0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 1360 144 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real effort[3,1] = [0; 0; -9.81];
-variables
-	real flow[6,1];
-equations
-	gravity.e[1:3] = transpose(T_next[1:3, 1:3]) * effort * m_load;
-	gravity.e[4:6] = [0; 0; 0];
-	flow = gravity.f;implementation_end;
-   MSe1 928 328
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 928 328 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   MSe2 696 328
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 696 328 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   MSe3 512 336
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 512 336 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   MSe4 328 336
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 328 336 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   MSe5 1144 320
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 1144 320 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   MSe6 152 336
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-     parameters
-      real N = -0.01;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 152 336 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort * N;
-	flow = p.f;
-implementation_end;
-   One 16 104
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-  <LibraryPath>Signal\Sources\One.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:54:39</TimeStamp>
-</Description>
-';
-    type One
-     ports
-      signal out identity [4,4];
-    end;
-    icon bg bottom
-     figures
-      rectangle 0.1 88 31.9 120 color 0 fill 15132390;
-      text '1' 16 104 color 16711680 18 bold;
-    end;
-    implementation eq
-equations
-	identity = [
-						1, 0, 0 ,0;
-					 	0, 1, 0, 0;
-					 	0, 0, 1, 0;
-					 	0, 0, 0, 1
-					];implementation_end;
-   OneJunction 1360 192
+   OneJunction 1384 192
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -17220,7 +17010,7 @@ equations
     end;
     icon bg ellipse
      figures
-      text '1' 1360 192 color 0 18 bold;
+      text '1' 1384 192 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -17228,25 +17018,16 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   PD 160 584
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 12:04:48</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_1 136 504
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 12:04:48</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
-      real Q_ref[2,1] = [0.0; 0.0];
+      real K[1,2] = [10.0, 5.0];
+      real Q_ref[2,1] = [1.570796; 0.0];
     end;
     implementation bg
      submodels
@@ -17344,24 +17125,15 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   PD1 336 536
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:47:57</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_2 328 480
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:47:57</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
+      real K[1,2] = [10.0, 5.0];
       real Q_ref[2,1] = [-0.78539; 0.0];
     end;
     implementation bg
@@ -17459,24 +17231,15 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   PD2 520 496
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:47:57</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_3 520 456
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:47:57</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
+      real K[1,2] = [10.0, 5.0];
       real Q_ref[2,1] = [-1.570796; 0.0];
     end;
     implementation bg
@@ -17574,24 +17337,15 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   PD3 704 448
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:47:57</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_4 712 432
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:47:57</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
+      real K[1,2] = [10.0, 5.0];
       real Q_ref[2,1] = [0.0; 0.0];
     end;
     implementation bg
@@ -17689,25 +17443,16 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   PD4 936 408
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:47:57</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_5 904 408
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:47:57</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
-      real Q_ref[2,1] = [0.0; 0.0];
+      real K[1,2] = [10.0, 5.0];
+      real Q_ref[2,1] = [1.570796; 0.0];
     end;
     implementation bg
      submodels
@@ -17804,25 +17549,16 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   PD5 1152 376
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>PD.emx</LibraryPath>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>True</KeepParameterValues>
-    <TimeStamp>2026-5-18 11:47:57</TimeStamp>
-    <AllowLibraryUpdate>False</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   PD_6 1096 384
+    description '<Information><Description><Version>5.1</Version><LibraryPath>PD.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 11:47:57</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       signal in Q [2,1];
       signal in gravity;
       signal out tau;
      parameters
-      real K[1,2] = [10.0, 1.0];
-      real Q_ref[2,1] = [0.0; 0.0];
+      real K[1,2] = [10.0, 5.0];
+      real Q_ref[2,1] = [1.04719; 0.0];
     end;
     implementation bg
      submodels
@@ -17919,36 +17655,7 @@ equations
       Q -> PlusMinus1\minus;
      end;
     implementation_end;
-   Sf 16 192
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\Sf.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:38:03</TimeStamp>
-</Description>
-</Information>';
-    type Sf
-     ports
-      power out p [6,1];
-     restrictions
-      causality fixed in p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Sf' 16 192 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real flow [6,1] = [0;0;0;0;0;0] ;
-variables
-	real effort[6,1];
-equations
-	p.f = flow;
-	effort = p.e;
-implementation_end;
-   Splitter1 240 104
+   Splitter1 232 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -17962,16 +17669,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 236.8 100.8 243.2 107.2 color -1 fill 0;
-      ellipse 235.7 99.7 244.3 108.3 color -1;
+      ellipse 228.8 100.8 235.2 107.2 color -1 fill 0;
+      ellipse 227.7 99.7 236.3 108.3 color -1;
      terminals
-      input 240 104 fixed;
+      input 232 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter2 416 104
+   Splitter2 424 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -17985,16 +17692,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 412.8 100.8 419.2 107.2 color -1 fill 0;
-      ellipse 411.7 99.7 420.3 108.3 color -1;
+      ellipse 420.8 100.8 427.2 107.2 color -1 fill 0;
+      ellipse 419.7 99.7 428.3 108.3 color -1;
      terminals
-      input 416 104 fixed;
+      input 424 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter3 600 104
+   Splitter3 616 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -18008,16 +17715,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 596.8 100.8 603.2 107.2 color -1 fill 0;
-      ellipse 595.7 99.7 604.3 108.3 color -1;
+      ellipse 612.8 100.8 619.2 107.2 color -1 fill 0;
+      ellipse 611.7 99.7 620.3 108.3 color -1;
      terminals
-      input 600 104 fixed;
+      input 616 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter4 816 104
+   Splitter4 808 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -18031,16 +17738,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 812.8 100.8 819.2 107.2 color -1 fill 0;
-      ellipse 811.7 99.7 820.3 108.3 color -1;
+      ellipse 804.8 100.8 811.2 107.2 color -1 fill 0;
+      ellipse 803.7 99.7 812.3 108.3 color -1;
      terminals
-      input 816 104 fixed;
+      input 808 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter5 1024 104
+   Splitter5 1000 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -18054,16 +17761,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 1020.8 100.8 1027.2 107.2 color -1 fill 0;
-      ellipse 1019.7 99.7 1028.3 108.3 color -1;
+      ellipse 996.8 100.8 1003.2 107.2 color -1 fill 0;
+      ellipse 995.7 99.7 1004.3 108.3 color -1;
      terminals
-      input 1024 104 fixed;
+      input 1000 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter6 1240 104
+   Splitter6 1192 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -18077,16 +17784,16 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 1236.8 100.8 1243.2 107.2 color -1 fill 0;
-      ellipse 1235.7 99.7 1244.3 108.3 color -1;
+      ellipse 1188.8 100.8 1195.2 107.2 color -1 fill 0;
+      ellipse 1187.7 99.7 1196.3 108.3 color -1;
      terminals
-      input 1240 104 fixed;
+      input 1192 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter7 1360 104
+   Splitter7 1320 104
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
@@ -18100,26 +17807,17 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 1356.8 100.8 1363.2 107.2 color -1 fill 0;
-      ellipse 1355.7 99.7 1364.3 108.3 color -1;
+      ellipse 1316.8 100.8 1323.2 107.2 color -1 fill 0;
+      ellipse 1315.7 99.7 1324.3 108.3 color -1;
      terminals
-      input 1360 104 fixed;
+      input 1320 104 fixed;
     end;
     implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Transformation 160 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:15:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_1 136 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-14 16:15:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18133,28 +17831,19 @@ implementation_end;
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3] * [1, 0, 0; 0, 0, 1; 0, -1, 0] * [-1, 0, 0; 0, -1, 0; 0, 0, 1];implementation_end;
-   Transformation1 336 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-12 22:05:55</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_2 328 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-12 22:05:55</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18168,30 +17857,21 @@ equations
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3] * [0, -1, 0; 1, 0, 0; 0, 0, 1] * [1, 0, 0; 0, 0, -1; 0, 1, 0] ;
 	
 implementation_end;
-   Transformation2 512 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:15:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_3 520 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-14 16:15:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18205,28 +17885,19 @@ implementation_end;
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3] * [0, 0, -1; 0, 1, 0; 1, 0, 0] * [0, 1, 0; -1, 0, 0; 0, 0, 1];implementation_end;
-   Transformation3 712 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:15:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_4 712 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-14 16:15:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18240,28 +17911,19 @@ equations
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3];implementation_end;
-   Transformation4 936 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:15:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_5 904 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-14 16:15:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18275,28 +17937,19 @@ equations
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3] * [1, 0, 0; 0, 0, -1; 0, 1, 0];implementation_end;
-   Transformation5 1128 104
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <LibraryPath>Transformation.emx</LibraryPath>
-    <TimeStamp>2026-5-14 16:15:03</TimeStamp>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
+   Transformation_6 1096 104
+    description '<Information><Description><Version>5.1</Version><LibraryPath>Transformation.emx</LibraryPath><TimeStamp>2026-5-14 16:15:03</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
       signal in T_prev [4,4];
@@ -18310,18 +17963,18 @@ equations
 variables
 	real R_next[3, 3];
 	real R_body[3,3];
-	real pose_abs_com[4,1];
+	real pose_abs_body[4,1];
 equations
 	T_next = T_prev * T_i;
 	pose_abs[1:4] = (T_next * [0;0;0;1]);
 	pose_abs[4] = atan2(T_next[3,2], T_next[3,3]);
 	pose_abs[5] = atan2(-T_next[3,1], sqrt(sqr(T_next[1,1])+sqr(T_next[2,1])));
 	pose_abs[6] = atan2(T_next[2,1], T_next[1,1]);
-	pose_abs_com[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
+	pose_abs_body[1:4] = (T_next * [pos_rel[1]; pos_rel[2]; pos_rel[3]; 1]);
 	
 	R_next = T_next[1:3, 1:3];
 	R_body = T_next[1:3, 1:3] * [1, 0, 0; 0, 0, -1; 0, 1, 0];implementation_end;
-   ZeroJunction1 1312 192
+   ZeroJunction1 1336 192
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -18340,7 +17993,7 @@ equations
     end;
     icon bg ellipse
      figures
-      text '0' 1312 192 color 0 18 bold;
+      text '0' 1336 192 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -18350,87 +18003,101 @@ equations
 implementation_end;
   end;
   connections
-   Demux\output1 -> PD\gravity 1352 432 1352 576;
-   Demux\output2 -> PD1\gravity 1336 424 1336 528;
-   Demux\output3 -> PD2\gravity 1320 416 1320 488;
-   Demux\output4 -> PD3\gravity 1296 400 1296 456;
-   Demux\output5 -> PD4\gravity 1280 392 1280 416;
-   Demux\output6 -> PD5\gravity;
-   GravityTerm\tau_g -> Demux\input 1304 -80 1448 -80 1448 408;
-   HarmonicDrive\harmonic_drive => Joint\actuator;
-   HarmonicDrive1\harmonic_drive => Joint1\actuator;
-   HarmonicDrive2\harmonic_drive => Joint2\actuator;
-   HarmonicDrive3\harmonic_drive => Joint3\actuator;
-   HarmonicDrive4\harmonic_drive => Joint4\actuator;
-   HarmonicDrive5\harmonic_drive => Joint5\actuator;
-   Joint\Q -> PD\Q 72 248 72 584;
-   Joint\T_i -> Transformation\T_i;
-   Joint\twist_ipp => Link\wrench_i;
-   Joint1\Q -> PD1\Q 256 240 256 536;
-   Joint1\T_i -> Transformation1\T_i;
-   Joint1\twist_ipp => Link1\wrench_i;
-   Joint2\Q -> PD2\Q 448 240 448 496;
-   Joint2\T_i -> Transformation2\T_i;
-   Joint2\twist_ipp => Link2\wrench_i;
-   Joint3\Q -> PD3\Q 624 240 624 448;
-   Joint3\T_i -> Transformation3\T_i;
-   Joint3\twist_ipp => Link3\wrench_i;
-   Joint4\Q -> PD4\Q 856 248 856 400;
-   Joint4\T_i -> Transformation4\T_i;
-   Joint4\twist_ipp => Link4\wrench_i;
-   Joint5\Q -> PD5\Q 1056 240 1056 376;
-   Joint5\T_i -> Transformation5\T_i;
-   Joint5\twist_ipp => Link5\wrench_i;
-   Link\wrench_ipp => Joint1\twist_i;
-   Link1\wrench_ipp => Joint2\twist_i;
-   Link2\wrench_ipp => Joint3\twist_i;
-   Link3\wrench_ipp => Joint4\twist_i;
-   Link4\wrench_ipp => Joint5\twist_i;
-   MSe\gravity => OneJunction\p;
-   MSe1\p => HarmonicDrive4\motor;
-   MSe2\p => HarmonicDrive3\motor;
-   MSe3\p => HarmonicDrive2\motor;
-   MSe4\p => HarmonicDrive1\motor;
-   MSe5\p => HarmonicDrive5\motor;
-   MSe6\p => HarmonicDrive\motor;
+   Actuator_1\p => HarmonicDrive_1\motor;
+   Actuator_2\p => HarmonicDrive_2\motor;
+   Actuator_3\p => HarmonicDrive_3\motor;
+   Actuator_4\p => HarmonicDrive_4\motor;
+   Actuator_5\p => HarmonicDrive_5\motor;
+   Actuator_6\p => HarmonicDrive_6\motor;
+   Demux\output1 -> PD_1\gravity 1352 432 1352 504;
+   Demux\output2 -> PD_2\gravity 1336 424 1336 480;
+   Demux\output3 -> PD_3\gravity 1320 416 1320 456;
+   Demux\output4 -> PD_4\gravity 1304 400 1304 432;
+   Demux\output5 -> PD_5\gravity 1288 392 1288 408;
+   Demux\output6 -> PD_6\gravity;
+   g\gravity => OneJunction\p;
+   GravityCompensation\tau_g -> Demux\input 1448 -64 1448 408;
+   Ground\p => Joint_1\twist_i;
+   HarmonicDrive_1\harmonic_drive => Joint_1\actuator;
+   HarmonicDrive_2\harmonic_drive => Joint_2\actuator;
+   HarmonicDrive_3\harmonic_drive => Joint_3\actuator;
+   HarmonicDrive_4\harmonic_drive => Joint_4\actuator;
+   HarmonicDrive_5\harmonic_drive => Joint_5\actuator;
+   HarmonicDrive_6\harmonic_drive => Joint_6\actuator;
+   Joint_1\Q -> PD_1\Q 64 256 64 504;
+   Joint_1\T_i -> Transformation_1\T_i;
+   Joint_1\twist_ipp => Link_1\wrench_i;
+   Joint_2\Q -> PD_2\Q 256 256 256 480;
+   Joint_2\T_i -> Transformation_2\T_i;
+   Joint_2\twist_ipp => Link_2\wrench_i;
+   Joint_3\Q -> PD_3\Q 448 256 448 456;
+   Joint_3\T_i -> Transformation_3\T_i;
+   Joint_3\twist_ipp => Link_3\wrench_i;
+   Joint_4\Q -> PD_4\Q 640 256 640 432;
+   Joint_4\T_i -> Transformation_4\T_i;
+   Joint_4\twist_ipp => Link_4\wrench_i;
+   Joint_5\Q -> PD_5\Q 832 256 832 408;
+   Joint_5\T_i -> Transformation_5\T_i;
+   Joint_5\twist_ipp => Link_5\wrench_i;
+   Joint_6\Q -> PD_6\Q 1024 256 1024 384;
+   Joint_6\T_i -> Transformation_6\T_i;
+   Joint_6\twist_ipp => Link_6\wrench_i;
+   Link_1\wrench_ipp => Joint_2\twist_i;
+   Link_2\wrench_ipp => Joint_3\twist_i;
+   Link_3\wrench_ipp => Joint_4\twist_i;
+   Link_4\wrench_ipp => Joint_5\twist_i;
+   Link_5\wrench_ipp => Joint_6\twist_i;
    OneJunction\p => I\p;
-   PD\tau -> MSe6\effort;
-   PD1\tau -> MSe4\effort;
-   PD2\tau -> MSe3\effort;
-   PD3\tau -> MSe2\effort;
-   PD4\tau -> MSe1\effort;
-   PD5\tau -> MSe5\effort;
-   Sf\p => Joint\twist_i;
-   Splitter1\output -> GravityTerm\T_1 240 -40;
-   Splitter1\output -> Link\T_next;
-   Splitter1\output -> Transformation1\T_prev;
-   Splitter2\output -> GravityTerm\T_2 416 -24;
-   Splitter2\output -> Link1\T_next;
-   Splitter2\output -> Transformation2\T_prev;
-   Splitter3\output -> GravityTerm\T_3 600 -8 1240 -8;
-   Splitter3\output -> Link2\T_next;
-   Splitter3\output -> Transformation3\T_prev;
-   Splitter4\output -> GravityTerm\T_4 816 8 1272 8;
-   Splitter4\output -> Link3\T_next;
-   Splitter4\output -> Transformation4\T_prev;
-   Splitter5\output -> GravityTerm\T_5 1024 24 1304 24;
-   Splitter5\output -> Link4\T_next;
-   Splitter5\output -> Transformation5\T_prev;
-   Splitter6\output -> Link5\T_next;
+   PD_1\tau -> Actuator_1\effort;
+   PD_2\tau -> Actuator_2\effort;
+   PD_3\tau -> Actuator_3\effort;
+   PD_4\tau -> Actuator_4\effort;
+   PD_5\tau -> Actuator_5\effort;
+   PD_6\tau -> Actuator_6\effort;
+   Splitter1\output -> GravityCompensation\T_1 232 -16 1200 -16;
+   Splitter1\output -> Link_1\T_next;
+   Splitter1\output -> Transformation_2\T_prev;
+   Splitter2\output -> GravityCompensation\T_2 424 0 1224 0;
+   Splitter2\output -> Link_2\T_next;
+   Splitter2\output -> Transformation_3\T_prev;
+   Splitter3\output -> GravityCompensation\T_3 616 16 1248 16;
+   Splitter3\output -> Link_3\T_next;
+   Splitter3\output -> Transformation_4\T_prev;
+   Splitter4\output -> GravityCompensation\T_4 808 32 1272 32;
+   Splitter4\output -> Link_4\T_next;
+   Splitter4\output -> Transformation_5\T_prev;
+   Splitter5\output -> GravityCompensation\T_5 1000 48 1296 48;
+   Splitter5\output -> Link_5\T_next;
+   Splitter5\output -> Transformation_6\T_prev;
+   Splitter6\output -> Link_6\T_next;
    Splitter6\output -> Splitter7\input;
-   Splitter7\output -> GravityTerm\T_6 1360 104 1360 -32;
-   Splitter7\output -> MSe\T_next;
-   Transformation\T_next -> Splitter1\input;
-   Transformation\T_prev <- One\identity;
-   Transformation1\T_next -> Splitter2\input;
-   Transformation2\T_next -> Splitter3\input;
-   Transformation3\T_next -> Splitter4\input;
-   Transformation4\T_next -> Splitter5\input;
-   Transformation5\T_next -> Splitter6\input 1216 104;
-   ZeroJunction1\p <= Link5\wrench_ipp;
+   Splitter7\output -> g\T_next 1384 104;
+   Splitter7\output -> GravityCompensation\T_6 1320 72 1320 8;
+   Transformation_1\T_next -> Splitter1\input;
+   Transformation_1\T_prev <- Identity\identity;
+   Transformation_2\T_next -> Splitter2\input;
+   Transformation_3\T_next -> Splitter3\input;
+   Transformation_4\T_next -> Splitter4\input;
+   Transformation_5\T_next -> Splitter5\input;
+   Transformation_6\T_next -> Splitter6\input 1216 104;
+   ZeroJunction1\p <= Link_6\wrench_ipp;
    ZeroJunction1\p => End_eff_constr\p;
    ZeroJunction1\p => OneJunction\p;
   end;
+  figures
+   rectangle 16 -80 1464 56 color 0 fill 255;
+   rectangle 16 240 1248 304 color 0 fill 55295;
+   rectangle 16 64 1248 144 color 0 fill 65280;
+   rectangle 1256 64 1464 304 color 0 fill 8454143;
+   rectangle 16 152 1248 232 color 0 fill 16443110;
+   rectangle 16 312 1464 544 color 0 fill 16777152;
+   text 'Gravity Compensation
+' 88 -64 color 0 16 bold;
+   text 'Robot' 40 168 color 0 16 bold;
+   text 'DH Transformations' 80 80 color 0 16 bold;
+   text 'Drives' 40 256 color 0 16 bold;
+   text 'Load' 1288 80 color 0 16 bold;
+   text 'Controllers' 56 528 color 0 16 bold;
  implementation_end;
 ]]></Sidops>
  </Model>
@@ -18452,51 +18119,51 @@ implementation_end;
   </Parameters>
   <Initials>
    <Variable>
-    <Name>HarmonicDrive\C\state_initial</Name>
+    <Name>HarmonicDrive_1\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive\I\state_initial</Name>
+    <Name>HarmonicDrive_1\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive1\C\state_initial</Name>
+    <Name>HarmonicDrive_2\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive1\I\state_initial</Name>
+    <Name>HarmonicDrive_2\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive2\C\state_initial</Name>
+    <Name>HarmonicDrive_3\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive2\I\state_initial</Name>
+    <Name>HarmonicDrive_3\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive3\C\state_initial</Name>
+    <Name>HarmonicDrive_4\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive3\I\state_initial</Name>
+    <Name>HarmonicDrive_4\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive4\C\state_initial</Name>
+    <Name>HarmonicDrive_5\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive4\I\state_initial</Name>
+    <Name>HarmonicDrive_5\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive5\C\state_initial</Name>
+    <Name>HarmonicDrive_6\C\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>HarmonicDrive5\I\state_initial</Name>
+    <Name>HarmonicDrive_6\I\state_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
@@ -18512,73 +18179,73 @@ implementation_end;
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link\Body\dh_int_initial</Name>
+    <Name>Link_1\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link\Body\dp_int_initial</Name>
+    <Name>Link_1\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link1\Body\dh_int_initial</Name>
+    <Name>Link_2\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link1\Body\dp_int_initial</Name>
+    <Name>Link_2\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link2\Body\dh_int_initial</Name>
+    <Name>Link_3\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link2\Body\dp_int_initial</Name>
+    <Name>Link_3\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link3\Body\dh_int_initial</Name>
+    <Name>Link_4\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link3\Body\dp_int_initial</Name>
+    <Name>Link_4\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link4\Body\dh_int_initial</Name>
+    <Name>Link_5\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link4\Body\dp_int_initial</Name>
+    <Name>Link_5\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link5\Body\dh_int_initial</Name>
+    <Name>Link_6\Body\dh_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Link5\Body\dp_int_initial</Name>
+    <Name>Link_6\Body\dp_int_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
@@ -18590,73 +18257,73 @@ implementation_end;
     <Value>0.0 0.0 0.0 0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint\Omega_constr\p.e_initial</Name>
+    <Name>Joint_1\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint\Vel_constr\p.e_initial</Name>
+    <Name>Joint_1\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint1\Omega_constr\p.e_initial</Name>
+    <Name>Joint_2\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint1\Vel_constr\p.e_initial</Name>
+    <Name>Joint_2\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint2\Omega_constr\p.e_initial</Name>
+    <Name>Joint_3\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint2\Vel_constr\p.e_initial</Name>
+    <Name>Joint_3\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint3\Omega_constr\p.e_initial</Name>
+    <Name>Joint_4\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint3\Vel_constr\p.e_initial</Name>
+    <Name>Joint_4\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint4\Omega_constr\p.e_initial</Name>
+    <Name>Joint_5\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint4\Vel_constr\p.e_initial</Name>
+    <Name>Joint_5\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint5\Omega_constr\p.e_initial</Name>
+    <Name>Joint_6\Omega_constr\p.e_initial</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>Joint5\Vel_constr\p.e_initial</Name>
+    <Name>Joint_6\Vel_constr\p.e_initial</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
@@ -18666,123 +18333,161 @@ implementation_end;
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
-   <VarName>Transformation\pose_abs[1]</VarName>
-   <VarName>Transformation\pose_abs[2]</VarName>
-   <VarName>Transformation\pose_abs[3]</VarName>
-   <VarName>Transformation\R_next[1,3]</VarName>
-   <VarName>Transformation\R_next[2,3]</VarName>
-   <VarName>Transformation\R_next[3,3]</VarName>
-   <VarName>Transformation\R_next[1,2]</VarName>
-   <VarName>Transformation\R_next[2,2]</VarName>
-   <VarName>Transformation\R_next[3,2]</VarName>
-   <VarName>Transformation1\pose_abs[1]</VarName>
-   <VarName>Transformation1\pose_abs[2]</VarName>
-   <VarName>Transformation1\pose_abs[3]</VarName>
-   <VarName>Joint\Integrate\output</VarName>
-   <VarName>Transformation1\R_next[1,3]</VarName>
-   <VarName>Transformation1\R_next[2,3]</VarName>
-   <VarName>Transformation1\R_next[3,3]</VarName>
-   <VarName>Transformation1\R_next[1,2]</VarName>
-   <VarName>Transformation1\R_next[2,2]</VarName>
-   <VarName>Transformation1\R_next[3,2]</VarName>
-   <VarName>Transformation\R_body[1,3]</VarName>
-   <VarName>Transformation\R_body[2,3]</VarName>
-   <VarName>Transformation\R_body[3,3]</VarName>
-   <VarName>Transformation\R_body[1,2]</VarName>
-   <VarName>Transformation\R_body[2,2]</VarName>
-   <VarName>Transformation\R_body[3,2]</VarName>
-   <VarName>Transformation1\pose_abs_com[1]</VarName>
-   <VarName>Transformation1\pose_abs_com[2]</VarName>
-   <VarName>Transformation1\pose_abs_com[3]</VarName>
-   <VarName>Transformation2\pose_abs[1]</VarName>
-   <VarName>Transformation2\pose_abs[2]</VarName>
-   <VarName>Transformation2\pose_abs[3]</VarName>
-   <VarName>Transformation2\R_next[1,3]</VarName>
-   <VarName>Transformation2\R_next[2,3]</VarName>
-   <VarName>Transformation2\R_next[3,3]</VarName>
-   <VarName>Transformation2\R_next[1,2]</VarName>
-   <VarName>Transformation2\R_next[2,2]</VarName>
-   <VarName>Transformation2\R_next[3,2]</VarName>
-   <VarName>Transformation3\pose_abs[1]</VarName>
-   <VarName>Transformation3\pose_abs[2]</VarName>
-   <VarName>Transformation3\pose_abs[3]</VarName>
-   <VarName>Transformation3\R_next[1,3]</VarName>
-   <VarName>Transformation3\R_next[2,3]</VarName>
-   <VarName>Transformation3\R_next[3,3]</VarName>
-   <VarName>Transformation3\R_next[1,2]</VarName>
-   <VarName>Transformation3\R_next[2,2]</VarName>
-   <VarName>Transformation3\R_next[3,2]</VarName>
-   <VarName>Transformation4\pose_abs[1]</VarName>
-   <VarName>Transformation4\pose_abs[2]</VarName>
-   <VarName>Transformation4\pose_abs[3]</VarName>
-   <VarName>Transformation4\R_next[1,3]</VarName>
-   <VarName>Transformation4\R_next[2,3]</VarName>
-   <VarName>Transformation4\R_next[3,3]</VarName>
-   <VarName>Transformation4\R_next[1,2]</VarName>
-   <VarName>Transformation4\R_next[2,2]</VarName>
-   <VarName>Transformation4\R_next[3,2]</VarName>
-   <VarName>Transformation5\pose_abs[1]</VarName>
-   <VarName>Transformation5\pose_abs[2]</VarName>
-   <VarName>Transformation5\pose_abs[3]</VarName>
-   <VarName>Transformation5\R_next[1,3]</VarName>
-   <VarName>Transformation5\R_next[2,3]</VarName>
-   <VarName>Transformation5\R_next[3,3]</VarName>
-   <VarName>Transformation5\R_next[1,2]</VarName>
-   <VarName>Transformation5\R_next[2,2]</VarName>
-   <VarName>Transformation5\R_next[3,2]</VarName>
-   <VarName>Transformation2\pose_abs_com[1]</VarName>
-   <VarName>Transformation2\pose_abs_com[2]</VarName>
-   <VarName>Transformation2\pose_abs_com[3]</VarName>
-   <VarName>Transformation3\pose_abs_com[1]</VarName>
-   <VarName>Transformation3\pose_abs_com[2]</VarName>
-   <VarName>Transformation3\pose_abs_com[3]</VarName>
-   <VarName>Transformation4\pose_abs_com[1]</VarName>
-   <VarName>Transformation4\pose_abs_com[2]</VarName>
-   <VarName>Transformation4\pose_abs_com[3]</VarName>
-   <VarName>Transformation5\pose_abs_com[1]</VarName>
-   <VarName>Transformation5\pose_abs_com[2]</VarName>
-   <VarName>Transformation5\pose_abs_com[3]</VarName>
-   <VarName>Transformation1\R_body[1,3]</VarName>
-   <VarName>Transformation1\R_body[2,3]</VarName>
-   <VarName>Transformation1\R_body[3,3]</VarName>
-   <VarName>Transformation1\R_body[1,2]</VarName>
-   <VarName>Transformation1\R_body[2,2]</VarName>
-   <VarName>Transformation1\R_body[3,2]</VarName>
-   <VarName>Transformation2\R_body[1,3]</VarName>
-   <VarName>Transformation2\R_body[2,3]</VarName>
-   <VarName>Transformation2\R_body[3,3]</VarName>
-   <VarName>Transformation2\R_body[1,2]</VarName>
-   <VarName>Transformation2\R_body[2,2]</VarName>
-   <VarName>Transformation2\R_body[3,2]</VarName>
-   <VarName>Transformation3\R_body[1,3]</VarName>
-   <VarName>Transformation3\R_body[2,3]</VarName>
-   <VarName>Transformation3\R_body[3,3]</VarName>
-   <VarName>Transformation3\R_body[1,2]</VarName>
-   <VarName>Transformation3\R_body[2,2]</VarName>
-   <VarName>Transformation3\R_body[3,2]</VarName>
-   <VarName>Transformation4\R_body[1,3]</VarName>
-   <VarName>Transformation4\R_body[2,3]</VarName>
-   <VarName>Transformation4\R_body[3,3]</VarName>
-   <VarName>Transformation4\R_body[1,2]</VarName>
-   <VarName>Transformation4\R_body[2,2]</VarName>
-   <VarName>Transformation4\R_body[3,2]</VarName>
-   <VarName>Transformation5\R_body[1,3]</VarName>
-   <VarName>Transformation5\R_body[2,3]</VarName>
-   <VarName>Transformation5\R_body[3,3]</VarName>
-   <VarName>Transformation5\R_body[1,2]</VarName>
-   <VarName>Transformation5\R_body[2,2]</VarName>
-   <VarName>Transformation5\R_body[3,2]</VarName>
-   <VarName>Joint2\Integrate\output</VarName>
-   <VarName>Joint4\Integrate\output</VarName>
-   <VarName>Joint5\Integrate\output</VarName>
-   <VarName>Joint1\Integrate\output</VarName>
-   <VarName>GravityTerm\tau_g[1]</VarName>
-   <VarName>GravityTerm\tau_g[2]</VarName>
-   <VarName>GravityTerm\tau_g[3]</VarName>
-   <VarName>GravityTerm\tau_g[4]</VarName>
-   <VarName>GravityTerm\tau_g[5]</VarName>
-   <VarName>GravityTerm\tau_g[6]</VarName>
-   <VarName>Joint1\FlowSensor\flow</VarName>
+   <VarName>Transformation_1\pose_abs[1]</VarName>
+   <VarName>Transformation_1\pose_abs[2]</VarName>
+   <VarName>Transformation_1\pose_abs[3]</VarName>
+   <VarName>Transformation_1\R_next[1,3]</VarName>
+   <VarName>Transformation_1\R_next[2,3]</VarName>
+   <VarName>Transformation_1\R_next[3,3]</VarName>
+   <VarName>Transformation_1\R_next[1,2]</VarName>
+   <VarName>Transformation_1\R_next[2,2]</VarName>
+   <VarName>Transformation_1\R_next[3,2]</VarName>
+   <VarName>Transformation_2\pose_abs[1]</VarName>
+   <VarName>Transformation_2\pose_abs[2]</VarName>
+   <VarName>Transformation_2\pose_abs[3]</VarName>
+   <VarName>Transformation_2\R_next[1,3]</VarName>
+   <VarName>Transformation_2\R_next[2,3]</VarName>
+   <VarName>Transformation_2\R_next[3,3]</VarName>
+   <VarName>Transformation_2\R_next[1,2]</VarName>
+   <VarName>Transformation_2\R_next[2,2]</VarName>
+   <VarName>Transformation_2\R_next[3,2]</VarName>
+   <VarName>Transformation_1\R_body[1,3]</VarName>
+   <VarName>Transformation_1\R_body[2,3]</VarName>
+   <VarName>Transformation_1\R_body[3,3]</VarName>
+   <VarName>Transformation_1\R_body[1,2]</VarName>
+   <VarName>Transformation_1\R_body[2,2]</VarName>
+   <VarName>Transformation_1\R_body[3,2]</VarName>
+   <VarName>Transformation_3\pose_abs[1]</VarName>
+   <VarName>Transformation_3\pose_abs[2]</VarName>
+   <VarName>Transformation_3\pose_abs[3]</VarName>
+   <VarName>Transformation_3\R_next[1,3]</VarName>
+   <VarName>Transformation_3\R_next[2,3]</VarName>
+   <VarName>Transformation_3\R_next[3,3]</VarName>
+   <VarName>Transformation_3\R_next[1,2]</VarName>
+   <VarName>Transformation_3\R_next[2,2]</VarName>
+   <VarName>Transformation_3\R_next[3,2]</VarName>
+   <VarName>Transformation_4\pose_abs[1]</VarName>
+   <VarName>Transformation_4\pose_abs[2]</VarName>
+   <VarName>Transformation_4\pose_abs[3]</VarName>
+   <VarName>Transformation_4\R_next[1,3]</VarName>
+   <VarName>Transformation_4\R_next[2,3]</VarName>
+   <VarName>Transformation_4\R_next[3,3]</VarName>
+   <VarName>Transformation_4\R_next[1,2]</VarName>
+   <VarName>Transformation_4\R_next[2,2]</VarName>
+   <VarName>Transformation_4\R_next[3,2]</VarName>
+   <VarName>Transformation_5\pose_abs[1]</VarName>
+   <VarName>Transformation_5\pose_abs[2]</VarName>
+   <VarName>Transformation_5\pose_abs[3]</VarName>
+   <VarName>Transformation_5\R_next[1,3]</VarName>
+   <VarName>Transformation_5\R_next[2,3]</VarName>
+   <VarName>Transformation_5\R_next[3,3]</VarName>
+   <VarName>Transformation_5\R_next[1,2]</VarName>
+   <VarName>Transformation_5\R_next[2,2]</VarName>
+   <VarName>Transformation_5\R_next[3,2]</VarName>
+   <VarName>Transformation_6\pose_abs[1]</VarName>
+   <VarName>Transformation_6\pose_abs[2]</VarName>
+   <VarName>Transformation_6\pose_abs[3]</VarName>
+   <VarName>Transformation_6\R_next[1,3]</VarName>
+   <VarName>Transformation_6\R_next[2,3]</VarName>
+   <VarName>Transformation_6\R_next[3,3]</VarName>
+   <VarName>Transformation_6\R_next[1,2]</VarName>
+   <VarName>Transformation_6\R_next[2,2]</VarName>
+   <VarName>Transformation_6\R_next[3,2]</VarName>
+   <VarName>Transformation_2\R_body[1,3]</VarName>
+   <VarName>Transformation_2\R_body[2,3]</VarName>
+   <VarName>Transformation_2\R_body[3,3]</VarName>
+   <VarName>Transformation_2\R_body[1,2]</VarName>
+   <VarName>Transformation_2\R_body[2,2]</VarName>
+   <VarName>Transformation_2\R_body[3,2]</VarName>
+   <VarName>Transformation_3\R_body[1,3]</VarName>
+   <VarName>Transformation_3\R_body[2,3]</VarName>
+   <VarName>Transformation_3\R_body[3,3]</VarName>
+   <VarName>Transformation_3\R_body[1,2]</VarName>
+   <VarName>Transformation_3\R_body[2,2]</VarName>
+   <VarName>Transformation_3\R_body[3,2]</VarName>
+   <VarName>Transformation_4\R_body[1,3]</VarName>
+   <VarName>Transformation_4\R_body[2,3]</VarName>
+   <VarName>Transformation_4\R_body[3,3]</VarName>
+   <VarName>Transformation_4\R_body[1,2]</VarName>
+   <VarName>Transformation_4\R_body[2,2]</VarName>
+   <VarName>Transformation_4\R_body[3,2]</VarName>
+   <VarName>Transformation_5\R_body[1,3]</VarName>
+   <VarName>Transformation_5\R_body[2,3]</VarName>
+   <VarName>Transformation_5\R_body[3,3]</VarName>
+   <VarName>Transformation_5\R_body[1,2]</VarName>
+   <VarName>Transformation_5\R_body[2,2]</VarName>
+   <VarName>Transformation_5\R_body[3,2]</VarName>
+   <VarName>Transformation_6\R_body[1,3]</VarName>
+   <VarName>Transformation_6\R_body[2,3]</VarName>
+   <VarName>Transformation_6\R_body[3,3]</VarName>
+   <VarName>Transformation_6\R_body[1,2]</VarName>
+   <VarName>Transformation_6\R_body[2,2]</VarName>
+   <VarName>Transformation_6\R_body[3,2]</VarName>
+   <VarName>Joint_1\Integrate\input</VarName>
+   <VarName>Joint_1\Integrate\output</VarName>
+   <VarName>PD_1\Constant\output[1]</VarName>
+   <VarName>PD_1\Constant\output[2]</VarName>
+   <VarName>Joint_2\Integrate\output</VarName>
+   <VarName>Joint_2\Integrate\input</VarName>
+   <VarName>PD_2\Constant\output[1]</VarName>
+   <VarName>PD_2\Constant\output[2]</VarName>
+   <VarName>Joint_3\Integrate\output</VarName>
+   <VarName>Joint_3\Integrate\input</VarName>
+   <VarName>PD_3\Constant\output[1]</VarName>
+   <VarName>PD_3\Constant\output[2]</VarName>
+   <VarName>Joint_4\Integrate\output</VarName>
+   <VarName>PD_4\Constant\output[1]</VarName>
+   <VarName>PD_4\Constant\output[2]</VarName>
+   <VarName>Joint_5\Integrate\output</VarName>
+   <VarName>Joint_5\Integrate\input</VarName>
+   <VarName>PD_5\Constant\output[1]</VarName>
+   <VarName>PD_5\Constant\output[2]</VarName>
+   <VarName>Joint_6\Integrate\output</VarName>
+   <VarName>Joint_6\Integrate\input</VarName>
+   <VarName>PD_6\Constant\output[1]</VarName>
+   <VarName>PD_6\Constant\output[2]</VarName>
+   <VarName>PD_1\Gain\output</VarName>
+   <VarName>PD_2\Gain\output</VarName>
+   <VarName>PD_3\Gain\output</VarName>
+   <VarName>PD_4\Gain\output</VarName>
+   <VarName>PD_5\Gain\output</VarName>
+   <VarName>PD_6\Gain\output</VarName>
+   <VarName>HarmonicDrive_1\C\state</VarName>
+   <VarName>HarmonicDrive_2\C\state</VarName>
+   <VarName>HarmonicDrive_3\C\state</VarName>
+   <VarName>HarmonicDrive_4\C\state</VarName>
+   <VarName>HarmonicDrive_5\C\state</VarName>
+   <VarName>HarmonicDrive_6\C\state</VarName>
+   <VarName>Transformation_6\pose_abs[4]</VarName>
+   <VarName>Transformation_6\pose_abs[5]</VarName>
+   <VarName>Transformation_6\pose_abs[6]</VarName>
+   <VarName>Transformation_2\pose_abs_body[1]</VarName>
+   <VarName>Transformation_2\pose_abs_body[2]</VarName>
+   <VarName>Transformation_2\pose_abs_body[3]</VarName>
+   <VarName>Transformation_3\pose_abs_body[1]</VarName>
+   <VarName>Transformation_3\pose_abs_body[2]</VarName>
+   <VarName>Transformation_3\pose_abs_body[3]</VarName>
+   <VarName>Transformation_4\pose_abs_body[1]</VarName>
+   <VarName>Transformation_4\pose_abs_body[2]</VarName>
+   <VarName>Transformation_4\pose_abs_body[3]</VarName>
+   <VarName>Transformation_5\pose_abs_body[1]</VarName>
+   <VarName>Transformation_5\pose_abs_body[2]</VarName>
+   <VarName>Transformation_5\pose_abs_body[3]</VarName>
+   <VarName>Transformation_6\pose_abs_body[1]</VarName>
+   <VarName>Transformation_6\pose_abs_body[2]</VarName>
+   <VarName>Transformation_6\pose_abs_body[3]</VarName>
+   <VarName>PD_1\tau</VarName>
+   <VarName>PD_1\gravity</VarName>
+   <VarName>PD_2\tau</VarName>
+   <VarName>PD_2\gravity</VarName>
+   <VarName>PD_3\tau</VarName>
+   <VarName>PD_3\gravity</VarName>
+   <VarName>PD_4\tau</VarName>
+   <VarName>PD_4\gravity</VarName>
+   <VarName>PD_5\tau</VarName>
+   <VarName>PD_5\gravity</VarName>
+   <VarName>PD_6\tau</VarName>
+   <VarName>PD_6\gravity</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -18962,24 +18667,24 @@ implementation_end;
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.457495704067041</Value>
+             <Value>0.45749568939209</Value>
             </X>
             <Y>
-             <Value>-0.762492859979951</Value>
+             <Value>-0.762492835521698</Value>
             </Y>
             <Z>
-             <Value>-0.457495704067041</Value>
+             <Value>-0.45749568939209</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.235379603289675</Value>
+             <Value>0.235379606485367</Value>
             </X>
             <Y>
-             <Value>-0.392299348750231</Value>
+             <Value>-0.392299354076385</Value>
             </Y>
             <Z>
-             <Value>0.889211821404405</Value>
+             <Value>0.88921183347702</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -19396,36 +19101,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-2.13207315695177</Value>
+            <Value>13.4339178850887</Value>
            </X>
            <Y>
-            <Value>-11.3313732524205</Value>
+            <Value>10.8953382810842</Value>
            </Y>
            <Z>
-            <Value>6.43477425940502</Value>
+            <Value>4.92247204288536</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.0472046481611727</Value>
+             <Value>-0.850627434801854</Value>
             </X>
             <Y>
-             <Value>0.971707882930105</Value>
+             <Value>-0.520387382281489</Value>
             </Y>
             <Z>
-             <Value>-0.231420637462333</Value>
+             <Value>-0.0750329229381139</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.0112289532652938</Value>
+             <Value>-0.0640054883209487</Value>
             </X>
             <Y>
-             <Value>0.231148064080733</Value>
+             <Value>-0.0391565644642547</Value>
             </Y>
             <Z>
-             <Value>0.972853782991203</Value>
+             <Value>0.997181057242943</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -19668,45 +19373,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation\pose_abs[1]</VariableName>
+            <VariableName>Transformation_1\pose_abs[1]</VariableName>
             <Value>0.0</Value>
            </X>
            <Y>
-            <VariableName>Transformation\pose_abs[2]</VariableName>
+            <VariableName>Transformation_1\pose_abs[2]</VariableName>
             <Value>0.0</Value>
            </Y>
            <Z>
-            <VariableName>Transformation\pose_abs[3]</VariableName>
+            <VariableName>Transformation_1\pose_abs[3]</VariableName>
             <Value>0.089159</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation\R_next[1,3]</VariableName>
-             <Value>0.023549550006459252</Value>
+             <VariableName>Transformation_1\R_next[1,3]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation\R_next[2,3]</VariableName>
-             <Value>-0.999722670891476</Value>
+             <VariableName>Transformation_1\R_next[2,3]</VariableName>
+             <Value>-8.261580660473555e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation\R_next[3,3]</VariableName>
-             <Value>3.2679490244837443e-7</Value>
+             <VariableName>Transformation_1\R_next[3,3]</VariableName>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation\R_next[1,2]</VariableName>
-             <Value>-7.69587238380568e-9</Value>
+             <VariableName>Transformation_1\R_next[1,2]</VariableName>
+             <Value>-3.267948898155737e-7</Value>
             </X>
             <Y>
-             <VariableName>Transformation\R_next[2,2]</VariableName>
-             <Value>3.2670428140589215e-7</Value>
+             <VariableName>Transformation_1\R_next[2,2]</VariableName>
+             <Value>2.699842432951627e-11</Value>
             </Y>
             <Z>
-             <VariableName>Transformation\R_next[3,2]</VariableName>
-             <Value>0.9999999999999467</Value>
+             <VariableName>Transformation_1\R_next[3,2]</VariableName>
+             <Value>1.0</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -19736,45 +19441,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation1\pose_abs[1]</VariableName>
-            <Value>-0.2578521441097849</Value>
+            <VariableName>Transformation_2\pose_abs[1]</VariableName>
+            <Value>-2.4904369277611667e-5</Value>
            </X>
            <Y>
-            <VariableName>Transformation1\pose_abs[2]</VariableName>
-            <Value>-0.0060738760198033774</Value>
+            <VariableName>Transformation_2\pose_abs[2]</VariableName>
+            <Value>-0.3002582127269697</Value>
            </Y>
            <Z>
-            <VariableName>Transformation1\pose_abs[3]</VariableName>
-            <Value>0.42694647727518986</Value>
+            <VariableName>Transformation_2\pose_abs[3]</VariableName>
+            <Value>0.38994132173746215</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation1\R_next[1,3]</VariableName>
-             <Value>0.023549550006459252</Value>
+             <VariableName>Transformation_2\R_next[1,3]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation1\R_next[2,3]</VariableName>
-             <Value>-0.999722670891476</Value>
+             <VariableName>Transformation_2\R_next[2,3]</VariableName>
+             <Value>-8.261580660473555e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation1\R_next[3,3]</VariableName>
-             <Value>3.2679490244837443e-7</Value>
+             <VariableName>Transformation_2\R_next[3,3]</VariableName>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation1\R_next[1,2]</VariableName>
-             <Value>0.7945736165696092</Value>
+             <VariableName>Transformation_2\R_next[1,2]</VariableName>
+             <Value>5.8238234487362206e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation1\R_next[2,2]</VariableName>
-             <Value>0.01871723940921719</Value>
+             <VariableName>Transformation_2\R_next[2,2]</VariableName>
+             <Value>0.707723081111908</Value>
             </Y>
             <Z>
-             <VariableName>Transformation1\R_next[3,2]</VariableName>
-             <Value>0.6068792571841533</Value>
+             <VariableName>Transformation_2\R_next[3,2]</VariableName>
+             <Value>0.7064899206161499</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -19850,6 +19555,26 @@ implementation_end;
            <Value>15</Value>
           </ShininessPower>
           <OverrideQuality>false</OverrideQuality>
+          <Texture>
+           <Filename></Filename>
+           <WrapStyle>0</WrapStyle>
+           <YWrap>
+            <Y>
+             <Value>1</Value>
+            </Y>
+           </YWrap>
+           <ZWrap>
+            <Z>
+             <Value>-1</Value>
+            </Z>
+           </ZWrap>
+           <XOrigin>
+            <Value>0.5</Value>
+           </XOrigin>
+           <YOrigin>
+            <Value>0.5</Value>
+           </YOrigin>
+          </Texture>
           <ShowReferenceFrame>false</ShowReferenceFrame>
           <Name>3D-File</Name>
           <Position>
@@ -19934,45 +19659,45 @@ implementation_end;
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation\pose_abs[1]</VariableName>
+            <VariableName>Transformation_1\pose_abs[1]</VariableName>
             <Value>0.0</Value>
            </X>
            <Y>
-            <VariableName>Transformation\pose_abs[2]</VariableName>
+            <VariableName>Transformation_1\pose_abs[2]</VariableName>
             <Value>0.0</Value>
            </Y>
            <Z>
-            <VariableName>Transformation\pose_abs[3]</VariableName>
+            <VariableName>Transformation_1\pose_abs[3]</VariableName>
             <Value>0.089159</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation\R_body[1,3]</VariableName>
-             <Value>-7.69587238380568e-9</Value>
+             <VariableName>Transformation_1\R_body[1,3]</VariableName>
+             <Value>-3.267948898155737e-7</Value>
             </X>
             <Y>
-             <VariableName>Transformation\R_body[2,3]</VariableName>
-             <Value>3.267042529841827e-7</Value>
+             <VariableName>Transformation_1\R_body[2,3]</VariableName>
+             <Value>2.699842432951627e-11</Value>
             </Y>
             <Z>
-             <VariableName>Transformation\R_body[3,3]</VariableName>
-             <Value>0.9999999999999467</Value>
+             <VariableName>Transformation_1\R_body[3,3]</VariableName>
+             <Value>1.0</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation\R_body[1,2]</VariableName>
-             <Value>0.023549550006459252</Value>
+             <VariableName>Transformation_1\R_body[1,2]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation\R_body[2,2]</VariableName>
-             <Value>-0.999722670891476</Value>
+             <VariableName>Transformation_1\R_body[2,2]</VariableName>
+             <Value>-8.261580660473555e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation\R_body[3,2]</VariableName>
-             <Value>3.2679490244837443e-7</Value>
+             <VariableName>Transformation_1\R_body[3,2]</VariableName>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20048,49 +19773,69 @@ implementation_end;
            <Value>15</Value>
           </ShininessPower>
           <OverrideQuality>false</OverrideQuality>
+          <Texture>
+           <Filename></Filename>
+           <WrapStyle>0</WrapStyle>
+           <YWrap>
+            <Y>
+             <Value>1</Value>
+            </Y>
+           </YWrap>
+           <ZWrap>
+            <Z>
+             <Value>-1</Value>
+            </Z>
+           </ZWrap>
+           <XOrigin>
+            <Value>0.5</Value>
+           </XOrigin>
+           <YOrigin>
+            <Value>0.5</Value>
+           </YOrigin>
+          </Texture>
           <ShowReferenceFrame>false</ShowReferenceFrame>
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation1\pose_abs_com[1]</VariableName>
-            <Value>-0.25467295486732294</Value>
+            <VariableName>Transformation_2\pose_abs_body[1]</VariableName>
+            <Value>0.1349750951700026</Value>
            </X>
            <Y>
-            <VariableName>Transformation1\pose_abs_com[2]</VariableName>
-            <Value>-0.14103643659029103</Value>
+            <VariableName>Transformation_2\pose_abs_body[2]</VariableName>
+            <Value>-0.30026936586114494</Value>
            </Y>
            <Z>
-            <VariableName>Transformation1\pose_abs_com[3]</VariableName>
-            <Value>0.4269465213925009</Value>
+            <VariableName>Transformation_2\pose_abs_body[3]</VariableName>
+            <Value>0.3899413658547732</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation1\R_body[1,3]</VariableName>
-             <Value>0.6067109079834204</Value>
+             <VariableName>Transformation_2\R_body[1,3]</VariableName>
+             <Value>5.859851444256492e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation1\R_body[2,3]</VariableName>
-             <Value>0.014291472666742267</Value>
+             <VariableName>Transformation_2\R_body[2,3]</VariableName>
+             <Value>0.7064899206161499</Value>
             </Y>
             <Z>
-             <VariableName>Transformation1\R_body[3,3]</VariableName>
-             <Value>-0.7947940789556432</Value>
+             <VariableName>Transformation_2\R_body[3,3]</VariableName>
+             <Value>-0.707723081111908</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation1\R_body[1,2]</VariableName>
-             <Value>0.023549545824896014</Value>
+             <VariableName>Transformation_2\R_body[1,2]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation1\R_body[2,2]</VariableName>
-             <Value>-0.9997226709899776</Value>
+             <VariableName>Transformation_2\R_body[2,2]</VariableName>
+             <Value>-8.261580660473555e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation1\R_body[3,2]</VariableName>
-             <Value>3.2596287641140607e-7</Value>
+             <VariableName>Transformation_2\R_body[3,2]</VariableName>
+             <Value>3.267959982622415e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20120,45 +19865,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation2\pose_abs[1]</VariableName>
-            <Value>0.05470721361857722</Value>
+            <VariableName>Transformation_3\pose_abs[1]</VariableName>
+            <Value>-2.0453254170172785e-6</Value>
            </X>
            <Y>
-            <VariableName>Transformation2\pose_abs[2]</VariableName>
-            <Value>0.0012888755030083417</Value>
+            <VariableName>Transformation_3\pose_abs[2]</VariableName>
+            <Value>-0.022471840501311402</Value>
            </Y>
            <Z>
-            <VariableName>Transformation2\pose_abs[3]</VariableName>
-            <Value>0.6638272495735789</Value>
+            <VariableName>Transformation_3\pose_abs[3]</VariableName>
+            <Value>0.6668795700585854</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation2\R_next[1,3]</VariableName>
-             <Value>0.023549550006459252</Value>
+             <VariableName>Transformation_3\R_next[1,3]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation2\R_next[2,3]</VariableName>
-             <Value>-0.999722670891476</Value>
+             <VariableName>Transformation_3\R_next[2,3]</VariableName>
+             <Value>-8.261580660473555e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation2\R_next[3,3]</VariableName>
-             <Value>3.2679490244837443e-7</Value>
+             <VariableName>Transformation_3\R_next[3,3]</VariableName>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation2\R_next[1,2]</VariableName>
-             <Value>0.6037351107431359</Value>
+             <VariableName>Transformation_3\R_next[1,2]</VariableName>
+             <Value>5.856025018147193e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation2\R_next[2,2]</VariableName>
-             <Value>0.014221372587887872</Value>
+             <VariableName>Transformation_3\R_next[2,2]</VariableName>
+             <Value>0.7060248851776123</Value>
             </Y>
             <Z>
-             <VariableName>Transformation2\R_next[3,2]</VariableName>
-             <Value>-0.7970581337755045</Value>
+             <VariableName>Transformation_3\R_next[3,2]</VariableName>
+             <Value>-0.7081871032714844</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20188,45 +19933,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation3\pose_abs[1]</VariableName>
-            <Value>0.0572776469949826</Value>
+            <VariableName>Transformation_4\pose_abs[1]</VariableName>
+            <Value>0.10914795430208248</Value>
            </X>
            <Y>
-            <VariableName>Transformation3\pose_abs[2]</VariableName>
-            <Value>-0.10783085402490813</Value>
+            <VariableName>Transformation_4\pose_abs[2]</VariableName>
+            <Value>-0.02248085801683161</Value>
            </Y>
            <Z>
-            <VariableName>Transformation3\pose_abs[3]</VariableName>
-            <Value>0.6638272852432419</Value>
+            <VariableName>Transformation_4\pose_abs[3]</VariableName>
+            <Value>0.6668796057282484</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation3\R_next[1,3]</VariableName>
-             <Value>-0.5958942175191397</Value>
+             <VariableName>Transformation_4\R_next[1,3]</VariableName>
+             <Value>-5.8185058151138946e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation3\R_next[2,3]</VariableName>
-             <Value>-0.014036997222069608</Value>
+             <VariableName>Transformation_4\R_next[2,3]</VariableName>
+             <Value>-0.7054367661476135</Value>
             </Y>
             <Z>
-             <VariableName>Transformation3\R_next[3,3]</VariableName>
-             <Value>0.8029402494807691</Value>
+             <VariableName>Transformation_4\R_next[3,3]</VariableName>
+             <Value>0.7087728977203369</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation3\R_next[1,2]</VariableName>
-             <Value>0.023549745475726573</Value>
+             <VariableName>Transformation_4\R_next[1,2]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation3\R_next[2,2]</VariableName>
-             <Value>-0.9997226662870179</Value>
+             <VariableName>Transformation_4\R_next[2,2]</VariableName>
+             <Value>-8.238527516368777e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation3\R_next[3,2]</VariableName>
-             <Value>6.519257677308167e-8</Value>
+             <VariableName>Transformation_4\R_next[3,2]</VariableName>
+             <Value>9.51768015511334e-8</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20256,45 +20001,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation4\pose_abs[1]</VariableName>
-            <Value>8.762617911897947e-4</Value>
+            <VariableName>Transformation_5\pose_abs[1]</VariableName>
+            <Value>0.10914244708648128</Value>
            </X>
            <Y>
-            <VariableName>Transformation4\pose_abs[2]</VariableName>
-            <Value>-0.10915945581663328</Value>
+            <VariableName>Transformation_5\pose_abs[2]</VariableName>
+            <Value>-0.08925044673143002</Value>
            </Y>
            <Z>
-            <VariableName>Transformation4\pose_abs[3]</VariableName>
-            <Value>0.7398255816813041</Value>
+            <VariableName>Transformation_5\pose_abs[3]</VariableName>
+            <Value>0.7339649580233206</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation4\R_next[1,3]</VariableName>
-             <Value>0.028592593765748672</Value>
+             <VariableName>Transformation_5\R_next[1,3]</VariableName>
+             <Value>3.10038507450372e-4</Value>
             </X>
             <Y>
-             <VariableName>Transformation4\R_next[2,3]</VariableName>
-             <Value>-0.9995841313257735</Value>
+             <VariableName>Transformation_5\R_next[2,3]</VariableName>
+             <Value>0.708772599697113</Value>
             </Y>
             <Z>
-             <VariableName>Transformation4\R_next[3,3]</VariableName>
-             <Value>0.0037453949652287086</Value>
+             <VariableName>Transformation_5\R_next[3,3]</VariableName>
+             <Value>0.7054369449615479</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation4\R_next[1,2]</VariableName>
-             <Value>0.5958941533104954</Value>
+             <VariableName>Transformation_5\R_next[1,2]</VariableName>
+             <Value>5.81851381866727e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation4\R_next[2,2]</VariableName>
-             <Value>0.014036668356750598</Value>
+             <VariableName>Transformation_5\R_next[2,2]</VariableName>
+             <Value>0.7054370045661926</Value>
             </Y>
             <Z>
-             <VariableName>Transformation4\R_next[3,2]</VariableName>
-             <Value>-0.8029403028817338</Value>
+             <VariableName>Transformation_5\R_next[3,2]</VariableName>
+             <Value>-0.7087726593017578</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20324,45 +20069,45 @@ implementation_end;
           <Name>Reference Frame</Name>
           <Position>
            <X>
-            <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>0.00322943232307607</Value>
+            <VariableName>Transformation_6\pose_abs[1]</VariableName>
+            <Value>0.10916796325523616</Value>
            </X>
            <Y>
-            <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>-0.1914252298000286</Value>
+            <VariableName>Transformation_6\pose_abs[2]</VariableName>
+            <Value>-0.030918462125395632</Value>
            </Y>
            <Z>
-            <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>0.7401338276937277</Value>
+            <VariableName>Transformation_6\pose_abs[3]</VariableName>
+            <Value>0.7920224202555479</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>0.028592593765748672</Value>
+             <VariableName>Transformation_6\R_next[1,3]</VariableName>
+             <Value>3.10038507450372e-4</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>-0.9995841313257735</Value>
+             <VariableName>Transformation_6\R_next[2,3]</VariableName>
+             <Value>0.708772599697113</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>0.0037453949652287086</Value>
+             <VariableName>Transformation_6\R_next[3,3]</VariableName>
+             <Value>0.7054369449615479</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>0.5958118932256627</Value>
+             <VariableName>Transformation_6\R_next[1,2]</VariableName>
+             <Value>-0.8659096360206604</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.014034085665583023</Value>
+             <VariableName>Transformation_6\R_next[2,2]</VariableName>
+             <Value>0.35305023193359375</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>-0.8030013899928083</Value>
+             <VariableName>Transformation_6\R_next[3,2]</VariableName>
+             <Value>-0.35433903336524963</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20442,45 +20187,45 @@ implementation_end;
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation2\pose_abs_com[1]</VariableName>
-            <Value>-0.2574989008606225</Value>
+            <VariableName>Transformation_3\pose_abs_body[1]</VariableName>
+            <Value>0.014975095579531299</Value>
            </X>
            <Y>
-            <VariableName>Transformation2\pose_abs_com[2]</VariableName>
-            <Value>-0.021069716083190894</Value>
+            <VariableName>Transformation_3\pose_abs_body[2]</VariableName>
+            <Value>-0.30025945196410025</Value>
            </Y>
            <Z>
-            <VariableName>Transformation2\pose_abs_com[3]</VariableName>
-            <Value>0.4269464821771133</Value>
+            <VariableName>Transformation_3\pose_abs_body[3]</VariableName>
+            <Value>0.3899413266393856</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation2\R_body[1,3]</VariableName>
-             <Value>0.7968371098608937</Value>
+             <VariableName>Transformation_3\R_body[1,3]</VariableName>
+             <Value>5.8276724303141236e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation2\R_body[2,3]</VariableName>
-             <Value>0.018770559651937628</Value>
+             <VariableName>Transformation_3\R_body[2,3]</VariableName>
+             <Value>0.7081871032714844</Value>
             </Y>
             <Z>
-             <VariableName>Transformation2\R_body[3,3]</VariableName>
-             <Value>0.6039025471372772</Value>
+             <VariableName>Transformation_3\R_body[3,3]</VariableName>
+             <Value>0.7060248851776123</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation2\R_body[1,2]</VariableName>
-             <Value>0.023549549548120358</Value>
+             <VariableName>Transformation_3\R_body[1,2]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation2\R_body[2,2]</VariableName>
-             <Value>-0.9997226709022721</Value>
+             <VariableName>Transformation_3\R_body[2,2]</VariableName>
+             <Value>-8.261581388069317e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation2\R_body[3,2]</VariableName>
-             <Value>3.287568441382767e-7</Value>
+             <VariableName>Transformation_3\R_body[3,2]</VariableName>
+             <Value>3.2679596984053205e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20560,45 +20305,45 @@ implementation_end;
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation3\pose_abs_com[1]</VariableName>
-            <Value>0.055075745867463874</Value>
+            <VariableName>Transformation_4\pose_abs_body[1]</VariableName>
+            <Value>0.015647954619390753</Value>
            </X>
            <Y>
-            <VariableName>Transformation3\pose_abs_com[2]</VariableName>
-            <Value>-0.01435678472535929</Value>
+            <VariableName>Transformation_4\pose_abs_body[2]</VariableName>
+            <Value>-0.022473154993565378</Value>
            </Y>
            <Z>
-            <VariableName>Transformation3\pose_abs_com[3]</VariableName>
-            <Value>0.6638272792220181</Value>
+            <VariableName>Transformation_4\pose_abs_body[3]</VariableName>
+            <Value>0.6668795968297095</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation3\R_body[1,3]</VariableName>
-             <Value>-0.5958942175191397</Value>
+             <VariableName>Transformation_4\R_body[1,3]</VariableName>
+             <Value>-5.8185058151138946e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation3\R_body[2,3]</VariableName>
-             <Value>-0.014036997222069608</Value>
+             <VariableName>Transformation_4\R_body[2,3]</VariableName>
+             <Value>-0.7054367661476135</Value>
             </Y>
             <Z>
-             <VariableName>Transformation3\R_body[3,3]</VariableName>
-             <Value>0.8029402494807691</Value>
+             <VariableName>Transformation_4\R_body[3,3]</VariableName>
+             <Value>0.7087728977203369</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation3\R_body[1,2]</VariableName>
-             <Value>0.023549745475726573</Value>
+             <VariableName>Transformation_4\R_body[1,2]</VariableName>
+             <Value>1.0</Value>
             </X>
             <Y>
-             <VariableName>Transformation3\R_body[2,2]</VariableName>
-             <Value>-0.9997226662870179</Value>
+             <VariableName>Transformation_4\R_body[2,2]</VariableName>
+             <Value>-8.238527516368777e-5</Value>
             </Y>
             <Z>
-             <VariableName>Transformation3\R_body[3,2]</VariableName>
-             <Value>6.519257677308167e-8</Value>
+             <VariableName>Transformation_4\R_body[3,2]</VariableName>
+             <Value>9.51768015511334e-8</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20678,45 +20423,45 @@ implementation_end;
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation4\pose_abs_com[1]</VariableName>
-            <Value>0.05748621084960227</Value>
+            <VariableName>Transformation_5\pose_abs_body[1]</VariableName>
+            <Value>0.10914797467647756</Value>
            </X>
            <Y>
-            <VariableName>Transformation4\pose_abs_com[2]</VariableName>
-            <Value>-0.10782597210846744</Value>
+            <VariableName>Transformation_5\pose_abs_body[2]</VariableName>
+            <Value>-0.022233933148908105</Value>
            </Y>
            <Z>
-            <VariableName>Transformation4\pose_abs_com[3]</VariableName>
-            <Value>0.6635462562654498</Value>
+            <VariableName>Transformation_5\pose_abs_body[3]</VariableName>
+            <Value>0.6666315571238457</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation4\R_body[1,3]</VariableName>
-             <Value>-0.595894220253436</Value>
+             <VariableName>Transformation_5\R_body[1,3]</VariableName>
+             <Value>-5.818515637656674e-5</Value>
             </X>
             <Y>
-             <VariableName>Transformation4\R_body[2,3]</VariableName>
-             <Value>-0.014036670392254005</Value>
+             <VariableName>Transformation_5\R_body[2,3]</VariableName>
+             <Value>-0.7054370045661926</Value>
             </Y>
             <Z>
-             <VariableName>Transformation4\R_body[3,3]</VariableName>
-             <Value>0.8029402531651086</Value>
+             <VariableName>Transformation_5\R_body[3,3]</VariableName>
+             <Value>0.7087726593017578</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation4\R_body[1,2]</VariableName>
-             <Value>0.028592593765748672</Value>
+             <VariableName>Transformation_5\R_body[1,2]</VariableName>
+             <Value>3.10038507450372e-4</Value>
             </X>
             <Y>
-             <VariableName>Transformation4\R_body[2,2]</VariableName>
-             <Value>-0.9995841313257735</Value>
+             <VariableName>Transformation_5\R_body[2,2]</VariableName>
+             <Value>0.708772599697113</Value>
             </Y>
             <Z>
-             <VariableName>Transformation4\R_body[3,2]</VariableName>
-             <Value>0.0037453949652287086</Value>
+             <VariableName>Transformation_5\R_body[3,2]</VariableName>
+             <Value>0.7054369449615479</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20796,45 +20541,45 @@ implementation_end;
           <Name>3D-File</Name>
           <Position>
            <X>
-            <VariableName>Transformation5\pose_abs_com[1]</VariableName>
-            <Value>9.134321641114492e-4</Value>
+            <VariableName>Transformation_6\pose_abs_body[1]</VariableName>
+            <Value>0.10914285013653452</Value>
            </X>
            <Y>
-            <VariableName>Transformation5\pose_abs_com[2]</VariableName>
-            <Value>-0.11045891518696636</Value>
+            <VariableName>Transformation_6\pose_abs_body[2]</VariableName>
+            <Value>-0.08832904235733714</Value>
            </Y>
            <Z>
-            <VariableName>Transformation5\pose_abs_com[3]</VariableName>
-            <Value>0.7398304506948661</Value>
+            <VariableName>Transformation_6\pose_abs_body[3]</VariableName>
+            <Value>0.7348820260780217</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation5\R_body[1,3]</VariableName>
-             <Value>-0.5958118547801775</Value>
+             <VariableName>Transformation_6\R_body[1,3]</VariableName>
+             <Value>0.8659095764160156</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_body[2,3]</VariableName>
-             <Value>-0.014034086163977694</Value>
+             <VariableName>Transformation_6\R_body[2,3]</VariableName>
+             <Value>-0.35305020213127136</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_body[3,3]</VariableName>
-             <Value>0.8030014185099219</Value>
+             <VariableName>Transformation_6\R_body[3,3]</VariableName>
+             <Value>0.35433903336524963</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation5\R_body[1,2]</VariableName>
-             <Value>0.028592595626771296</Value>
+             <VariableName>Transformation_6\R_body[1,2]</VariableName>
+             <Value>3.1003355979919434e-4</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_body[2,2]</VariableName>
-             <Value>-0.9995841312690512</Value>
+             <VariableName>Transformation_6\R_body[2,2]</VariableName>
+             <Value>0.708772599697113</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_body[3,2]</VariableName>
-             <Value>0.0037453958963387405</Value>
+             <VariableName>Transformation_6\R_body[3,2]</VariableName>
+             <Value>0.7054369449615479</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20893,64 +20638,84 @@ implementation_end;
           <Direct3DColorRange>true</Direct3DColorRange>
           <SpecularColor>
            <X>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </X>
            <Y>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Y>
            <Z>
-            <Value>0.5</Value>
+            <Value>0.498039215686275</Value>
            </Z>
           </SpecularColor>
           <EmissiveColor>
           </EmissiveColor>
           <ShininessPower>
-           <Value>15</Value>
+           <Value>14.298713684082</Value>
           </ShininessPower>
           <OverrideQuality>false</OverrideQuality>
+          <Texture>
+           <Filename></Filename>
+           <WrapStyle>0</WrapStyle>
+           <YWrap>
+            <Y>
+             <Value>1</Value>
+            </Y>
+           </YWrap>
+           <ZWrap>
+            <Z>
+             <Value>-1</Value>
+            </Z>
+           </ZWrap>
+           <XOrigin>
+            <Value>0.5</Value>
+           </XOrigin>
+           <YOrigin>
+            <Value>0.5</Value>
+           </YOrigin>
+          </Texture>
           <ShowReferenceFrame>false</ShowReferenceFrame>
           <Name>Block</Name>
           <Position>
            <X>
-            <VariableName>Transformation5\pose_abs[1]</VariableName>
-            <Value>0.00322943232307607</Value>
+            <VariableName>Transformation_6\pose_abs[1]</VariableName>
+            <Value>0.10916796325523616</Value>
            </X>
            <Y>
-            <VariableName>Transformation5\pose_abs[2]</VariableName>
-            <Value>-0.1914252298000286</Value>
+            <VariableName>Transformation_6\pose_abs[2]</VariableName>
+            <Value>-0.030918462125395632</Value>
            </Y>
            <Z>
-            <VariableName>Transformation5\pose_abs[3]</VariableName>
-            <Value>0.7401338276937277</Value>
+            <VariableName>Transformation_6\pose_abs[3]</VariableName>
+            <Value>0.7920224202555479</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>Transformation5\R_next[1,3]</VariableName>
-             <Value>0.028592593765748672</Value>
+             <VariableName>Transformation_6\R_next[1,3]</VariableName>
+             <Value>3.10038507450372e-4</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_next[2,3]</VariableName>
-             <Value>-0.9995841313257735</Value>
+             <VariableName>Transformation_6\R_next[2,3]</VariableName>
+             <Value>0.708772599697113</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_next[3,3]</VariableName>
-             <Value>0.0037453949652287086</Value>
+             <VariableName>Transformation_6\R_next[3,3]</VariableName>
+             <Value>0.7054369449615479</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>Transformation5\R_next[1,2]</VariableName>
-             <Value>0.5958118932256627</Value>
+             <VariableName>Transformation_6\R_next[1,2]</VariableName>
+             <Value>-0.8659096360206604</Value>
             </X>
             <Y>
-             <VariableName>Transformation5\R_next[2,2]</VariableName>
-             <Value>0.014034085665583023</Value>
+             <VariableName>Transformation_6\R_next[2,2]</VariableName>
+             <Value>0.35305023193359375</Value>
             </Y>
             <Z>
-             <VariableName>Transformation5\R_next[3,2]</VariableName>
-             <Value>-0.8030013899928083</Value>
+             <VariableName>Transformation_6\R_next[3,2]</VariableName>
+             <Value>-0.35433903336524963</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -20992,7 +20757,7 @@ implementation_end;
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>model</PlotTitle>
+    <PlotTitle>Joint 1</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -21042,7 +20807,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>2.6099508785080334</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21050,46 +20815,32 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.8</Minimum>
-      <Maximum>0.2</Maximum>
+      <Minimum>-0.1999999999999999</Minimum>
+      <Maximum>1.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q_1</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.6</Minimum>
-      <Maximum>0.4</Maximum>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>q_2</Label>
+      <Label>qdot_1</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.6</Minimum>
-      <Maximum>0.4</Maximum>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>q_3</Label>
+      <Label>q_1_ref</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.6</Minimum>
-      <Maximum>0.4</Maximum>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>q_3</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.6</Minimum>
-      <Maximum>0.4</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_5</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.6</Minimum>
-      <Maximum>0.4</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_6</Label>
+      <Label>q1_dot_ref</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -21111,13 +20862,13 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint\Integrate\output</VarName>
+       <VarName>Joint_1\Integrate\output</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>6076255</LineColor>
+      <LineColor>9109504</LineColor>
       <LineStyle>1</LineStyle>
-      <TickColor>6076255</TickColor>
+      <TickColor>9109504</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -21130,13 +20881,13 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint1\Integrate\output</VarName>
+       <VarName>Joint_1\Integrate\input</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>12553035</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>12553035</TickColor>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -21149,13 +20900,13 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint2\Integrate\output</VarName>
+       <VarName>PD_1\Constant\output[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>15790150</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -21168,45 +20919,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint4\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15790150</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint4\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>1696255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>1696255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint5\Integrate\output</VarName>
+       <VarName>PD_1\Constant\output[2]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -21238,7 +20951,7 @@ implementation_end;
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>model(1)</PlotTitle>
+    <PlotTitle>Deflection</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -21288,7 +21001,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>2.6099508785080334</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21296,46 +21009,46 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-30.0</Minimum>
-      <Maximum>70.0</Maximum>
+      <Minimum>-0.008</Minimum>
+      <Maximum>0.002</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[1]</Label>
+      <Label>deflection_1</Label>
      </Axis>
      <Axis>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[2]</Label>
+      <Label>deflection_2</Label>
      </Axis>
      <Axis>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[3]</Label>
+      <Label>deflection_3</Label>
      </Axis>
      <Axis>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[4]</Label>
+      <Label>deflection_4</Label>
      </Axis>
      <Axis>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[5]</Label>
+      <Label>deflection_5</Label>
      </Axis>
      <Axis>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau_g[6]</Label>
+      <Label>deflection_6</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -21357,7 +21070,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[1]</VarName>
+       <VarName>HarmonicDrive_1\C\state</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -21376,7 +21089,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[2]</VarName>
+       <VarName>HarmonicDrive_2\C\state</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -21395,7 +21108,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[3]</VarName>
+       <VarName>HarmonicDrive_3\C\state</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -21414,7 +21127,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[4]</VarName>
+       <VarName>HarmonicDrive_4\C\state</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -21433,7 +21146,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[5]</VarName>
+       <VarName>HarmonicDrive_5\C\state</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -21452,16 +21165,12 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>GravityTerm\tau_g[6]</VarName>
+       <VarName>HarmonicDrive_6\C\state</VarName>
       </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
      <ShowLegenda>true</ShowLegenda>
-     <Position>
-      <X>0.9534461910519951</X>
-      <Y>0.17307692307692307</Y>
-     </Position>
      <BorderPenColor>0</BorderPenColor>
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
@@ -21488,7 +21197,7 @@ implementation_end;
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>model(2)</PlotTitle>
+    <PlotTitle>Joint 2</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -21538,7 +21247,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>2.6099508785080334</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -21550,7 +21259,28 @@ implementation_end;
       <Maximum>0.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>flow</Label>
+      <Label>q_2</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_2</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_2_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q2_dot_ref</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -21572,7 +21302,2190 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Joint1\FlowSensor\flow</VarName>
+       <VarName>Joint_2\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_2\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_2\Constant\output[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_2\Constant\output[2]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>5</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 3</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.8</Minimum>
+      <Maximum>0.2</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q3_dot_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_3\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_3\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\Constant\output[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\Constant\output[2]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>6</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 4</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.39999999999999986</Minimum>
+      <Maximum>1.6</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_4</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_4</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_4_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q4_dot_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_4\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_1\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\Constant\output[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\Constant\output[2]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>7</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 5</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.1999999999999999</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_5</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_5</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_5_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q5_dot_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_5\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_5\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\Constant\output[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\Constant\output[2]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>8</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 6</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.39999999999999986</Minimum>
+      <Maximum>1.6</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_6</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_6</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_6_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.2</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q6_dot_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_6\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_6\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\Constant\output[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\Constant\output[2]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>9</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 1</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>PD_output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau_total</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity_comp</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_1\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_1\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_1\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>10</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 2</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-80.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>PD_output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-100.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-100.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity_comp</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_2\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_2\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_2\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>11</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 3</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-35.0</Minimum>
+      <Maximum>15.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-60.0</Minimum>
+      <Maximum>40.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-60.0</Minimum>
+      <Maximum>40.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>12</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 4</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-3.5</Minimum>
+      <Maximum>1.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>13</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 5</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>14</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Torques &amp; Gravity 6</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-25.0</Minimum>
+      <Maximum>25.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-25.0</Minimum>
+      <Maximum>25.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>gravity</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3329330</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>3329330</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\Gain\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\tau</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1740031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>1740031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\gravity</VarName>
+       <MulOffsetMValue>-1.0</MulOffsetMValue>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>15</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>EE_Position</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>X</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.218285700273069</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>Y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.218285700273069</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>Z</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs_body[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs_body[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs_body[3]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>16</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>EE_orientation</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>3.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>roll</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>3.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pitch</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>3.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>yaw</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs[4]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs[5]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transformation_6\pose_abs[6]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -21591,16 +23504,76 @@ implementation_end;
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>1</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+   <PlotPanel>
+    <PlotPanelId>2</PlotPanelId>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Window 2</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
      <PlotId>2</PlotId>
-     <PlotId>3</PlotId>
      <PlotId>4</PlotId>
+     <PlotId>5</PlotId>
+     <PlotId>6</PlotId>
+     <PlotId>7</PlotId>
+     <PlotId>8</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+   <PlotPanel>
+    <PlotPanelId>3</PlotPanelId>
+    <PlotPanelVisible>false</PlotPanelVisible>
+    <Name>Window 3</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>9</PlotId>
+     <PlotId>10</PlotId>
+     <PlotId>11</PlotId>
+     <PlotId>12</PlotId>
+     <PlotId>13</PlotId>
+     <PlotId>14</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+   <PlotPanel>
+    <PlotPanelId>4</PlotPanelId>
+    <PlotPanelVisible>false</PlotPanelVisible>
+    <Name>Window 4</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>3</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+   <PlotPanel>
+    <PlotPanelId>5</PlotPanelId>
+    <PlotPanelVisible>false</PlotPanelVisible>
+    <Name>Window 5</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>15</PlotId>
+     <PlotId>16</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.0104167 0.0037037 0.964583 0.855556
+0.00416667 0.0814815 0.995833 1.00833
+   </WindowRectangle>
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
+0.00416667 0.0287037 1.00417 1.00741
+   </WindowRectangle>
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="3">
+0.00416667 0.0287037 1.00417 1.00741
+   </WindowRectangle>
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="4">
+0.00416667 0.0287037 1.00417 1.00741
+   </WindowRectangle>
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="5">
+0.00416667 0.0287037 1.00417 1.00741
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -21699,16 +23672,16 @@ implementation_end;
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>MeBDFiMethod</Name>
-    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <AbsoluteTolerance>0.001</AbsoluteTolerance>
     <RelativeTolerance>1.0e-5</RelativeTolerance>
-    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicAbsoluteTolerance>0.001</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
     <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
     <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
-   <SelectedIntegrationMethod>8</SelectedIntegrationMethod>
+   <SelectedIntegrationMethod>9</SelectedIntegrationMethod>
   </IntegrationMethods>
  </RunSpecs>
  <MultipleRun>
@@ -21745,6 +23718,9 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
