@@ -1,0 +1,65 @@
+20-sim Experiment Description
+=============================
+
+Model:      model
+Experiment: Robot
+
+Date:		05/22/26
+Time:		17:42:25
+
+Version:	PC Version 5.1
+License:	Personal License
+User:		University of Bologna
+Company:	-
+
+
+Initial Values:
+===============
+
+HarmonicDrive_1\C\state_initial	1.3556835241084692e-11
+HarmonicDrive_1\I\state_initial	3.994519042928233e-12
+HarmonicDrive_2\C\state_initial	-0.0018731280225743878
+HarmonicDrive_2\I\state_initial	9.074815933176548e-9
+HarmonicDrive_3\C\state_initial	-9.587626297920364e-4
+HarmonicDrive_3\I\state_initial	1.3857907445453491e-8
+HarmonicDrive_4\C\state_initial	7.942887075491902e-8
+HarmonicDrive_4\I\state_initial	7.204960532336036e-10
+HarmonicDrive_5\C\state_initial	-3.965443535719965e-8
+HarmonicDrive_5\I\state_initial	5.430487171593533e-10
+HarmonicDrive_6\C\state_initial	1.2324038799969992e-12
+HarmonicDrive_6\I\state_initial	9.61696612424389e-12
+I\dh_int_initial	[-1.1565832505037734e-13;	6.811644022058641e-10;	-2.956037161351968e-8]
+I\dp_int_initial	[-2.7407036365242722e-6;	1.6063403472746456e-5;	-4.067609451555344e-9]
+Joint_1\Integrate\initial	3.6527593157486994e-9	"initial value"
+Joint_2\Integrate\initial	6.058485525016665e-5	"initial value"
+Joint_3\Integrate\initial	9.405530223863105e-5	"initial value"
+Joint_4\Integrate\initial	4.905727797834345e-6	"initial value"
+Joint_5\Integrate\initial	3.8922754741221605e-6	"initial value"
+Joint_6\Integrate\initial	6.190090140395286e-8	"initial value"
+Link_1\Body\dh_int_initial	[-2.5063959849223724e-26;	-3.193978308600874e-11;	-1.0927027961279205e-17]
+Link_1\Body\dp_int_initial	[-3.563796563559991e-11;	2.981578342028368e-23;	-3.7260370109275636e-25]
+Link_2\Body\dh_int_initial	[-4.490112399003543e-15;	-1.7786466673894599e-9;	-4.029978061262983e-6]
+Link_2\Body\dp_int_initial	[-4.748200484020151e-9;	2.0229429633711144e-5;	-8.900781605983287e-9]
+Link_3\Body\dh_int_initial	[-9.745233006311793e-8;	-2.7498156677250253e-10;	-1.5649697427461617e-6]
+Link_3\Body\dp_int_initial	[7.47161383769024e-10;	2.741018127747542e-5;	-7.758834522862015e-9]
+Link_4\Body\dh_int_initial	[-9.523818543564778e-16;	-3.5458020509429793e-8;	4.482841315142233e-12]
+Link_4\Body\dp_int_initial	[-5.416804215796294e-7;	-4.569833196868177e-9;	-1.8021521482939586e-5]
+Link_5\Body\dh_int_initial	[-1.3884054129613083e-13;	8.173972826384956e-10;	-2.6593515582211574e-8]
+Link_5\Body\dp_int_initial	[-3.065532516571278e-6;	1.8021523604054797e-5;	-4.56368469150486e-9]
+Link_6\Body\dh_int_initial	[-1.1565832505037733e-14;	6.811644022058638e-11;	-2.956037161351968e-9]
+Link_6\Body\dp_int_initial	[-5.15126554629882e-7;	3.01831348734144e-6;	-7.643038159472494e-10]
+End_eff_constr\p.e_initial	[0.0015662609600029668;	9.809996889443237;	3.2010926973414638e-6;	4.159576242676792e-14;	-1.1899612998193759e-10;	5.473929362822692e-9]
+Joint_1\Omega_constr\p.e_initial	[-14.800791928739185;	60.26011622552937]
+Joint_1\Vel_constr\p.e_initial	[1.2781944227919864e-6;	-9.952707804817244e-9;	175.15458786738336]
+Joint_2\Omega_constr\p.e_initial	[-14.730738195733359;	1.9897292270059818e-5]
+Joint_2\Vel_constr\p.e_initial	[1.2781828596905807e-6;	138.85758786737594;	4.53879037730465e-5]
+Joint_3\Omega_constr\p.e_initial	[-5.3972056050353014;	3.3331385173588626e-4]
+Joint_3\Vel_constr\p.e_initial	[0.0034256692235410864;	56.52226154986328;	1.8478250183659866e-5]
+Joint_4\Omega_constr\p.e_initial	[-4.7914872603257175;	7.41153884150044e-4]
+Joint_4\Vel_constr\p.e_initial	[0.005207230641441008;	33.66496635169207;	1.1006083769666907e-5]
+Joint_5\Omega_constr\p.e_initial	[-1.1367665685340251;	3.347117165257263e-4]
+Joint_5\Vel_constr\p.e_initial	[0.003616344669173391;	1.481283543275766e-5;	-22.659130815458898]
+Joint_6\Omega_constr\p.e_initial	[-0.9569298207448105;	1.5272374494312065e-4]
+Joint_6\Vel_constr\p.e_initial	[0.001859840070818029;	11.65329530508472;	3.8025780152728943e-6]
+
+
