@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\cenni\Desktop\Automation_magistrale\3_Universit&agrave;\IV_semestre\MSMS\Project\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-24 18:00:15</TimeStamp>
+    <TimeStamp>2026-5-25 11:49:55</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -175,7 +175,7 @@ equations
 	state = int(p.f);
 	p.e = state / c;
 implementation_end;
-   Constant1 208 824
+   Constant1 168 728
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -186,10 +186,10 @@ implementation_end;
     end;
     icon bg bottom
      figures
-      rectangle 192.1 808 223.9 840 color 0 fill 15132390;
-      line 196.9 819.6 218.9 819.6 color 16711680 width 2;
-      line 194.2 830.7 219.9 830.7 color 0;
-      line 196.5 814.7 196.5 833 color 0;
+      rectangle 152.1 712 183.9 744 color 0 fill 15132390;
+      line 156.9 723.6 178.9 723.6 color 16711680 width 2;
+      line 154.2 734.7 179.9 734.7 color 0;
+      line 156.5 718.7 156.5 737 color 0;
     end;
     implementation eq
 parameters
@@ -197,7 +197,7 @@ parameters
 equations
 	omega = C;
      implementation_end;
-   DataFromFile 16 688
+   DataFromFile 16 696
     description '<Description>
  <Version>4.0</Version>
  <IsMainModel>1</IsMainModel>
@@ -216,8 +216,8 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle -8 672 40 704 color 0 fill 16777215;
-      text 'filedata' 14.4 688;
+      rectangle -8 680 40 712 color 0 fill 16777215;
+      text 'filedata' 14.4 696 color 0;
     end;
     implementation eq
 // 20-sim User Editor
@@ -252,6 +252,32 @@ code
 	Y = row_values[4];
 	Z = row_values[5];
 implementation_end;
+   Delay 656 704
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Delay-Step.emx</LibraryPath>
+  <TimeStamp>2007-9-26 12:23:9</TimeStamp>
+</Description>';
+    type 'Delay-Step'
+     ports
+      signal in input [6,1];
+      signal out output [6,1];
+    end;
+    icon bg bottom
+     figures
+      rectangle 640 688 672 720 color 0 fill 15132390;
+      text 'T' 660.8 704 color 16711680 14;
+      group
+       line 647.1 707.7 654.6 707.7 color 16711680;
+       line 654.6 707.7 650.9 699.4 color 16711680;
+       line 647.1 707.7 650.9 699.4 color 16711680;
+      end;
+    end;
+    implementation eq
+parameters
+	real initial[6,1] = [0;0;0;0;0;0];		// initial value
+equations
+	output = dly (input,initial);
+     implementation_end;
    Demux 1392 408
 			specifications active 'outputs_6'
 				specification 'outputs_2'
@@ -834,10 +860,10 @@ equations
 	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
 specification_end;
 			end;
-   Demux2 295 816
+   Demux2 255 720
 			specifications active 'outputs_3'
 				specification 'outputs_2'
- description '<Description>
+description '<Description>
    <Version>4.8</Version>
   <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
   <TimeStamp>2019-06-26 12:00:00</TimeStamp>
@@ -883,14 +909,14 @@ specification_end;
  end;
  icon bg bottom
   figures
-   line 288 800 288 832 color 0 width 2;
-   rectangle 288 800 304 832 color -1;
-   text '3' 294 826 color 8421504 8;
+   line 248 704 248 736 color 0 width 2;
+   rectangle 248 704 264 736 color -1;
+   text '3' 254 730 color 8421504 8;
   terminals
-   output1 288 808 fixed;
-   output2 288 816 fixed;
-   output3 288 824 fixed;
-   input 288 816 fixed;
+   output1 248 712 fixed;
+   output2 248 720 fixed;
+   output3 248 728 fixed;
+   input 248 720 fixed;
  end;
  implementation eq
 equations
@@ -1168,7 +1194,6 @@ equations
       signal in T_6 [4,4];
       signal out tau_g [6,1];
       signal boolean in is_picked;
-      signal out Jacobian [6,6];
      parameters
       real r_gp_1[3,1] = [0.0; -0.02561; 0.00193];
       real r_gp_2[3,1] = [0.2125; 0.0; 0.11336];
@@ -1192,21 +1217,19 @@ equations
 
 variables
 
-    real z_1[3,1]; real z_2[3,1]; real z_3[3,1]; 
-    real z_4[3,1]; real z_5[3,1]; real z_6[3,1];
+    // real z_1[3,1]; real z_2[3,1]; real z_3[3,1]; 
+    // real z_4[3,1]; real z_5[3,1]; real z_6[3,1];
 
-    real p_com_1[3,1]; real p_com_2[3,1]; real p_com_3[3,1];
-    real p_com_4[3,1]; real p_com_5[3,1]; real p_com_6[3,1];
+    // real p_com_1[3,1]; real p_com_2[3,1]; real p_com_3[3,1];
+    // real p_com_4[3,1]; real p_com_5[3,1]; real p_com_6[3,1];
 
-    real p_1[3,1]; real p_2[3,1]; real p_3[3,1];
-    real p_4[3,1]; real p_5[3,1]; real p_6[3,1];
+    // real p_1[3,1]; real p_2[3,1]; real p_3[3,1];
+    // real p_4[3,1]; real p_5[3,1]; real p_6[3,1];
 
     real tau_1; real tau_2; real tau_3;
     real tau_4; real tau_5; real tau_6;
 
  	 real m_load_ctrl;
-	
-	 real J1[6,1], J2[6,1], J3[6,1], J4[6,1], J5[6,1], J6[6,1];
 
 equations
 	
@@ -1216,54 +1239,49 @@ equations
 		m_load_ctrl = 0.0;
 	 end;
 
+    // p_1 = T_1[1:3,4];
+    // p_2 = T_2[1:3,4];
+    // p_3 = T_3[1:3,4];
+    // p_4 = T_4[1:3,4];
+    // p_5 = T_5[1:3,4];
+    // p_6 = T_6[1:3,4];
 
+    // p_com_1 = T_1[1:3,1:3] * r_gp_1 + p_1;
+    // p_com_2 = T_2[1:3,1:3] * r_gp_2 + p_2;
+    // p_com_3 = T_3[1:3,1:3] * r_gp_3 + p_3;
+    // p_com_4 = T_4[1:3,1:3] * r_gp_4 + p_4;
+    // p_com_5 = T_5[1:3,1:3] * r_gp_5 + p_5;
+    // p_com_6 = T_6[1:3,1:3] * r_gp_6 + p_6;
 
-    p_1 = T_1[1:3,4];
-    p_2 = T_2[1:3,4];
-    p_3 = T_3[1:3,4];
-    p_4 = T_4[1:3,4];
-    p_5 = T_5[1:3,4];
-    p_6 = T_6[1:3,4];
+    // z_1 = T_1[1:3,3];
+    // z_2 = T_2[1:3,3];
+    // z_3 = T_3[1:3,3];
+    // z_4 = T_4[1:3,3];
+    // z_5 = T_5[1:3,3];
+    // z_6 = T_6[1:3,3];
 
-    p_com_1 = T_1[1:3,1:3] * r_gp_1 + p_1;
-    p_com_2 = T_2[1:3,1:3] * r_gp_2 + p_2;
-    p_com_3 = T_3[1:3,1:3] * r_gp_3 + p_3;
-    p_com_4 = T_4[1:3,1:3] * r_gp_4 + p_4;
-    p_com_5 = T_5[1:3,1:3] * r_gp_5 + p_5;
-    p_com_6 = T_6[1:3,1:3] * r_gp_6 + p_6;
-
-    z_1 = T_1[1:3,3];
-    z_2 = T_2[1:3,3];
-    z_3 = T_3[1:3,3];
-    z_4 = T_4[1:3,3];
-    z_5 = T_5[1:3,3];
-    z_6 = T_6[1:3,3];
-
-    tau_1 = transpose(g) * (m_1*cross(z_0, p_com_1 - p_0) + m_2*cross(z_0, p_com_2 - p_0) + m_3*cross(z_0, p_com_3 - p_0) + m_4*cross(z_0, p_com_4 - p_0) + m_5*cross(z_0, p_com_5 - p_0) + (m_6+m_load_ctrl)*cross(z_0, p_com_6 - p_0));
-    tau_2 = transpose(g) * (m_2*cross(z_1, p_com_2 - p_1) + m_3*cross(z_1, p_com_3 - p_1) + m_4*cross(z_1, p_com_4 - p_1) + m_5*cross(z_1, p_com_5 - p_1) + (m_6+m_load_ctrl)*cross(z_1, p_com_6 - p_1));
-    tau_3 = transpose(g) * (m_3*cross(z_2, p_com_3 - p_2) + m_4*cross(z_2, p_com_4 - p_2) + m_5*cross(z_2, p_com_5 - p_2) + (m_6+m_load_ctrl)*cross(z_2, p_com_6 - p_2));
-    tau_4 = transpose(g) * (m_4*cross(z_3, p_com_4 - p_3) + m_5*cross(z_3, p_com_5 - p_3) + (m_6+m_load_ctrl)*cross(z_3, p_com_6 - p_3));
-    tau_5 = transpose(g) * (m_5*cross(z_4, p_com_5 - p_4) + (m_6+m_load_ctrl)*cross(z_4, p_com_6 - p_4));
-    tau_6 = transpose(g) * ((m_6+m_load_ctrl)*cross(z_5, p_com_6 - p_5));
+    // tau_1 = transpose(g) * (m_1*cross(z_0, p_com_1 - p_0) + m_2*cross(z_0, p_com_2 - p_0) + m_3*cross(z_0, p_com_3 - p_0) + m_4*cross(z_0, p_com_4 - p_0) + m_5*cross(z_0, p_com_5 - p_0) + (m_6+m_load_ctrl)*cross(z_0, p_com_6 - p_0));
+    // tau_2 = transpose(g) * (m_2*cross(z_1, p_com_2 - p_1) + m_3*cross(z_1, p_com_3 - p_1) + m_4*cross(z_1, p_com_4 - p_1) + m_5*cross(z_1, p_com_5 - p_1) + (m_6+m_load_ctrl)*cross(z_1, p_com_6 - p_1));
+    // tau_3 = transpose(g) * (m_3*cross(z_2, p_com_3 - p_2) + m_4*cross(z_2, p_com_4 - p_2) + m_5*cross(z_2, p_com_5 - p_2) + (m_6+m_load_ctrl)*cross(z_2, p_com_6 - p_2));
+    // tau_4 = transpose(g) * (m_4*cross(z_3, p_com_4 - p_3) + m_5*cross(z_3, p_com_5 - p_3) + (m_6+m_load_ctrl)*cross(z_3, p_com_6 - p_3));
+    // tau_5 = transpose(g) * (m_5*cross(z_4, p_com_5 - p_4) + (m_6+m_load_ctrl)*cross(z_4, p_com_6 - p_4));
+    // tau_6 = transpose(g) * ((m_6+m_load_ctrl)*cross(z_5, p_com_6 - p_5));
 	
-	 J1[1:3] = cross(z_0, p_6 - p_0);
-	 J1[4:6] = z_0;
-	 J2[1:3] = cross(z_1, p_6 - p_1);
-	 J2[4:6] = z_1;
-	 J3[1:3] = cross(z_2, p_6 - p_2);
-	 J3[4:6] = z_2;
-	 J4[1:3] = cross(z_3, p_6 - p_3);
-	 J4[4:6] = z_3;
-	 J5[1:3] = cross(z_4, p_6 - p_4);
-	 J5[4:6] = z_4;
-	 J6[1:3] = cross(z_5, p_6 - p_5);
-	 J6[4:6] = z_5;
-	 Jacobian[1:6,1] = J1;
-	 Jacobian[1:6,2] = J2;
-	 Jacobian[1:6,3] = J3;
-	 Jacobian[1:6,4] = J4;
-	 Jacobian[1:6,5] = J5;
-	 Jacobian[1:6,6] = J6;
+	 // J1[1:3] = cross(z_0, p_6 - p_0);
+	 // J1[4:6] = z_0;
+	 // J2[1:3] = cross(z_1, p_6 - p_1);
+	 // J2[4:6] = z_1;
+	 // J3[1:3] = cross(z_2, p_6 - p_2);
+	 // J3[4:6] = z_2;
+	 // J4[1:3] = cross(z_3, p_6 - p_3);
+	 // J4[4:6] = z_3;
+	 // J5[1:3] = cross(z_4, p_6 - p_4);
+	 // J5[4:6] = z_4;
+	 // J6[1:3] = cross(z_5, p_6 - p_5);
+	 // J6[4:6] = z_5;
+	
+	 tau_6 = transpose(g) * cross(T_5[1:3,3],             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_5[1:3,4])        );     tau_5 = transpose(g) * cross(T_4[1:3,3],             m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_4[1:3,4]) +             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_4[1:3,4])        );     tau_4 = transpose(g) * cross(T_3[1:3,3],             m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_3[1:3,4]) +             m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_3[1:3,4]) +             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_3[1:3,4])        );     tau_3 = transpose(g) * cross(T_2[1:3,3],             m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_2[1:3,4]) +             m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_2[1:3,4]) +             m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_2[1:3,4]) +             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_2[1:3,4])        );     tau_2 = transpose(g) * cross(T_1[1:3,3],             m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - T_1[1:3,4]) +             m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_1[1:3,4]) +             m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_1[1:3,4]) +             m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_1[1:3,4]) +             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_1[1:3,4])        );     tau_1 = transpose(g) * cross(z_0,             m_1*(T_1[1:3,1:3]*r_gp_1 + T_1[1:3,4] - p_0) +             m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - p_0) +             m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - p_0) +             m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - p_0) +             m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - p_0) +             (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - p_0)        );
+	 
 	
     // Output mapping
     tau_g = [tau_1; tau_2; tau_3; tau_4; tau_5; tau_6];implementation_end;
@@ -3443,36 +3461,15 @@ equations
 					 	0, 0, 1, 0;
 					 	0, 0, 0, 1
 					];implementation_end;
-   IK 568 704
+   IK 504 704
     description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Equation'
      ports
-      signal in vel [6,1];
       signal out theta_ref [6,1];
-      signal in J [6,6];
-      signal in T_geom [3,3];
+      signal in T_des [4,4];
     end;
     implementation eq
-parameters
-	real I[6,6] = [1, 0, 0, 0, 0, 0; 0, 1, 0, 0, 0, 0; 0, 0, 1, 0, 0, 0; 0, 0, 0, 1, 0, 0; 0, 0, 0, 0, 1, 0; 0, 0, 0, 0, 0, 1];
-	real mu = 1;
-	real thetaoff_ref[6,1] = [0; 0; 0; 0; 0; 0];
-variables
-	real qdot[6,1];
-	real q[6,1];
-	real J_analytic[6,6];
-equations
-	// qdot = inverse(transpose(J) * J) * transpose(J) * vel; 
-	J_analytic[1:3,1:6] = J[1:3,1:6];
-	J_analytic[4:6, 1:3] = T_geom * J[4:6, 1:3];
-	J_analytic[4:6, 4:6] = T_geom * J[4:6, 4:6];
-	
-	qdot = inverse(J_analytic + mu*I) * vel; 
-	q = int(qdot, thetaoff_ref);
-	
-	theta_ref = q;
-	
-	implementation_end;
+parameters		   real d1 = 0.089159;   real a2 = -0.425;   real a3 = -0.39225;   real d4 = 0.10915;   real d5 = 0.09465;   real d6 = 0.0823;     		   real c_shoulder =  1.0;     real c_elbow    =  1.0;     real c_wrist    =  1.0;   variables	     real px, py, pz;   real nx, ny, nz;   real ox, oy, oz;   real ax, ay, az;       real p05x, p05y, R_shoulder, alpha1, alpha2;   real num5;   real num6_x, num6_y;   real p14x, p14z, D, theta234;      real theta1, theta2, theta3, theta5, theta6; equations		 	 px = T_des[1,4];	 py = T_des[2,4];	 pz = T_des[3,4];	 nx = T_des[1,1];	 ny = T_des[2,1];	 nz = T_des[3,1];	 ox = T_des[1,2];	 oy = T_des[2,2];	 oz = T_des[3,2];	 ax = T_des[1,3];	 ay = T_des[2,3];	 az = T_des[3,3];       p05x = px - d6 * ax;    p05y = py - d6 * ay;    R_shoulder = sqrt(p05x^2 + p05y^2);    alpha1 = atan2(p05y, p05x);        alpha2 = arccos(d4 / R_shoulder);        theta1 = alpha1 + (c_shoulder * alpha2) + (pi / 2.0); 	    num5 = (px * sin(theta1)) - (py * cos(theta1)) - d4;      theta5 = c_wrist * arccos(num5 / d6);     	    num6_y = (-ox * sin(theta1)) + (oy * cos(theta1));    num6_x = (nx * sin(theta1)) - (ny * cos(theta1));       theta6 = atan2(num6_y / sin(theta5), num6_x / sin(theta5));     	 	 theta234 = atan2(-az, -(ax * cos(theta1) + ay * sin(theta1)));	 		 p14x = p05x * cos(theta1) + p05y * sin(theta1) - d5 * sin(theta234);	 p14z = (pz - d6 * az) - d1  + d5 * cos(theta234);			 D = (p14x^2 + p14z^2 - a2^2 - a3^2) / (2.0 * a2 * a3);	 theta3 = atan2(c_elbow * sqrt(1.0 - D^2), D);	 		 theta2 = atan2(p14z, p14x) - atan2(a3 * sin(theta3), a2 + a3 * cos(theta3));	 				 theta_ref = [theta1; theta2; theta3; theta234 - theta2 - theta3; theta5; theta6];implementation_end;
    Joint_1 136 192
     description '<Information><Description><Version>5.1</Version><LibraryPath>Joint.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2026-5-18 15:25:51</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
@@ -3609,7 +3606,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 799 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -3628,13 +3625,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 792 336 792 368 color 0 width 2;
+   rectangle 792 336 808 368 color -1;
+   text '2' 798 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 792 344 fixed;
+   output 792 352 fixed;
+   input2 792 360 fixed;
  end;
  implementation eq
 equations
@@ -3904,7 +3901,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 888 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -5784,7 +5781,7 @@ implementation_end;
       real d_i = 0.0 {m};
       real a_i = -0.425 {m};
       real alpha_i = 0.0 {rad};
-      real theta_off_i = -0.5 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -5903,7 +5900,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 767 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -5922,13 +5919,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 760 336 760 368 color 0 width 2;
+   rectangle 760 336 776 368 color -1;
+   text '2' 766 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 760 344 fixed;
+   output 760 352 fixed;
+   input2 760 360 fixed;
  end;
  implementation eq
 equations
@@ -6198,7 +6195,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 856 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -8078,7 +8075,7 @@ implementation_end;
       real d_i = 0.0 {m};
       real a_i = -0.39225 {m};
       real alpha_i = 0.0 {rad};
-      real theta_off_i = 0.5 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -8197,7 +8194,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 823 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -8216,13 +8213,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 816 336 816 368 color 0 width 2;
+   rectangle 816 336 832 368 color -1;
+   text '2' 822 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 816 344 fixed;
+   output 816 352 fixed;
+   input2 816 360 fixed;
  end;
  implementation eq
 equations
@@ -8492,7 +8489,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 912 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -10372,7 +10369,7 @@ implementation_end;
       real d_i = 0.10915 {m};
       real a_i = 0.0 {m};
       real alpha_i = 1.570796 {rad};
-      real theta_off_i = 0.0 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -10491,7 +10488,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 807 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -10510,13 +10507,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 800 336 800 368 color 0 width 2;
+   rectangle 800 336 816 368 color -1;
+   text '2' 806 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 800 344 fixed;
+   output 800 352 fixed;
+   input2 800 360 fixed;
  end;
  implementation eq
 equations
@@ -10786,7 +10783,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 896 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -12666,7 +12663,7 @@ implementation_end;
       real d_i = 0.09465 {m};
       real a_i = 0.0 {m};
       real alpha_i = -1.570796 {rad};
-      real theta_off_i = 0.0 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -12785,7 +12782,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 807 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -12804,13 +12801,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 800 336 800 368 color 0 width 2;
+   rectangle 800 336 816 368 color -1;
+   text '2' 806 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 800 344 fixed;
+   output 800 352 fixed;
+   input2 800 360 fixed;
  end;
  implementation eq
 equations
@@ -13080,7 +13077,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 896 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -14932,7 +14929,7 @@ implementation_end;
       PowerMux\twist_i => MTF\twist_i;
       PowerMux1\w_i => PowerMux\w_i;
       Splitter1\output -> MTF\theta;
-      Splitter1\output -> Mux\input1 568 344;
+      Splitter1\output -> Mux\input1 568 344 576 344;
       Splitter2\output -> Integrate\input;
       Splitter2\output -> Mux\input2 440 360;
       twist_i => PowerDemux\twist_i;
@@ -14960,7 +14957,7 @@ implementation_end;
       real d_i = 0.0823 {m};
       real a_i = 0.0 {m};
       real alpha_i = 0.0 {rad};
-      real theta_off_i = 0.0 {rad};
+      real theta_off_i = 0 {rad};
     end;
     implementation bg
      submodels
@@ -15079,7 +15076,7 @@ equations
 	T_i[1:3, 1:3] = R;
 	T_i[1:3, 4] = P;
 	T_i[4, 1:4] = [0,0,0,1];implementation_end;
-      Mux 623 352
+      Mux 743 352
 						specifications active 'inputs_2'
 							specification 'inputs_2'
  description '<Description>
@@ -15098,13 +15095,13 @@ equations
  end;
  icon bg bottom
   figures
-   line 616 336 616 368 color 0 width 2;
-   rectangle 616 336 632 368 color -1;
-   text '2' 622 362 color 8421504 8;
+   line 736 336 736 368 color 0 width 2;
+   rectangle 736 336 752 368 color -1;
+   text '2' 742 362 color 8421504 8;
   terminals
-   input1 616 344 fixed;
-   output 616 352 fixed;
-   input2 616 360 fixed;
+   input1 736 344 fixed;
+   output 736 352 fixed;
+   input2 736 360 fixed;
  end;
  implementation eq
 equations
@@ -15374,7 +15371,7 @@ specification_end;
       plug twist_ipp 912 168;
       plug actuator 392 400;
       plug T_i 760 88;
-      plug Q 712 352;
+      plug Q 832 352;
       Omega_constr 400 184
        description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
        type 'Submodel-Equation'
@@ -18029,7 +18026,6 @@ implementation_end;
       power in wrench_i [6,1];
       power out wrench_ipp [6,1];
       signal in T_next [4,4];
-      signal out T_geom [3,3];
      restrictions
       causality fixed in wrench_i;
       causality fixed in wrench_ipp;
@@ -18485,7 +18481,6 @@ equations
       plug wrench_ipp 232 344;
       plug T_next 512 40;
       plug wrench_i 264 88;
-      plug T_geom 976 96;
       OneJunction 512 176
        description '<Information>
  <Description>
@@ -18521,13 +18516,11 @@ implementation_end;
          signal out output [6,1];
          signal in twist [6,1];
          signal in rpy [3,1];
-         signal out T_geom [3,3];
        end;
        implementation eq
 
 equations
 	output[1:3] = T[1:3, 1:3] * twist[1:3];
-	T_geom = 1/cos(rpy[2]) * [cos(rpy[2]), sin(rpy[1])*sin(rpy[2]), cos(rpy[1])*sin(rpy[2]); 0, cos(rpy[1])*cos(rpy[2]), -sin(rpy[1])*cos(rpy[2]); 0, sin(rpy[1]), cos(rpy[1])];
 	output[4:6] = 1/cos(rpy[2]) * [cos(rpy[2]), sin(rpy[1])*sin(rpy[2]), cos(rpy[1])*sin(rpy[2]); 0, cos(rpy[1])*cos(rpy[2]), -sin(rpy[1])*cos(rpy[2]); 0, sin(rpy[1]), cos(rpy[1])] * twist[4:6];
 implementation_end;
       Splitter1 512 64
@@ -18577,7 +18570,6 @@ equations
       MSe\gravity => OneJunction\p;
       OneJunction\p => Body\wrench_com;
       Rot\output -> Integrate\input;
-      Rot\T_geom -> T_geom;
       Splitter1\output -> MSe\T_next;
       Splitter1\output -> Rot\T;
       T_next -> Splitter1\input;
@@ -18585,10 +18577,10 @@ equations
       wrench_i => i_com\wrench_in;
      end;
     implementation_end;
-   Mux 351 696
+   Mux 351 704
 			specifications active 'inputs_6'
 				specification 'inputs_2'
- description '<Description>
+description '<Description>
    <Version>4.8</Version>
   <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
   <TimeStamp>2019-06-26 12:00:00</TimeStamp>
@@ -18736,17 +18728,17 @@ specification_end;
  end;
  icon bg bottom
   figures
-   line 344 664 344 728 color 0 width 2;
-   rectangle 344 664 360 728 color -1;
-   text '6' 350 722 color 8421504 8;
+   line 344 672 344 736 color 0 width 2;
+   rectangle 344 672 360 736 color -1;
+   text '6' 350 730 color 8421504 8;
   terminals
-   input1 344 672 fixed;
-   input2 344 680 fixed;
-   input3 344 688 fixed;
-   input4 344 704 fixed;
-   input5 344 712 fixed;
-   input6 344 720 fixed;
-   output 344 696 fixed;
+   input1 344 680 fixed;
+   input2 344 688 fixed;
+   input3 344 696 fixed;
+   input4 344 712 fixed;
+   input5 344 720 fixed;
+   input6 344 728 fixed;
+   output 344 704 fixed;
  end;
  implementation eq
 equations
@@ -21336,6 +21328,17 @@ equations
       q_ref -> Mux\input1;
      end;
     implementation_end;
+   Planner 424 704
+    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'Submodel-Equation'
+     ports
+      signal in pose_des [6,1];
+      signal out T_des [4,4];
+    end;
+    implementation eq
+equations
+	T_des = [1, 0, 0, pose_des[1,1]; 0, -1, 0, pose_des[2,1]; 0, 0, -1, pose_des[3,1]; 0, 0, 0, 1];
+ implementation_end;
    R 1280 240
     description '<Information>
  <Description>
@@ -21407,6 +21410,29 @@ implementation_end;
       ellipse 227.7 99.7 236.3 108.3 color -1;
      terminals
       input 232 104 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter10 568 672
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [6,1];
+      signal knot in input [6,1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 564.8 668.8 571.2 675.2 color -1 fill 0;
+      ellipse 563.7 667.7 572.3 676.3 color -1;
+     terminals
+      input 568 672 fixed;
     end;
     implementation eq
 equations
@@ -21800,6 +21826,28 @@ equations
 	
 	
  implementation_end;
+   Unwrap 568 704
+    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'Submodel-Equation'
+     ports
+      signal in theta_raw [6,1];
+      signal out theta_unwrapped [6,1];
+      signal in theta_prev [6,1];
+    end;
+    implementation eq
+parameters
+    real pi = 3.141592653589793;
+    integer n = 6;  
+ 
+variables
+    integer i; 
+ 
+equations
+    
+    for i = 1 to n do
+      
+        theta_unwrapped[i] = theta_raw[i] - 2.0 * pi * round((theta_raw[i] - theta_prev[i]) / (2.0 * pi));
+    end;implementation_end;
    X0 1320 192
     description '<Information>
  <Description>
@@ -21844,7 +21892,7 @@ equations
    Actuator_5\p => HarmonicDrive_5\motor;
    Actuator_6\p => HarmonicDrive_6\motor;
    Constant1\omega -> Demux2\input;
-   DataFromFile\Cond -> Splitter8\input 320 776 1648 776;
+   DataFromFile\Cond -> Splitter8\input 16 808 1648 808;
    DataFromFile\X -> Mux\input1;
    DataFromFile\Y -> Mux\input2;
    DataFromFile\Z -> Mux\input3;
@@ -21865,7 +21913,6 @@ equations
    Demux2\output3 -> Mux\input6;
    g\gravity => OneJunction\p;
    GravityCompensation\is_picked <- Splitter8\output 1648 -48;
-   GravityCompensation\Jacobian -> IK\J 1728 -160 1896 -112 1872 624 760 624;
    GravityCompensation\tau_g -> Demux\input 1744 -64 1744 408;
    Ground\p => Joint_1\twist_i;
    HarmonicDrive_1\harmonic_drive => Joint_1\actuator;
@@ -21874,7 +21921,7 @@ equations
    HarmonicDrive_4\harmonic_drive => Joint_4\actuator;
    HarmonicDrive_5\harmonic_drive => Joint_5\actuator;
    HarmonicDrive_6\harmonic_drive => Joint_6\actuator;
-   IK\theta_ref -> Demux1\input;
+   IK\theta_ref -> Unwrap\theta_raw;
    Joint_1\Q -> PD_1\Q 72 256 72 504;
    Joint_1\T_i -> Transformation_1\T_i;
    Joint_1\twist_ipp => Link_1\wrench_i;
@@ -21898,9 +21945,8 @@ equations
    Link_3\wrench_ipp => Joint_4\twist_i;
    Link_4\wrench_ipp => Joint_5\twist_i;
    Link_5\wrench_ipp => Joint_6\twist_i;
-   Link_6\T_geom -> IK\T_geom 1152 712;
    Link_6\wrench_ipp => X0\ee;
-   Mux\output -> IK\vel;
+   Mux\output -> Planner\pose_des;
    OneJunction\p => I\p;
    OneJunction1\p <= X0\constrainer;
    OneJunction1\p => C\p;
@@ -21910,11 +21956,14 @@ equations
    PD_4\tau -> Actuator_4\effort;
    PD_5\tau -> Actuator_5\effort;
    PD_6\tau -> Actuator_6\effort;
+   Planner\T_des -> IK\T_des;
    R\p <= OneJunction1\p;
    Se\p => X0\source_effort;
    Splitter1\output -> GravityCompensation\T_1 232 -16 1200 -16;
    Splitter1\output -> Link_1\T_next;
    Splitter1\output -> Transformation_2\T_prev;
+   Splitter10\output -> Delay\input 696 672 696 704;
+   Splitter10\output -> Demux1\input;
    Splitter2\output -> GravityCompensation\T_2 424 0 1224 0;
    Splitter2\output -> Link_2\T_next;
    Splitter2\output -> Transformation_3\T_prev;
@@ -21943,6 +21992,8 @@ equations
    Transformation_5\T_next -> Splitter5\input;
    Transformation_6\T_next -> Splitter6\input 1216 104;
    Transformation_Body\condition <- Splitter8\output;
+   Unwrap\theta_prev <- Delay\output;
+   Unwrap\theta_unwrapped -> Splitter10\input;
    X0\one => OneJunction\p;
   end;
   figures
@@ -21976,6 +22027,8 @@ equations
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
+  <Constants>
+  </Constants>
   <Parameters>
   </Parameters>
   <Initials>
@@ -22284,14 +22337,6 @@ equations
    <VarName>Transformation_6\R_body[3,2]</VarName>
    <VarName>Joint_1\Integrate\input</VarName>
    <VarName>Joint_1\Integrate\output</VarName>
-   <VarName>Joint_2\Integrate\output</VarName>
-   <VarName>Joint_2\Integrate\input</VarName>
-   <VarName>Joint_3\Integrate\output</VarName>
-   <VarName>Joint_3\Integrate\input</VarName>
-   <VarName>Joint_4\Integrate\output</VarName>
-   <VarName>Joint_5\Integrate\output</VarName>
-   <VarName>Joint_6\Integrate\output</VarName>
-   <VarName>Joint_6\Integrate\input</VarName>
    <VarName>PD_1\Gain\output</VarName>
    <VarName>PD_2\Gain\output</VarName>
    <VarName>PD_3\Gain\output</VarName>
@@ -22319,7 +22364,6 @@ equations
    <VarName>Transformation_6\pose_abs_body[1]</VarName>
    <VarName>Transformation_6\pose_abs_body[2]</VarName>
    <VarName>Transformation_6\pose_abs_body[3]</VarName>
-   <VarName>Joint_5\Integrate\input</VarName>
    <VarName>Link_6\Integrate\output[1]</VarName>
    <VarName>Link_6\Integrate\output[2]</VarName>
    <VarName>Link_6\Integrate\output[3]</VarName>
@@ -22356,11 +22400,6 @@ equations
    <VarName>X0\constrainer.f[4]</VarName>
    <VarName>X0\constrainer.f[5]</VarName>
    <VarName>X0\constrainer.f[6]</VarName>
-   <VarName>PD_1\Constant\output[2]</VarName>
-   <VarName>PD_2\Constant\output[2]</VarName>
-   <VarName>PD_3\Constant\output[2]</VarName>
-   <VarName>PD_4\Constant\output[2]</VarName>
-   <VarName>PD_6\Constant\output[2]</VarName>
    <VarName>PD_1\tau</VarName>
    <VarName>PD_1\gravity</VarName>
    <VarName>PD_2\tau</VarName>
@@ -22373,17 +22412,35 @@ equations
    <VarName>PD_5\gravity</VarName>
    <VarName>PD_6\tau</VarName>
    <VarName>PD_6\gravity</VarName>
-   <VarName>Constant\output</VarName>
-   <VarName>Planner\pos[1]</VarName>
-   <VarName>Planner\pos[2]</VarName>
-   <VarName>Planner\pos[3]</VarName>
-   <VarName>IK\vel[1]</VarName>
-   <VarName>IK\vel[2]</VarName>
-   <VarName>IK\vel[3]</VarName>
-   <VarName>IK\vel[4]</VarName>
-   <VarName>IK\vel[5]</VarName>
-   <VarName>IK\vel[6]</VarName>
+   <VarName>Unwrap\theta_unwrapped[1]</VarName>
+   <VarName>PD_1\Constant\output</VarName>
+   <VarName>Joint_2\Integrate\output</VarName>
+   <VarName>Joint_2\Integrate\input</VarName>
+   <VarName>Unwrap\theta_unwrapped[2]</VarName>
+   <VarName>PD_2\Constant\output</VarName>
+   <VarName>Joint_3\Integrate\output</VarName>
+   <VarName>Joint_3\Integrate\input</VarName>
+   <VarName>Unwrap\theta_unwrapped[3]</VarName>
+   <VarName>PD_3\Constant\output</VarName>
+   <VarName>Joint_4\Integrate\output</VarName>
+   <VarName>Joint_4\Integrate\input</VarName>
+   <VarName>Unwrap\theta_unwrapped[4]</VarName>
+   <VarName>PD_4\Constant\output</VarName>
+   <VarName>Joint_5\Integrate\output</VarName>
+   <VarName>Joint_5\Integrate\input</VarName>
+   <VarName>Unwrap\theta_unwrapped[5]</VarName>
    <VarName>PD_5\Constant\output</VarName>
+   <VarName>Joint_6\Integrate\output</VarName>
+   <VarName>Joint_6\Integrate\input</VarName>
+   <VarName>Unwrap\theta_unwrapped[6]</VarName>
+   <VarName>PD_6\Constant\output</VarName>
+   <VarName>DataFromFile\Cond</VarName>
+   <VarName>Planner\pose_des[1]</VarName>
+   <VarName>Planner\pose_des[2]</VarName>
+   <VarName>Planner\pose_des[3]</VarName>
+   <VarName>Planner\pose_des[4]</VarName>
+   <VarName>Planner\pose_des[5]</VarName>
+   <VarName>Planner\pose_des[6]</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -22997,36 +23054,36 @@ equations
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-5.60058690071451</Value>
+            <Value>19.8271207257651</Value>
            </X>
            <Y>
-            <Value>-13.5524734503915</Value>
+            <Value>-12.4344751634973</Value>
            </Y>
            <Z>
-            <Value>4.34222437372675</Value>
+            <Value>20.4330495245022</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.193048469216367</Value>
+             <Value>-0.721941842167772</Value>
             </X>
             <Y>
-             <Value>0.979537983100217</Value>
+             <Value>0.430133047017147</Value>
             </Y>
             <Z>
-             <Value>-0.0569001599046659</Value>
+             <Value>-0.542019869000342</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.0110023145797677</Value>
+             <Value>-0.465638757938183</Value>
             </X>
             <Y>
-             <Value>0.0558263155907205</Value>
+             <Value>0.277427637090579</Value>
             </Y>
             <Z>
-             <Value>0.998379873375587</Value>
+             <Value>0.840365666412023</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -23285,11 +23342,11 @@ equations
            <ZAxis>
             <X>
              <VariableName>Transformation_1\R_next[1,3]</VariableName>
-             <Value>-0.01974184811115265</Value>
+             <Value>-0.9318734407424927</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_next[2,3]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627834916114807</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_next[3,3]</VariableName>
@@ -23299,11 +23356,11 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_1\R_next[1,2]</VariableName>
-             <Value>6.451534861895425e-9</Value>
+             <Value>3.045314826977119e-7</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_next[2,2]</VariableName>
-             <Value>3.2673119676474016e-7</Value>
+             <Value>-1.1855579629127533e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_next[3,2]</VariableName>
@@ -23338,26 +23395,26 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_2\pose_abs[1]</VariableName>
-            <Value>-0.37173714983269096</Value>
+            <Value>-0.004544239626584764</Value>
            </X>
            <Y>
             <VariableName>Transformation_2\pose_abs[2]</VariableName>
-            <Value>0.007340276275552194</Value>
+            <Value>-0.0116730644795558</Value>
            </Y>
            <Z>
             <VariableName>Transformation_2\pose_abs[3]</VariableName>
-            <Value>0.2950293761450487</Value>
+            <Value>0.5139743592466641</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_2\R_next[1,3]</VariableName>
-             <Value>-0.01974184811115265</Value>
+             <Value>-0.9318734407424927</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_next[2,3]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627834916114807</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_next[3,3]</VariableName>
@@ -23367,15 +23424,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_2\R_next[1,2]</VariableName>
-             <Value>0.4843065142631531</Value>
+             <Value>-0.3626258969306946</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_next[2,2]</VariableName>
-             <Value>-0.00956268422305584</Value>
+             <Value>-0.931468665599823</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_next[3,2]</VariableName>
-             <Value>0.8748461604118347</Value>
+             <Value>-0.029473867267370224</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23571,11 +23628,11 @@ equations
            <ZAxis>
             <X>
              <VariableName>Transformation_1\R_body[1,3]</VariableName>
-             <Value>6.451535305984635e-9</Value>
+             <Value>3.045314826977119e-7</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_body[2,3]</VariableName>
-             <Value>3.2673119676474016e-7</Value>
+             <Value>-1.1855579629127533e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_body[3,3]</VariableName>
@@ -23585,15 +23642,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_1\R_body[1,2]</VariableName>
-             <Value>-0.01974184811115265</Value>
+             <Value>-0.9318734407424927</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_body[2,2]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627834916114807</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_body[3,2]</VariableName>
-             <Value>3.2679486139386427e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23694,40 +23751,40 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_2\pose_abs_body[1]</VariableName>
-            <Value>-0.37440229936733466</Value>
+            <Value>-0.13034715610829606</Value>
            </X>
            <Y>
             <VariableName>Transformation_2\pose_abs_body[2]</VariableName>
-            <Value>-0.1276334136696574</Value>
+            <Value>0.037302707129410445</Value>
            </Y>
            <Z>
             <VariableName>Transformation_2\pose_abs_body[3]</VariableName>
-            <Value>0.29502942026235973</Value>
+            <Value>0.5139744033639752</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_2\R_body[1,3]</VariableName>
-             <Value>0.8746756315231323</Value>
+             <Value>0.010692328214645386</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_body[2,3]</VariableName>
-             <Value>-0.017271237447857857</Value>
+             <Value>0.02746603451669216</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_body[3,3]</VariableName>
-             <Value>-0.4844008982181549</Value>
+             <Value>-0.9995655417442322</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_2\R_body[1,2]</VariableName>
-             <Value>-0.01974184811115265</Value>
+             <Value>-0.9318735003471375</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_body[2,2]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627834618091583</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_body[3,2]</VariableName>
@@ -23762,26 +23819,26 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_3\pose_abs[1]</VariableName>
-            <Value>-0.7638447980988169</Value>
+            <Value>0.13559523145759522</Value>
            </X>
            <Y>
             <VariableName>Transformation_3\pose_abs[2]</VariableName>
-            <Value>0.015082717294510434</Value>
+            <Value>0.3482998484953176</Value>
            </Y>
            <Z>
             <VariableName>Transformation_3\pose_abs[3]</VariableName>
-            <Value>0.3022202916258238</Value>
+            <Value>0.582095523862593</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_3\R_next[1,3]</VariableName>
-             <Value>-0.01974184811115265</Value>
+             <Value>-0.9318734407424927</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_next[2,3]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627834916114807</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_next[3,3]</VariableName>
@@ -23791,15 +23848,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_3\R_next[1,2]</VariableName>
-             <Value>0.018328912556171417</Value>
+             <Value>-0.06300348788499832</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_next[2,2]</VariableName>
-             <Value>-3.615903260651976e-4</Value>
+             <Value>-0.16183646023273468</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_next[3,2]</VariableName>
-             <Value>0.9998319745063782</Value>
+             <Value>0.9848043322563171</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23830,44 +23887,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_4\pose_abs[1]</VariableName>
-            <Value>-0.7659996208521974</Value>
+            <Value>0.03388124379849308</Value>
            </X>
            <Y>
             <VariableName>Transformation_4\pose_abs[2]</VariableName>
-            <Value>-0.09404601053896827</Value>
+            <Value>0.3878976667999003</Value>
            </Y>
            <Z>
             <VariableName>Transformation_4\pose_abs[3]</VariableName>
-            <Value>0.30222032729548676</Value>
+            <Value>0.582095559532256</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_4\R_next[1,3]</VariableName>
-             <Value>-0.01774909906089306</Value>
+             <Value>-0.3627837896347046</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_next[2,3]</VariableName>
-             <Value>3.498146834317595e-4</Value>
+             <Value>-0.9318733215332031</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_next[3,3]</VariableName>
-             <Value>-0.9998424649238586</Value>
+             <Value>-2.006376307690516e-4</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_4\R_next[1,2]</VariableName>
-             <Value>-0.0197418425232172</Value>
+             <Value>-0.9318733811378479</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_next[2,2]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627837896347046</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_next[3,2]</VariableName>
-             <Value>6.53468248401623e-7</Value>
+             <Value>3.268651198595762e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23898,44 +23955,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_5\pose_abs[1]</VariableName>
-            <Value>-0.767679572840005</Value>
+            <Value>-4.562419903468007e-4</Value>
            </X>
            <Y>
             <VariableName>Transformation_5\pose_abs[2]</VariableName>
-            <Value>-0.0940129005833108</Value>
+            <Value>0.2996958572432492</Value>
            </Y>
            <Z>
             <VariableName>Transformation_5\pose_abs[3]</VariableName>
-            <Value>0.2075852430783849</Value>
+            <Value>0.5820765691801587</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_5\R_next[1,3]</VariableName>
-             <Value>0.707438588142395</Value>
+             <Value>7.366981299128383e-5</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_next[2,3]</VariableName>
-             <Value>-0.7066588997840881</Value>
+             <Value>1.8627491954248399e-4</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_next[3,3]</VariableName>
-             <Value>-0.012805940583348274</Value>
+             <Value>-1.0</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_5\R_next[1,2]</VariableName>
-             <Value>0.017749330028891563</Value>
+             <Value>0.3627837896347046</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_next[2,2]</VariableName>
-             <Value>-3.500459424685687e-4</Value>
+             <Value>0.9318733811378479</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_next[3,2]</VariableName>
-             <Value>0.9998424053192139</Value>
+             <Value>2.003108529606834e-4</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23966,44 +24023,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_6\pose_abs[1]</VariableName>
-            <Value>-0.7094573816972919</Value>
+            <Value>-4.501789647184952e-4</Value>
            </X>
            <Y>
             <VariableName>Transformation_6\pose_abs[2]</VariableName>
-            <Value>-0.15217092208658856</Value>
+            <Value>0.29971118766860133</Value>
            </Y>
            <Z>
             <VariableName>Transformation_6\pose_abs[3]</VariableName>
-            <Value>0.20653131422046794</Value>
+            <Value>0.49977657083132654</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_6\R_next[1,3]</VariableName>
-             <Value>0.707438588142395</Value>
+             <Value>7.366981299128383e-5</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_next[2,3]</VariableName>
-             <Value>-0.7066588997840881</Value>
+             <Value>1.8627491954248399e-4</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_next[3,3]</VariableName>
-             <Value>-0.012805940583348274</Value>
+             <Value>-1.0</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_6\R_next[1,2]</VariableName>
-             <Value>0.3984881639480591</Value>
+             <Value>-0.014008216559886932</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_next[2,2]</VariableName>
-             <Value>0.38383248448371887</Value>
+             <Value>-0.9999019503593445</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_next[3,2]</VariableName>
-             <Value>0.8329944610595703</Value>
+             <Value>-1.8728863506112248e-4</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24084,44 +24141,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_3\pose_abs_body[1]</VariableName>
-            <Value>-0.37203327755876253</Value>
+            <Value>-0.01852234145788602</Value>
            </X>
            <Y>
             <VariableName>Transformation_3\pose_abs_body[2]</VariableName>
-            <Value>-0.007656800385026647</Value>
+            <Value>-0.006231312078559537</Value>
            </Y>
            <Z>
             <VariableName>Transformation_3\pose_abs_body[3]</VariableName>
-            <Value>0.29502938104697213</Value>
+            <Value>0.5139743641485875</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_3\R_body[1,3]</VariableName>
-             <Value>-0.9996371269226074</Value>
+             <Value>0.3572708070278168</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_body[2,3]</VariableName>
-             <Value>0.019738538190722466</Value>
+             <Value>0.9177129864692688</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_body[3,3]</VariableName>
-             <Value>0.018332483246922493</Value>
+             <Value>0.17366772890090942</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_3\R_body[1,2]</VariableName>
-             <Value>-0.019741849973797798</Value>
+             <Value>-0.9318735003471375</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_body[2,2]</VariableName>
-             <Value>-0.9998051524162292</Value>
+             <Value>0.3627835214138031</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_body[3,2]</VariableName>
-             <Value>3.2680691219866276e-7</Value>
+             <Value>3.203749656677246e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24202,44 +24259,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_4\pose_abs_body[1]</VariableName>
-            <Value>-0.7641537585686808</Value>
+            <Value>0.12101140079529972</Value>
            </X>
            <Y>
             <VariableName>Transformation_4\pose_abs_body[2]</VariableName>
-            <Value>-5.642326773331407e-4</Value>
+            <Value>0.3539773816933318</Value>
            </Y>
            <Z>
             <VariableName>Transformation_4\pose_abs_body[3]</VariableName>
-            <Value>0.30222026618965625</Value>
+            <Value>0.5820955289708026</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_4\R_body[1,3]</VariableName>
-             <Value>-0.01774909906089306</Value>
+             <Value>-0.3627837896347046</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_body[2,3]</VariableName>
-             <Value>3.498146834317595e-4</Value>
+             <Value>-0.9318733215332031</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_body[3,3]</VariableName>
-             <Value>-0.9998424649238586</Value>
+             <Value>-2.006376307690516e-4</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_4\R_body[1,2]</VariableName>
-             <Value>-0.0197418425232172</Value>
+             <Value>-0.9318733811378479</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_body[2,2]</VariableName>
-             <Value>-0.9998050928115845</Value>
+             <Value>0.3627837896347046</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_body[3,2]</VariableName>
-             <Value>6.53468248401623e-7</Value>
+             <Value>3.268651198595762e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24320,44 +24377,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_5\pose_abs_body[1]</VariableName>
-            <Value>-0.7659933867056135</Value>
+            <Value>0.03400821812752366</Value>
            </X>
            <Y>
             <VariableName>Transformation_5\pose_abs_body[2]</VariableName>
-            <Value>-0.09404615491267956</Value>
+            <Value>0.3882238224670174</Value>
            </Y>
            <Z>
             <VariableName>Transformation_5\pose_abs_body[3]</VariableName>
-            <Value>0.30257027174183376</Value>
+            <Value>0.5820955987099136</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_5\R_body[1,3]</VariableName>
-             <Value>-0.017749328166246414</Value>
+             <Value>-0.3627837896347046</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_body[2,3]</VariableName>
-             <Value>3.5004556411877275e-4</Value>
+             <Value>-0.9318733215332031</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_body[3,3]</VariableName>
-             <Value>-0.9998424053192139</Value>
+             <Value>-2.0031083840876818e-4</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_5\R_body[1,2]</VariableName>
-             <Value>0.707438588142395</Value>
+             <Value>7.36697984393686e-5</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_body[2,2]</VariableName>
-             <Value>-0.7066588997840881</Value>
+             <Value>1.8627493409439921e-4</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_body[3,2]</VariableName>
-             <Value>-0.012805940583348274</Value>
+             <Value>-1.0</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24438,44 +24495,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_6\pose_abs_body[1]</VariableName>
-            <Value>-0.7667599027490509</Value>
+            <Value>-4.5614621958960994e-4</Value>
            </X>
            <Y>
             <VariableName>Transformation_6\pose_abs_body[2]</VariableName>
-            <Value>-0.09493155705906124</Value>
+            <Value>0.2996960994006363</Value>
            </Y>
            <Z>
             <VariableName>Transformation_6\pose_abs_body[3]</VariableName>
-            <Value>0.20756859535644942</Value>
+            <Value>0.5807765692062403</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_6\R_body[1,3]</VariableName>
-             <Value>-0.3984881639480591</Value>
+             <Value>0.014008215628564358</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_body[2,3]</VariableName>
-             <Value>-0.38383251428604126</Value>
+             <Value>0.9999018907546997</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_body[3,3]</VariableName>
-             <Value>-0.8329944610595703</Value>
+             <Value>1.8728862050920725e-4</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_6\R_body[1,2]</VariableName>
-             <Value>0.707438588142395</Value>
+             <Value>7.366981299128383e-5</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_body[2,2]</VariableName>
-             <Value>-0.7066588997840881</Value>
+             <Value>1.8627490499056876e-4</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_body[3,2]</VariableName>
-             <Value>-0.012805894948542118</Value>
+             <Value>-1.0</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24574,44 +24631,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_Body\pos_load[1]</VariableName>
-            <Value>0.3</Value>
+            <Value>-0.30370872423684053</Value>
            </X>
            <Y>
             <VariableName>Transformation_Body\pos_load[2]</VariableName>
-            <Value>0.0</Value>
+            <Value>0.001067493565945354</Value>
            </Y>
            <Z>
             <VariableName>Transformation_Body\pos_load[3]</VariableName>
-            <Value>0.0</Value>
+            <Value>0.06358146798734876</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_Body\R_load[1,3]</VariableName>
-             <Value>0.0</Value>
+             <Value>-0.009150677360594273</Value>
             </X>
             <Y>
              <VariableName>Transformation_Body\R_load[2,3]</VariableName>
-             <Value>0.0</Value>
+             <Value>0.0035779511090368032</Value>
             </Y>
             <Z>
              <VariableName>Transformation_Body\R_load[3,3]</VariableName>
-             <Value>1.0</Value>
+             <Value>-0.9999517202377319</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_Body\R_load[1,2]</VariableName>
-             <Value>0.0</Value>
+             <Value>-0.01586989313364029</Value>
             </X>
             <Y>
              <VariableName>Transformation_Body\R_load[2,2]</VariableName>
-             <Value>1.0</Value>
+             <Value>-0.9998682141304016</Value>
             </Y>
             <Z>
              <VariableName>Transformation_Body\R_load[3,2]</VariableName>
-             <Value>0.0</Value>
+             <Value>-0.0034324252046644688</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24703,7 +24760,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -24711,32 +24768,32 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.45</Minimum>
-      <Maximum>0.05</Maximum>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q_1</Label>
      </Axis>
      <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>qdot_1</Label>
      </Axis>
      <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q_1_ref</Label>
      </Axis>
      <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>q1_dot_ref</Label>
+      <Label>qdot_1_ref</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -24796,7 +24853,7 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[1]</VarName>
+       <VarName>Unwrap\theta_unwrapped[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -24815,7 +24872,7 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>PD_1\Constant\output[2]</VarName>
+       <VarName>PD_1\Constant\output</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -24897,7 +24954,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -24905,8 +24962,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.0035</Minimum>
-      <Maximum>0.0015</Maximum>
+      <Minimum>-0.003</Minimum>
+      <Maximum>0.002</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>deflection_1</Label>
@@ -25074,976 +25131,6 @@ equations
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>4</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Joint 2</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-0.8</Minimum>
-      <Maximum>0.2</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_2</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.5</Minimum>
-      <Maximum>1.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>qdot_2</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.5</Minimum>
-      <Maximum>1.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_2_ref</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.5</Minimum>
-      <Maximum>1.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q2_dot_ref</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_2\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>9109504</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>9109504</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_2\Integrate\input</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>2124031</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>2124031</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[2]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>16711680</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>16711680</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PD_2\Constant\output[2]</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
-     <PlotId>5</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Joint 3</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-0.8</Minimum>
-      <Maximum>0.2</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_3</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>qdot_3</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_3_ref</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q3_dot_ref</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_3\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>9109504</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>9109504</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_3\Integrate\input</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>2124031</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>2124031</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[3]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>16711680</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>16711680</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PD_3\Constant\output[2]</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
-     <PlotId>6</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Joint 4</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-0.14999999999999997</Minimum>
-      <Maximum>0.35000000000000003</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_4</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>qdot_4</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_4_ref</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q4_dot_ref</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_4\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>9109504</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>9109504</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_1\Integrate\input</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>2124031</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>2124031</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[4]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>16711680</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>16711680</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PD_4\Constant\output[2]</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
-     <PlotId>7</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Joint 5</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-9.0</Minimum>
-      <Maximum>1.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_5</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_5_ref</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>output</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>qdot_5</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_5\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>2124031</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>2124031</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[5]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>16711680</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>16711680</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PD_5\Constant\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>9109504</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>9109504</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_5\Integrate\input</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
-     <PlotId>8</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Joint 6</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-8.0</Minimum>
-      <Maximum>2.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_6</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>qdot_6</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q_6_ref</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>q6_dot_ref</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_6\Integrate\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>9109504</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>9109504</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Joint_6\Integrate\input</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>2124031</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>2124031</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>IK\theta_ref[6]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>16711680</LineColor>
-      <LineStyle>2</LineStyle>
-      <TickColor>16711680</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PD_6\Constant\output[2]</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
      <PlotId>9</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
@@ -26113,7 +25200,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26121,7 +25208,7 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-9.0</Minimum>
+      <Minimum>-4.0</Minimum>
       <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
@@ -26282,7 +25369,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26297,15 +25384,15 @@ equations
       <Label>PD_output</Label>
      </Axis>
      <Axis>
-      <Minimum>-100.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Minimum>-80.0</Minimum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau</Label>
+      <Label>tau_total</Label>
      </Axis>
      <Axis>
-      <Minimum>-100.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Minimum>-80.0</Minimum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>gravity_comp</Label>
@@ -26451,7 +25538,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26459,25 +25546,25 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-40.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Minimum>-30.0</Minimum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>output</Label>
+      <Label>PD_output</Label>
      </Axis>
      <Axis>
-      <Minimum>-35.0</Minimum>
-      <Maximum>15.0</Maximum>
+      <Minimum>-30.0</Minimum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau</Label>
+      <Label>tau_total</Label>
      </Axis>
      <Axis>
-      <Minimum>-35.0</Minimum>
-      <Maximum>15.0</Maximum>
+      <Minimum>-30.0</Minimum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>gravity</Label>
+      <Label>gravity_comp</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -26620,7 +25707,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26628,25 +25715,25 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>8.0</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>output</Label>
+      <Label>PD_output</Label>
      </Axis>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau</Label>
+      <Label>tau_total</Label>
      </Axis>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>gravity</Label>
+      <Label>gravity_comp</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -26789,7 +25876,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26797,25 +25884,25 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-80.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>output</Label>
+      <Label>PD_output</Label>
      </Axis>
      <Axis>
       <Minimum>-2.0</Minimum>
       <Maximum>18.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau</Label>
+      <Label>tau_total</Label>
      </Axis>
      <Axis>
       <Minimum>-2.0</Minimum>
       <Maximum>18.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>gravity</Label>
+      <Label>gravity_comp</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -26958,7 +26045,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -26966,25 +26053,25 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-45.0</Minimum>
-      <Maximum>5.0</Maximum>
+      <Minimum>-18.0</Minimum>
+      <Maximum>2.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>output</Label>
+      <Label>PD_output</Label>
      </Axis>
      <Axis>
-      <Minimum>-25.0</Minimum>
-      <Maximum>25.0</Maximum>
+      <Minimum>-18.0</Minimum>
+      <Maximum>2.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>tau</Label>
+      <Label>tau_total</Label>
      </Axis>
      <Axis>
-      <Minimum>-25.0</Minimum>
-      <Maximum>25.0</Maximum>
+      <Minimum>-18.0</Minimum>
+      <Maximum>2.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>gravity</Label>
+      <Label>gravity_comp</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -27127,7 +26214,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -27135,8 +26222,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.020000000000000004</Minimum>
-      <Maximum>0.07999999999999999</Maximum>
+      <Minimum>-0.5999999999999999</Minimum>
+      <Maximum>1.4000000000000001</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>X</Label>
@@ -27373,7 +26460,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -27381,8 +26468,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>3.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>roll</Label>
@@ -27619,7 +26706,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -27627,50 +26714,50 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.5000000000000001</Minimum>
-      <Maximum>0.5</Maximum>
+      <Minimum>-0.6000000000000001</Minimum>
+      <Maximum>1.4</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>output</Label>
+      <Label>Cond</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[1]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[2]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[3]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[4]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[5]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.4</Minimum>
-      <Maximum>1.6</Maximum>
+      <Minimum>-0.006</Minimum>
+      <Maximum>0.014</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>constrainer.f[6]</Label>
@@ -27695,7 +26782,7 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Constant\output</VarName>
+       <VarName>DataFromFile\Cond</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -27895,7 +26982,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -27903,7 +26990,7 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.2000000000000002</Minimum>
+      <Minimum>-1.2</Minimum>
       <Maximum>0.8</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
@@ -28063,7 +27150,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -28071,8 +27158,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.1999999999999999</Minimum>
-      <Maximum>1.8</Maximum>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>roll</Label>
@@ -28231,7 +27318,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -28242,22 +27329,43 @@ equations
       <Minimum>-1.2</Minimum>
       <Maximum>0.8</Maximum>
       <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos[1]</Label>
+      <Scaling>1</Scaling>
+      <Label>pose_des[1]</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.2</Minimum>
-      <Maximum>0.8</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos[2]</Label>
+      <Scaling>1</Scaling>
+      <Label>pose_des[2]</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.2</Minimum>
-      <Maximum>0.8</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos[3]</Label>
+      <Scaling>1</Scaling>
+      <Label>pose_des[3]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pose_des[4]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pose_des[5]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pose_des[6]</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -28279,7 +27387,7 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pos[1]</VarName>
+       <VarName>Planner\pose_des[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -28298,7 +27406,7 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pos[2]</VarName>
+       <VarName>Planner\pose_des[2]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -28317,7 +27425,64 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pos[3]</VarName>
+       <VarName>Planner\pose_des[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Planner\pose_des[4]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Planner\pose_des[5]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Planner\pose_des[6]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -28399,7 +27564,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -28407,8 +27572,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-9.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>theta_ref[1]</Label>
@@ -28576,7 +27741,7 @@ equations
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>22</PlotId>
+     <PlotId>4</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -28595,7 +27760,7 @@ equations
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>Plot</PlotTitle>
+    <PlotTitle>Joint 2</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -28645,7 +27810,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>0.5579272370663818</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -28653,46 +27818,32 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.039999999999999994</Minimum>
-      <Maximum>0.16</Maximum>
+      <Minimum>-3.5</Minimum>
+      <Maximum>1.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>vel[1]</Label>
+      <Label>q_2</Label>
      </Axis>
      <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.215174999999937</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>vel[2]</Label>
+      <Label>qdot_2</Label>
      </Axis>
      <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.215174999999937</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>vel[3]</Label>
+      <Label>q_2_ref</Label>
      </Axis>
      <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.215174999999937</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
-      <Label>vel[4]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.215174999999937</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>vel[5]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>0.215174999999937</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>vel[6]</Label>
+      <Label>qdot_2_ref</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -28714,13 +27865,13 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[1]</VarName>
+       <VarName>Joint_2\Integrate\output</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>6076255</LineColor>
+      <LineColor>9109504</LineColor>
       <LineStyle>1</LineStyle>
-      <TickColor>6076255</TickColor>
+      <TickColor>9109504</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -28733,13 +27884,13 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[2]</VarName>
+       <VarName>Joint_2\Integrate\input</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>12553035</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>12553035</TickColor>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -28752,13 +27903,13 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[3]</VarName>
+       <VarName>Unwrap\theta_unwrapped[2]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>15086320</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -28771,13 +27922,131 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[4]</VarName>
+       <VarName>PD_2\Constant\output</VarName>
       </YCurveData>
      </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>5</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 3</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.5</Minimum>
+      <Maximum>3.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_3_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_3_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
      <Curve>
-      <LineColor>15790150</LineColor>
+      <LineColor>3355111</LineColor>
       <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
+      <TickColor>3355111</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -28790,13 +28059,13 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[5]</VarName>
+       <VarName>Joint_3\Integrate\output</VarName>
       </YCurveData>
      </Curve>
      <Curve>
-      <LineColor>1696255</LineColor>
+      <LineColor>9109504</LineColor>
       <LineStyle>1</LineStyle>
-      <TickColor>1696255</TickColor>
+      <TickColor>9109504</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -28809,7 +28078,627 @@ equations
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>IK\vel[6]</VarName>
+       <VarName>Joint_3\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Unwrap\theta_unwrapped[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_3\Constant\output</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>6</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 4</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_4</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_4</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_4_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_1_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_4\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_4\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Unwrap\theta_unwrapped[4]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_4\Constant\output</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>7</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 5</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.5</Minimum>
+      <Maximum>3.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_5</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_5</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_5_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_5_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_5\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_5\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Unwrap\theta_unwrapped[5]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_5\Constant\output</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>8</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Joint 6</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>100.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-14.0</Minimum>
+      <Maximum>6.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_6</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_6</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>q_6_ref</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-9.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>qdot_6_ref</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_6\Integrate\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>9109504</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>9109504</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Joint_6\Integrate\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>2124031</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>2124031</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Unwrap\theta_unwrapped[6]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>16711680</LineColor>
+      <LineStyle>2</LineStyle>
+      <TickColor>16711680</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PD_6\Constant\output</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -28824,7 +28713,7 @@ equations
    <PlotPanel>
     <PlotPanelId>1</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 1</Name>
+    <Name>3D_Plot</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>1</PlotId>
@@ -28834,7 +28723,7 @@ equations
    <PlotPanel>
     <PlotPanelId>2</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 2</Name>
+    <Name>Joint_States</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>2</PlotId>
@@ -28848,8 +28737,8 @@ equations
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>3</PlotPanelId>
-    <PlotPanelVisible>false</PlotPanelVisible>
-    <Name>Window 3</Name>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Torques</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>9</PlotId>
@@ -28863,8 +28752,8 @@ equations
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>4</PlotPanelId>
-    <PlotPanelVisible>false</PlotPanelVisible>
-    <Name>Window 4</Name>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Deflections</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>3</PlotId>
@@ -28874,7 +28763,7 @@ equations
    <PlotPanel>
     <PlotPanelId>5</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 5</Name>
+    <Name>Dynamics_Proof</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>15</PlotId>
@@ -28885,7 +28774,7 @@ equations
    <PlotPanel>
     <PlotPanelId>6</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 6</Name>
+    <Name>Constraint_Test</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>17</PlotId>
@@ -28895,7 +28784,7 @@ equations
    <PlotPanel>
     <PlotPanelId>7</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 7</Name>
+    <Name>End_Effector</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>18</PlotId>
@@ -28906,7 +28795,7 @@ equations
    <PlotPanel>
     <PlotPanelId>8</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 8</Name>
+    <Name>Inverse_Kinematics</Name>
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>20</PlotId>
@@ -28914,20 +28803,10 @@ equations
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
-   <PlotPanel>
-    <PlotPanelId>9</PlotPanelId>
-    <PlotPanelVisible>true</PlotPanelVisible>
-    <Name>Window 9</Name>
-    <Tiling>0</Tiling>
-    <PlotIds>
-     <PlotId>22</PlotId>
-    </PlotIds>
-    <ToggleState>Base</ToggleState>
-   </PlotPanel>
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00416667 0.0037037 0.995833 0.990741
+0.00833333 0.0037037 0.991667 0.977778
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
 0.00416667 0.0287037 1 1
@@ -28939,7 +28818,7 @@ equations
 0.00416667 0.0287037 1 1
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="5">
-0.00416667 0.0287037 1.00417 1.00741
+0.00416667 0.0287037 1 1
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="6">
 0.00416667 0.0287037 1 1
@@ -28948,10 +28827,7 @@ equations
 0.00416667 0.0287037 1 1
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="8">
-0.00416667 0.0287037 1.00417 1.00741
-   </WindowRectangle>
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="9">
-0.00416667 0.0287037 1.00417 1.00741
+0.00416667 0.0287037 1 1
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -29096,9 +28972,6 @@ equations
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
