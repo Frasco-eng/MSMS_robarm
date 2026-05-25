@@ -5,82 +5,37 @@
 
 \section{Test Scenario}
 
-The simulation is designed to test all layers of the model simultaneously:
+The simulation is designed to test all layers of the model simultaneously, covering both the dynamic response of the mechanical chain and the complete trajectory-tracking control stack:
 \begin{enumerate}
-  \item \textbf{Multi-joint step reference}: each joint is commanded to move from its initial angle to a specified target angle.
-  \item \textbf{Gravity compensation}: the arm must hold its posture against gravity at all times.
+  \item \textbf{Cartesian trajectory tracking}: the end-effector is commanded to follow a smooth six-dimensional Cartesian reference trajectory (position and orientation) generated offline via a PCHIP spline interpolant through a set of ten waypoints spanning 100 seconds of simulation.
+  \item \textbf{Inverse kinematics}: at every time step, the desired end-effector pose is mapped to joint-space references by the closed-form UR5 IK solver. An unwrapping stage ensures continuity of the joint references across $2\pi$ boundaries.
+  \item \textbf{Gravity compensation}: the arm must hold its posture against gravity at all times, including while carrying a load.
   \item \textbf{Harmonic drive effects}: the elastic flex-spline introduces a slight lag between the commanded and actual joint position.
-  \item \textbf{Payload}: approximately 1 Kg rigid cube is attached at the tool-centre point.
+  \item \textbf{Switchable payload}: a rigid load of approximately 1~kg is attached to and detached from the end-effector at prescribed times, controlled by the \texttt{Cond} flag embedded in the trajectory CSV.
 \end{enumerate}
 
-The joint initial conditions are set to $q_i(0) = 0$ and $\dot{q}_i(0) = 0$ for all joints.
+The joint initial conditions are set to match the IK solution at the first waypoint $\mathbf{x}_0 = [-0.72,\; -0.11,\; 0.007,\; \pi/2,\; 0,\; 0]^T$~m/rad:
 \begin{equation}
-q_0 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix} \qquad
-\dot{q_0} = \begin{bmatrix}0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+q_0 = \begin{bmatrix} -0.81725 \\ -0.19145 \\ -0.005491 \\ 0 \\ 0 \\ 0 \end{bmatrix} \quad \text{(rad)}, \qquad
+\dot{q}_0 = \begin{bmatrix}0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix} \quad \text{(rad/s)}.
 \end{equation}
 
-
-The reference joint angles and PD gains used in the test are summarised in \cref{tab:test_params}.
-
-\begin{table}[H]
-  \centering
-  \caption{Reference joint angles and PD gains for the test scenario.}
-  \label{tab:test_params}
-  \begin{tabular}{@{}ccccc@{}}
-    \toprule
-    Joint & $q^*$ [rad] & $\dot{q}^*$ [rad/s] & $K_p$ [Nm/rad] & $K_d$ [Nm\,s/rad] \\
-    \midrule
-    1 & $\frac{\pi}{2}$   & 0 & 10 & 5 \\
-    2 & $-\frac{\pi}{4}$ & 0 & 10 & 5 \\
-    3 & $-\frac{\pi}{2}$  & 0 & 10 & 5 \\
-    4 & 0.0   & 0 & 10  & 5 \\
-    5 & $\frac{\pi}{2}$   & 0 & 10  & 5 \\
-    6 & $\frac{\pi}{3}$   & 0 & 10  & 5 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-Making the following Proportional and Derivative Matrix:
-\begin{equation}
-K_p = \begin{bmatrix}10 & 0 & 0 & 0 & 0 & 0 \\
-0 & 10 & 0 & 0 & 0 & 0 \\
-0 & 0 & 10 & 0 & 0 & 0 \\
-0 & 0 & 0 & 10 & 0 & 0 \\
-0 & 0 & 0 & 0 & 10 & 0 \\
-0 & 0 & 0 & 0 & 0 & 10 \\
-\end{bmatrix} \qquad
-K_d = \begin{bmatrix}5 & 0 & 0 & 0 & 0 & 0 \\
-0 & 5 & 0 & 0 & 0 & 0 \\
-0 & 0 & 5 & 0 & 0 & 0 \\
-0 & 0 & 0 & 5 & 0 & 0 \\
-0 & 0 & 0 & 0 & 5 & 0 \\
-0 & 0 & 0 & 0 & 0 & 5 \\
-\end{bmatrix}
-\end{equation}
-
-Target joint angles and velocities are chosen to be within the UR5's physical limits and to produce a non-trivial motion that tests the dynamic response of the system.
-
-\begin{equation}
-q^* = \begin{bmatrix} \frac{\pi}{2} \\ -\frac{\pi}{4} \\ -\frac{\pi}{2} \\ 0.0 \\ \frac{\pi}{2} \\ \frac{\pi}{3} \end{bmatrix} \qquad
-\dot{q}^* = \begin{bmatrix}0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-\end{equation}
 
 \section{3-D Animation}
 
-Click the image \Cref{fig:anim} to show the animation of the UR5 robot reaching its target configuration.
-
+Click the image \Cref{fig:anim} to show the animation of the UR5 robot following its Cartesian trajectory.
 
 \begin{figure}[H]
   \centering
-  \href{https://liveunibo.sharepoint.com/:v:/s/idughis/IQArw4KkpN96S7hrhPBzuWamAVoQNgidEd90RXpPfWLRGk4?e=7XcFCA}{\includegraphics[width=0.8\textwidth]{chapter_results_conclusions/figs/stl2.png}}
-  \caption{3-D animation from rest to target configuration.}
+  \href{https://liveunibo.sharepoint.com/:v:/s/idughis/IQCJnBP_Y-YvTbkAXLTUZcDNAXnBRojG6Ld38mDD1TUP0nQ?e=Ib98C5}{\includegraphics[width=0.8\textwidth]{chapter_results_conclusions/figs/stl2.png}}
+  \caption{3-D animation of the UR5 trajectory tracking.}
   \label{fig:anim}
 \end{figure}
 
 
 \section{Joint Position Tracking}
 
-\Cref{fig:joint_pos} shows the time evolution of all six joint angles $q_i(t)$ compared to their references $q_i^*$.
+\Cref{fig:joint_pos} shows the time evolution of all six joint angles $q_i(t)$ compared to their references $q_i^*(t)$.
 
 \begin{figure}[H]
   \centering
@@ -90,8 +45,11 @@ Click the image \Cref{fig:anim} to show the animation of the UR5 robot reaching 
 \end{figure}
 
 \paragraph{Observation.}
-All six joints converge to their reference values within approximately 6s.
-Thanks to the correct tuning of the PD controller, no overshoots are present.
+All six joints track their time-varying references with a small steady-state error, consistent with the PD control law.
+The tracking error remains bounded throughout the 100-second simulation, even across the load pick-up and release events.
+No overshoots are present thanks to the derivative damping term and the gravity feedforward.
+
+The delay between the reference and actual joint angles is around 0.3 seconds.  
 
 \section{Joint Torques}
 
@@ -105,8 +63,8 @@ Thanks to the correct tuning of the PD controller, no overshoots are present.
 \end{figure}
 
 \paragraph{Observation.}
-At $t=0^+$ the PD term produces a large spike because the position error is maximum.
-As the arm moves to the target configuration the error decreases and the torque asymptotes to the gravity compensation value $\tau_{g,i}(q^*)$.
+The torques are smooth and continuous, following the smooth Cartesian trajectory.
+A visible step change occurs when the load is picked up or released, as the gravity compensation term instantaneously adds or removes the load weight contribution.
 The close match between the steady-state commanded torque and the analytically predicted gravity torque confirms that the compensation term is correctly implemented.
 
 
@@ -122,10 +80,12 @@ The close match between the steady-state commanded torque and the analytically p
 \end{figure}
 
 \paragraph{Observation.}
-Peak deflections occur during the transient and are bounded well within the rated torque limits of the selected HFUS-14/HFUS-20 units.
-At the start there is an oscillation that is rapidly dissipated by the resistor element.
+Peak deflections occur during the transient and are bounded. The added structural damping R element on the compliance branch effectively prevents sustained oscillations: the deflection waveforms are smooth and decay rapidly after each change in the reference trajectory.
 
-\section{Position of the End-Effector}
+
+%-------------------------------------------------------------
+\section{End-Effector Trajectory: Reference vs.\ Actual}
+%-------------------------------------------------------------
 
 \Cref{fig:end_effector_position} shows the end effector position in the world reference frame. 
 
@@ -136,22 +96,60 @@ At the start there is an oscillation that is rapidly dissipated by the resistor 
   \label{fig:end_effector_position}
 \end{figure}
 
+
+
 \paragraph{Observation.}
+The actual end-effector position closely tracks the Cartesian reference generated by the PCHIP spline, with a small but non-zero lag attributable to the finite PD gains.
+The delay between the reference and actual end-effector position is around 0.4 seconds, while the error magnitude is $ <0.5\%$
+
+
+%-------------------------------------------------------------
+\section{End-Effector Position: Kinematics vs.\ Dynamics}
+%-------------------------------------------------------------
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{chapter_results_conclusions/figs/dynamics_proof.png}
+  \caption{ comparison of end-effector XYZ position computed (i) directly from the bond-graph state via the DH forward kinematics chain (Transformation blocks) and (ii) from the body velocity integration in the Link sub-models}
+  \label{fig:kinematics_vs_dynamics}
+\end{figure}
+
+\paragraph{Observation.}
+The end-effector position computed by forward kinematics through the Denavit--Hartenberg transformation chain and the position obtained by integrating the bond-graph body velocities within the Link sub-models are in very close agreement throughout the simulation, with a discrepancy of the order of numerical precision (below $10^{-8}$~m).
+This internal consistency check confirms that the MTF-based wrench/twist propagation and the DH transformation chain are mutually coherent: the kinematic and dynamic layers of the model are correctly coupled.
+
+
+%-------------------------------------------------------------
+\section{Load--End-Effector Constraint Verification}
+%-------------------------------------------------------------
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{chapter_results_conclusions/figs/constraints.png}
+  \caption{time evolution of the six-component constraint wrench at the X0 junction, and of the velocity difference between the end-effector port and the payload body during the load-attached phase}
+  \label{fig:constraints}
+\end{figure}
+
+
+\paragraph{Observation.}
+During the load-attached phase (controlled by the \texttt{Cond} flag), the velocity difference between the end-effector port and the payload body remains at the level of numerical noise ($<10^{-3}$~m/s), confirming that the very stiff C element ($c = 10^{-6}$) effectively enforces a rigid connection.
+The constraint wrench correctly reflects the inertial and gravitational load of the $1\,\text{kg}$ payload: during acceleration phases the force component along the direction of motion increases accordingly, while at near-constant velocity the wrench is dominated by the gravity contribution.
+At the load pick-up and release instants a brief transient is visible in the constraint wrench as the stiff spring absorbs the initial velocity mismatch; the additional R damper at the constraint junction suppresses this transient within a few simulation steps.
+
 
 %=============================================================
 \section{Conclusions}
 %=============================================================
 
 A complete bond-graph model of the UR5 six-degree-of-freedom robot manipulator has been presented and validated.
-Starting from the fundamental Newton--Euler equations of a rigid body expressed in terms of twists and wrenches, a hierarchical set of reusable 20-sim sub-models --- \texttt{Link}, \texttt{Joint}, \texttt{Transformation}, \texttt{HarmonicDrive}, \texttt{PD}, and \texttt{GravityTerm} --- was developed.
+Starting from the fundamental Newton--Euler equations of a rigid body expressed in terms of twists and wrenches, a hierarchical set of reusable 20-sim sub-models --- \texttt{Link}, \texttt{Joint}, \texttt{Transformation}, \texttt{HarmonicDrive}, \texttt{PD}, and \texttt{GravityTerm} --- was developed and assembled into a complete closed-loop trajectory tracking system.
 
 The following aspects deserve particular emphasis:
 \begin{itemize}
   \item The \textbf{Modulated transformer} (MTF) is the central bond-graph element for both the change-of-reference-point in the Link model and the DH transformation in the Joint model.
-  \item \textbf{Causality assignment} is the most challenging design step and it's possible to mantain a full integral causality of all the elements thanks to constraint blocks, used to interface two rigid bodies. 
+  \item \textbf{Causality assignment} is the most challenging design step and it's possible to maintain a full integral causality of all the elements thanks to constraint blocks, used to interface two rigid bodies. 
   \item The \textbf{GravityTerm} block, while signal-only, is critical for controller stability: without feedforward compensation, the PD controller cannot hold arbitrary postures.
+  \item The \textbf{structural damping} added in parallel with the flex-spline compliance is necessary to obtain physically plausible and numerically well-behaved harmonic drive dynamics; without it, the elastic mode persists indefinitely.
+  \item The \textbf{switchable load} mechanism based on the \texttt{SwitchingZeroJunction} and the trajectory \texttt{Cond} flag elegantly handles the pick-and-place scenario while preserving integral causality throughout, requiring no modification of the underlying bond-graph topology.
+  \item The \textbf{closed-form IK solver} combined with a phase-unwrapping stage provides smooth, continuous joint references directly from the Cartesian trajectory, closing the loop between the high-level task-space planner and the joint-level PD+G controller.
 \end{itemize}
-
-
-
-

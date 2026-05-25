@@ -14,6 +14,7 @@ These components exhibit several non-ideal characteristics that introduce dynami
   \item Viscous friction at the input shaft.
   \item Asymmetric Coulomb friction (static friction differs for positive and negative rotation).
   \item Motor rotor inertia reflected through the gear ratio.
+  \item Internal structural damping within the flex-spline.
 \end{enumerate}
 
 \section{Ports \& Parameters}
@@ -68,40 +69,6 @@ The \texttt{HarmonicDrive} sub-model's port structure is as follows:
 \end{center}
 
 The input port \texttt{motor} receives the motor torque and angular velocity (effort-in, flow-out), while the output port \texttt{harmonic\_drive} provides the joint torque and output shaft velocity (effort-out, flow-in).
-The datasheets (HFUS-14 and HFUS-20 series, see \cref{tab:hd14,tab:hd20}) supply the rated and peak torques, maximum speeds, and moment-of-inertia values used to set the model parameters. They are both useful as the first three 
-joints of the UR5 use HFUS-20, while the last three joints use HFUS-14.
-
-\begin{table}[H]
-  \centering
-  \caption{HFUS-14 harmonic drive specifications (selected entries).}
-  \label{tab:hd14}
-  \begin{tabular}{@{}lcc@{}}
-    \toprule
-    Parameter & Ratio 50 & Ratio 100 \\
-    \midrule
-    Repeated peak torque $T_p$ [Nm] & 18 & 28 \\
-    Average torque $T_a$ [Nm]       & 6.9 & 11 \\
-    Rated torque $T_r$ [Nm]         & 5.4 & 7.8 \\
-    Moment of inertia $J$ [$10^{-4}$ kg\,m$^2$] & \multicolumn{2}{c}{0.033--0.091} \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \caption{HFUS-20 harmonic drive specifications (selected entries).}
-  \label{tab:hd20}
-  \begin{tabular}{@{}lcc@{}}
-    \toprule
-    Parameter & Ratio 80 & Ratio 100 \\
-    \midrule
-    Repeated peak torque $T_p$ [Nm] & 74 & 82 \\
-    Average torque $T_a$ [Nm]       & 47 & 49 \\
-    Rated torque $T_r$ [Nm]         & 34 & 40 \\
-    Moment of inertia $J$ [$10^{-4}$ kg\,m$^2$] & \multicolumn{2}{c}{0.193--0.404} \\
-    \bottomrule
-  \end{tabular}
-\end{table}
 
 
 \section{Bond-Graph Structure}
@@ -128,30 +95,45 @@ The transformer element with ratio $N$ enforces:
   \tau_m = N \, \tau_{\text{out}}, \qquad \omega_{\text{out}} = N \, \omega_m.
 \end{equation}
 
-\paragraph{Torsional stiffness (C element -- non-linear).}
-The flex-spline introduces a piecewise-linear torsional compliance parameterised by three stiffness zones:
+\paragraph{Torsional stiffness (C element -- smooth cubic).}
+The flex-spline introduces a non-linear torsional compliance.
+The constitutive law is implemented as a smooth cubic polynomial that interpolates the three stiffness breakpoints:
 \begin{equation}
-  \tau_s(\varphi) =
-  \begin{cases}
-    k_1\,\varphi & \text{if } \varphi \leq \varphi_1 = T_1/k_1, \\
-    k_2(\varphi-\varphi_1) + T_1 & \text{if } \varphi_1 < \varphi < \varphi_2, \\
-    k_3(\varphi-\varphi_2) + T_2 & \text{if } \varphi \geq \varphi_2,
-  \end{cases}
+  \tau_s(\varphi) = a\,\varphi^3 + b\,\varphi,
 \end{equation}
-where $\varphi = \int(\omega_{\text{out}} - \omega_{\text{load}})\,dt$ is the elastic twist of the flex-spline, and $k_1 = 4700$, $k_2 = 6100$, $k_3 = 7100$~Nm/rad, $T_1 = 2$~Nm, $T_2 = 6.9$~Nm.
+where $\varphi = \int(\omega_{\text{out}} - \omega_{\text{load}})\,dt$ is the elastic twist of the flex-spline, and the coefficients $a$ and $b$ are computed from the three-zone stiffness data via:
+\begin{align}
+  \varphi_1 &= \frac{T_1}{k_1}, \qquad \varphi_2 = \varphi_1 + \frac{T_2 - T_1}{k_2}, \\
+  \Delta &= \varphi_1\,\varphi_2\bigl(\varphi_1^2 - \varphi_2^2\bigr), \\
+  a &= \frac{\varphi_2\,T_1 - \varphi_1\,T_2}{\Delta}, \qquad
+  b = \frac{-\varphi_2^3\,T_1 + \varphi_1^3\,T_2}{\Delta},
+\end{align}
 
-\paragraph{Viscous friction at motor shaft (R element).}
-\begin{equation}
-  \tau_{\text{visc}} = b_w\,\omega_m, \qquad b_w = 6.4\times10^{-4}\;\text{Nm\,s/rad}.
-\end{equation}
 
-\paragraph{Asymmetric Coulomb friction at output shaft (R element).}
-Friction at the output shaft is modelled as a smooth approximation to the sign function:
+\paragraph{Viscous and Coulomb friction at the motor shaft (R element).}
+At the motor-side 1-junction (input shaft), a combined resistance element captures both viscous damping and asymmetric Coulomb friction:
 \begin{equation}
-  \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan(\omega - \omega_0) + \frac{b_{f,+}+b_{f,-}}{2},
+  \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan\!\Bigl(\omega - \tan\!\Bigl(\frac{\pi}{2}\cdot\frac{b_{f,+}+b_{f,-}}{b_{f,+}-b_{f,-}}\Bigr)\Bigr)
+  + \frac{b_{f,+}+b_{f,-}}{2}
+  + b_w\,\omega,
 \end{equation}
-with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm, and $\omega_0$ set to shift the friction characteristics to make zero friction coincide with zero velocity.
-This formulation avoids discontinuities in the origin and ensures numerical stability of the integration.
+with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm, and $b_w = 6.4\times10^{-4}$~Nm\,s/rad.
+The $\arctan$ regularisation avoids a discontinuity at zero velocity and ensures numerical stability.
+
+\paragraph{Asymmetric Coulomb friction at the output shaft (R element).}
+An identical resistance formulation is applied at the output-side 1-junction with the same parameters $(b_{f,+},\, b_{f,-},\, b_w)$, capturing friction at the output bearing of the strain-wave gear.
+
+\paragraph{Structural damping of the flex-spline (R element).}
+A third resistance element is placed at the compliance 1-junction, in parallel with the torsional spring C element.
+This models the internal structural damping of the flex-spline itself: as the flex-spline elastically deforms, part of the stored energy is dissipated through material hysteresis.
+The resistance is governed by the same smooth regularised formula:
+\begin{equation}
+  \tau_{d}(\dot{\varphi}) = B_s \cdot \frac{2}{\pi}\arctan(\dot{\varphi}) + b_w\,\dot{\varphi},
+\end{equation}
+where $\dot{\varphi} = \omega_{\text{out}} - \omega_{\text{load}}$ is the relative angular velocity across the flex-spline,
+$B_s = 0.4$~Nm is the symmetric Coulomb-like structural damping coefficient (i.e.\ $B_{s,+} = 0.4$~Nm, $B_{s,-} = -0.4$~Nm), and $b_w$ is the same viscous coefficient shared with the shaft friction elements.
+Because this element is on the compliance branch, its effort opposes the rate of elastic deformation, adding dissipation proportional to how rapidly the flex-spline is being twisted.
+This element is essential to damp the high-frequency oscillations associated with the elastic flex-spline mode that would otherwise persist indefinitely under a purely conservative C element.
 
 \subsection{Causality Assignment}
 
@@ -160,12 +142,13 @@ The \texttt{harmonic\_drive} port is fixed \emph{effort-out}: the transmission o
 Within the sub-model:
 \begin{itemize}
   \item The 1-junction at the motor shaft has the I-element as the \emph{effort-out} element (integral causality), and the TF and R elements as effort-in elements.
-  \item The 0-junction at the output shaft is the sum point for the elastic and Coulomb friction torques.
+  \item The 0-junction at the output shaft is the sum point for the elastic torque from the compliance branch, the structural damping torque, and the output Coulomb friction.
   \item The C element is in integral causality: $\dot{\varphi} = f_C$, $e_C = \tau_s(\varphi)$.
+  \item The structural damping R on the compliance branch shares the same 1-junction as the C element; it therefore sees the same flow $\dot{\varphi}$ and contributes an additional dissipative effort in parallel with the spring torque.
 \end{itemize}
 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.0\textwidth]{chapter_harmonic_drive/figs/harmonic_drive.png}
+  \includegraphics[width=0.7\textwidth]{chapter_harmonic_drive/figs/harmonic_drive.png}
 \end{figure}

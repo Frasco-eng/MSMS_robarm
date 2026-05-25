@@ -35,7 +35,7 @@ For each link $i = 1,\ldots,6$, the connectivity is defined as:
   Joint$_i$ (\texttt{twist\_ipp}) $\longrightarrow$ Link$_i$ (\texttt{wrench\_i})
   $\longrightarrow$ Link$_i$ (\texttt{wrench\_ipp}) $\longrightarrow$ Joint$_{i+1}$ (\texttt{twist\_i}).
 \end{center}
-After Joint$_6$ and Link$_6$, the distal power port terminates either in a free end (zero-force source) or within the payload model.
+After Joint$_6$ and Link$_6$, the distal power port terminates at the load sub-system described in \cref{sec:payload}.
 
 \subsection{Signal Chain for Transformations}
 
@@ -56,7 +56,7 @@ To manage these computational constraints:
 \begin{itemize}
   \item The world bond imposes velocity (effort-out causality at the base).
   \item At the base, a source of flow ($S_f = 0$) simulates a stationary ground.
-  \item At the end-effector (a Link), it is possible to attach either a source of effort to simulate a contact force, or an additional inertia with gravity to simulate a load.
+  \item At the end-effector (a Link), the load is attached through a switching constraint block described in \cref{sec:payload}.
   \item The harmonic drive outputs an effort, simulating a mechanical transmission. 
   \item The motor driving the shaft is simulated as a source of effort.
 \end{itemize}
@@ -64,22 +64,85 @@ To manage these computational constraints:
 Moreover, the non-linear C-element within the harmonic drive retains integral causality. No derivative causality is present in the final assembled model, ensuring the numerical stability of the constrained integration via BDF solvers. 
 
 \section{Payload Model}
+\label{sec:payload}
 
-A point-mass payload $m_{\text{load}}$ attached at the end-effector (the distal port of Link 6) is modeled as an additional \texttt{Link} block with:
+\subsection{Overview and Switchable Load}
+
+The payload sub-system has been redesigned to support two distinct operating modes: \emph{free end-effector} (no load attached) and \emph{rigid load attached}.
+The transition between the two modes is governed by a boolean condition signal \texttt{Cond}, which is read from the trajectory CSV file generated offline by the Python planner (see \cref{chap:trajectory}).
+This allows the simulation to replicate a pick-and-place scenario in which the robot arm picks up a load at a specific instant, carries it along a portion of the trajectory, and then releases it.
+
+The end of the kinematic chain (the distal port of Link$_6$) is connected to a \newline
+\texttt{SwitchingZeroJunction} block (\texttt{X0}), which acts as the interface between the robot arm and the load sub-system.
+
+The \texttt{X0} block has the following ports:
 \begin{itemize}
-  \item $m = m_{\text{load}}$.
-  \item $J = J_{\text{load}}$.
-  \item $r_{Gp} = [0,0,0]^T$ (mass concentrated at the attachment point).
+  \item \texttt{ee}: power input from Link$_6$ (the end-effector port of the last link).
+  \item \texttt{one}: power output towards the payload I-element.
+  \item \texttt{constrainer}: power port connected to the constraint 1-junction (feedback path).
+  \item \texttt{source\_effort}: power input from an $S_e$ block (zero-effort source, modelling a free end-effector with no contact force applied).
+  \item \texttt{condition}: boolean signal input from \texttt{Cond}.
 \end{itemize}
 
-Gravity is also applied to its center of mass, which corresponds to the origin of the end-effector. This gravity vector is properly rotated according to the DH transformation of the end-effector frame. 
+\subsection{Operating Modes}
 
-Lastly, to ensure a rigid connection between the final link and the payload, a zero-junction with a velocity constraint is employed in the exact same manner as in the Joint sub-model. 
+The switching logic of \texttt{X0} is governed by the following conditional equations:
+\begin{align}
+  e_{\text{ee}}      &= \begin{cases} e_{\text{constrainer}} & \text{if } \texttt{Cond} \\ e_{S_e} & \text{otherwise} \end{cases} \\
+  e_{\text{one}}     &= \begin{cases} e_{\text{constrainer}} & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases} \\
+  f_{S_e}            &= \begin{cases} \mathbf{0} & \text{if } \texttt{Cond} \\ f_{\text{one}} - f_{\text{ee}} & \text{otherwise} \end{cases} \\
+  f_{\text{constrainer}} &= \begin{cases} -(f_{\text{one}} - f_{\text{ee}}) & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases}
+\end{align}
+
+\paragraph{Free mode (\texttt{Cond} = \texttt{false}).}
+The end-effector sees the effort from the zero-effort source $S_e$ (i.e.\ zero contact wrench).
+The payload I-element is decoupled: its effort input is set to zero and it does not exchange power with the chain.
+The constraint junction is also deactivated.
+This mode correctly simulates a free-hanging end-effector with no load attached.
+
+\paragraph{Load mode (\texttt{Cond} = \texttt{true}).}
+The end-effector effort is determined by the constraint, and the payload inertia is rigidly coupled to Link$_6$.
+The constraint junction (OneJunction$_1$) closes the loop: the flow mismatch between the payload and the end-effector is fed back and nullified by the constraint.
+
+\subsection{Rigid Constraint Between End-Effector and Payload}
+
+When the load is active, a rigid velocity constraint must be enforced between the distal port of Link$_6$ and the payload body.
+This is achieved via a 1-junction (\texttt{OneJunction$_1$}) connected to a very stiff C element (compliance $c = 10^{-6}$~m/N), which approximates a rigid kinematic constraint while preserving full integral causality:
+\begin{equation}
+  \boldsymbol{\tau}_{\text{constraint}} = \frac{1}{c}\int \bigl(\mathbf{f}_{\text{one}} - \mathbf{f}_{\text{ee}}\bigr)\,dt.
+\end{equation}
+The flow difference $\mathbf{f}_{\text{one}} - \mathbf{f}_{\text{ee}}$ integrates to a very small displacement (due to the high stiffness), and the resulting effort is fed back as the constraint wrench that enforces zero relative motion between the end-effector and the payload.
+An additional resistive element R ($r = 10^4$~Nm\,s/m) is placed on this same 1-junction to damp the high-frequency oscillations of the constraint spring and prevent numerical chattering.
+
+This formulation avoids the introduction of algebraic constraints which is not ideal when switching between free and constrained modes, since it must be activated when the relative velocity is
+perfectly zero (at the pick-up instant) and deactivated when the relative velocity is also zero (at the release instant), but this is not guaranteed to be the case due to numerical precision issues.
+
+\subsection{Payload Inertia}
+
+The payload body is modelled as a full 6-DOF inertia element (I-field) with translational mass $m_{\text{load}}$ and rotational inertia $J_{\text{load}}$:
+\begin{align}
+  \dot{\mathbf{p}} &= \frac{1}{m_{\text{load}}}\bigl(\mathbf{f}_e^{[1:3]} - m_{\text{load}}\,\boldsymbol{\omega}\times\mathbf{v}\bigr), \\
+  \dot{\mathbf{h}} &= J_{\text{load}}^{-1}\bigl(\mathbf{f}_e^{[4:6]} - \boldsymbol{\omega}\times J_{\text{load}}\boldsymbol{\omega}\bigr),
+\end{align}
+where $\mathbf{v}$ and $\boldsymbol{\omega}$ are the linear and angular velocities of the load frame, and $\mathbf{f}_e$ is the six-dimensional wrench exerted by the constraint.
+The default parameters are $m_{\text{load}} = 1.0$~kg and $J_{\text{load}} = \text{diag}(0.001, 0.001, 0.001)$~kg\,m$^2$.
+
+\subsection{Conditional Gravity on the Payload}
+
+A dedicated modulated source of effort \texttt{g} applies the gravitational wrench to the payload.
+It receives the same boolean \texttt{Cond} signal and the transformation matrix $T_6$ of the end-effector frame:
+\begin{equation}
+  \mathbf{F}_{\text{grav}}^{[1:3]} = R_6^T \begin{bmatrix}0\\0\\-m_{\text{load}}\,g\end{bmatrix}, \qquad \mathbf{F}_{\text{grav}}^{[4:6]} = \mathbf{0},
+\end{equation}
+where $R_6$ is the rotation matrix of the end-effector frame extracted from $T_6$.
+When \texttt{Cond} is false, the gravitational effort is set to zero, consistent with the decoupled load.
+
+The gravity compensation block \texttt{GravityCompensation} receives the same boolean \texttt{is\_picked} flag and adds the load mass $m_{\text{load}}$ to the effective mass of joint 6 when computing the feedforward gravity torques, ensuring that the PD+G controller correctly compensates for the additional weight whenever the load is picked up.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{chapter_robot/figs/load.png}
-  \caption{Mass load architecture.}
+  \caption{Switchable load architecture: the \texttt{X0} switching zero-junction controls the coupling between the end-effector and the payload I-element, driven by the trajectory \texttt{Cond} signal.}
   \label{fig:load_arch}
 \end{figure}
 

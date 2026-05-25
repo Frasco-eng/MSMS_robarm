@@ -55,6 +55,19 @@
 }
 
 
+\definecolor{light_blue}{rgb}{0.122, 0.435, 0.698} % Light blue
+
+\newtcolorbox{mybox}[1]{
+      enhanced, breakable,
+      colback=light_blue!20!white , colframe=light_blue!80!white,
+      fonttitle=\bfseries,
+      title={#1},
+      halign title=left,
+      top=6pt, bottom=6pt,
+      left=6pt, right=6pt,
+}
+
+
 %=============================================================
 \begin{document}
 %=============================================================
@@ -102,6 +115,7 @@
 \include{chapter_transformation/transformation}
 \include{chapter_harmonic_drive/harmonic_drive}
 \include{chapter_pd_g/pd_g}
+\include{chapter_trajectory_track/trajectory_gentrack}
 \include{chapter_robot/robot}
 \include{chapter_results_conclusions/results_conclusions}
 

@@ -46,6 +46,7 @@ Each \texttt{PD} block within the 20-sim library acts as a single-joint decentra
 \end{equation}
 The sub-model handles the following external interfaces:
 \begin{itemize}
+  \item It receives the reference joint angle $q_i$ from the inverse kinematics block. 
   \item It receives the vector signal \texttt{Q} = $[q_i, \dot{q}_i]^T$ from the physical \texttt{Joint} block.
   \item It receives the scalar gravity feedforward signal \texttt{gravity} = $\tau_{g,i}$ from the centralized computing unit.
   \item It outputs the scalar signal \texttt{tau} directed to the effort source modulating the joint's actuator.
@@ -53,7 +54,7 @@ The sub-model handles the following external interfaces:
 
 The signal processing sequence within the block is structured as follows:
 \begin{enumerate}
-  \item A local \textbf{Constant} block defines the reference configuration parameter $q_i^*$.
+  \item A local \textbf{Constant} block defines the reference joint velocity $\dot{q}_i$, which is always set to 0.
   \item A \textbf{PlusMinus} junction computes the scalar tracking position error $e_i = q_i^* - q_i$.
   \item A \textbf{Gain} block multiplies the error vector $[e_i, \, -\dot{q}_i]^T$ by the localized parameters matrix $K_i = [K_{p,i}, \, K_{d,i}]$ to construct the tracking control action.
   \item A final summation node adds the signal coming from the gravity feedforward line, routing the definitive scalar command $\tau_i$ to the output port.
@@ -61,7 +62,7 @@ The signal processing sequence within the block is structured as follows:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.0\textwidth]{chapter_pd_g/figs/pd_g.png}
+  \includegraphics[width=0.8\textwidth]{chapter_pd_g/figs/pd_g.png}
   \caption{Internal structure of the \texttt{PD} sub-model in 20-sim.}
   \label{fig:pd_block}
 \end{figure}
