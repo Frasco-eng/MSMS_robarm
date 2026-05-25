@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+ <Model version="5.1" build="5.1.6.14106">
+  <Sidops>
+<![CDATA[IK 632 656 description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <LibraryPath>IK.emx</LibraryPath>
+    <IsMainModel>1</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <TimeStamp>2026-5-25 15:49:15</TimeStamp>
+    <AllowLibraryUpdate>False</AllowLibraryUpdate>
+  </Description>
+</Information>'; type 'Submodel-Equation'  ports   signal out theta_ref [6,1];   signal in T_des [4,4];  parameters   real d1 = 0.089159;   real a2 = -0.425;   real a3 = -0.39225;   real d4 = 0.10915;   real d5 = 0.09465;   real d6 = 0.0823;   real c_shoulder = 1.0;   real c_elbow = 1.0;   real c_wrist = 1.0; end; implementation eqvariables	     	real px, py, pz;   	real nx, ny, nz;   	real ox, oy, oz;   	real ax, ay, az;       	real p05x, p05y, R_shoulder, alpha1, alpha2;   	real num5;   real num6_x, num6_y;   	real p14x, p14z, D, theta234;      	real theta1, theta2, theta3, theta4, theta5, theta6; equations		 	 	px = T_des[1,4];	 	py = T_des[2,4];	 	pz = T_des[3,4];	 	nx = T_des[1,1];	 	ny = T_des[2,1];	 	nz = T_des[3,1];	 	ox = T_des[1,2];	 	oy = T_des[2,2];	 	oz = T_des[3,2];	 	ax = T_des[1,3];	 	ay = T_des[2,3];	 	az = T_des[3,3];	       	p05x = px - d6 * ax;    	p05y = py - d6 * ay;    	R_shoulder = sqrt(p05x^2 + p05y^2);    	alpha1 = atan2(p05y, p05x);        	alpha2 = arccos(d4 / R_shoulder);        	theta1 = alpha1 + (c_shoulder * alpha2) + (pi / 2.0); 	    	num5 = (px * sin(theta1)) - (py * cos(theta1)) - d4;      	theta5 = c_wrist * arccos(num5 / d6);     	    	num6_y = (-ox * sin(theta1)) + (oy * cos(theta1));    	num6_x = (nx * sin(theta1)) - (ny * cos(theta1));       	theta6 = atan2(num6_y / sin(theta5), num6_x / sin(theta5));     	 	 	theta234 = atan2(-az, -(ax * cos(theta1) + ay * sin(theta1)));	 		 	p14x = p05x * cos(theta1) + p05y * sin(theta1) - d5 * sin(theta234);	 	p14z = (pz - d6 * az) - d1  + d5 * cos(theta234);			 	D = (p14x^2 + p14z^2 - a2^2 - a3^2) / (2.0 * a2 * a3);	 	theta3 = atan2(c_elbow * sqrt(1.0 - D^2), D);	 		 	theta2 = atan2(p14z, p14x) - atan2(a3 * sin(theta3), a2 + a3 * cos(theta3));	theta4 = theta234 - theta2 - theta3;	 				 	theta_ref = [theta1; theta2; theta3; theta4; theta5; theta6];implementation_end;]]>  </Sidops>
+ </Model>
+</Document>
