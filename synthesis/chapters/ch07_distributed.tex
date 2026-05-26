@@ -3,191 +3,870 @@
 \label{ch:distributed}
 %══════════════════════════════════════════════════════════════════════
 
-All models considered so far are \textbf{lumped-parameter models}: the state is a finite-dimensional vector, components are point-like, and the number of degrees of freedom is finite. Real structures, however, have \textbf{continuously distributed} inertia, compliance, and damping — a beam, a gas column, a hydraulic line. These are described by \textbf{partial differential equations} (PDEs), and the number of degrees of freedom is infinite. This chapter develops two strategies for obtaining tractable finite-dimensional bond graph models: \emph{simple lumping} and \emph{separation of variables (normal modes)}.
+All models considered so far are \textbf{lumped-parameter models}: the state is a
+finite-dimensional vector, components are point-like, and the number of degrees of
+freedom is finite. Real structures, however, have \textbf{continuously distributed}
+inertia, compliance, and damping --- a vibrating rod, a flexible beam, a hydraulic
+line, a heat-conducting bar. These are described by \textbf{partial differential
+equations} (PDEs), and the number of degrees of freedom is in principle infinite.
+This chapter develops two strategies for obtaining tractable finite-dimensional
+bond-graph models: \emph{simple lumping} and \emph{separation of variables (normal
+modes)}.
 
-\section{Distributed vs.\ lumped parameter systems}
+%──────────────────────────────────────────────────────────────────────
+\section{Distributed-parameter systems}
+\label{sec:distrib_intro}
+%──────────────────────────────────────────────────────────────────────
 
-A \textbf{distributed-parameter system} is one in which the state (displacement, pressure, temperature, etc.) varies continuously with both time and space. Its model is a PDE of the form:
+A \textbf{distributed-parameter system} is represented by a PDE: it cannot be
+accurately approximated by a lumped-parameter model without significant loss of
+information. The overarching philosophy is the same that governs all engineering
+modelling: use the \emph{simplest model} that captures the behaviour of interest,
+but resist oversimplification. In the memorable words often attributed to
+Einstein, \emph{``Everything should be made as simple as possible, but not simpler.''}
+
+So far it has been assumed that systems are built from components exhibiting
+inertia-like, compliance-like, or resistance-like effects in isolated, point-like
+fashion: a mass is perfectly rigid (no finite stiffness), and a spring is
+perfectly compliant (no mass). Of course, all real materials simultaneously
+exhibit inertial and compliance effects; it is our modelling \emph{assumptions}
+that justify separating these effects into specific lumps. When those assumptions
+break down --- for example when excitation frequencies become comparable to the
+first natural frequency of the distributed body --- a distributed-parameter
+description is unavoidable.
+
+%──────────────────────────────────────────────────────────────────────
+\section{Simple lumping techniques}
+\label{sec:simple_lumping}
+%──────────────────────────────────────────────────────────────────────
+
+\subsection{Derivation of the wave equation for a bar}
+\label{ssec:wave_eq}
+
+The simplest and most physically transparent route to a PDE model is to start
+with \textbf{spatially distributed finite lumps} and then take the limit as the
+lump size becomes infinitesimal.  We illustrate this approach with the canonical
+example: the \textbf{longitudinal vibrations of a uniform elastic bar}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/chapter7/7_1a.png}
+  \caption{Elastic bar of length $L$, cross-sectional area $A$, and density $\rho$,
+  clamped at $x=0$ and subjected to an axial force $F(t)$}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figs/chapter7/7_1b.png}
+  \caption{Image of a single Lump}
+\end{figure}
+
+Consider a small element of the bar located between $x$ and $x + \Delta x$.
+Applying \textbf{Newton's second law} to this element gives:
 \begin{equation}
-  \mathcal{L}\left[\xi(x,t)\right] = f(x,t),
+  A\bigl[\sigma(x+\Delta x) - \sigma(x)\bigr]
+  = \rho A\,\Delta x\,\frac{\partial^{2}\xi}{\partial t^{2}}(x),
+  \label{eq:newton_element}
 \end{equation}
-where $\mathcal{L}$ is a spatial differential operator and $f$ is a forcing term. The PDE is "local" because it describes the system's behavior point by point. A complete problem statement requires:
+where $\sigma(x)$ is the axial stress and the right-hand side is the inertia
+force of the element.  The \textbf{definition of linear strain} and Hooke's law
+connect the stress to the displacement gradient:
+\begin{equation}
+  \sigma(x)
+  = E\,\frac{\xi(x) - \xi(x - \Delta x)}{\Delta x},
+  \label{eq:strain_def}
+\end{equation}
+where $E$ is Young's modulus.  Substituting \eqref{eq:strain_def} into
+\eqref{eq:newton_element} and \textbf{taking the limit $\Delta x \to 0$} one
+obtains the \textbf{wave equation}:
+\begin{equation}
+  \boxed{
+    E\,\frac{\partial^{2}\xi}{\partial x^{2}}
+    = \rho\,\frac{\partial^{2}\xi}{\partial t^{2}}
+  }.
+  \label{eq:wave_eq}
+\end{equation}
+
+Equivalently, defining the stress as $\sigma = E\,\partial\xi/\partial x$, the
+two-field form reads:
+\begin{equation}
+  A\,\frac{\partial\sigma}{\partial x}
+  = \rho A\,\frac{\partial^{2}\xi}{\partial t^{2}},
+  \qquad
+  \sigma = E\,\frac{\partial\xi}{\partial x}.
+\end{equation}
+
+
+\subsection{The lumped approximation and its bond graph}
+\label{ssec:lumped_bar}
+
+Instead of taking the limit, one can \textbf{retain finite lumps} and construct
+a discrete approximation.  Dividing the bar into $n$ elements of length
+$\Delta x = L/n$, the state variables for the $i$-th lump are:
+\begin{equation}
+  p_{i} = \rho A\,\Delta x\;\dot{\xi}_{i}
+  \quad\text{(momentum)},
+  \qquad
+  q_{i} = \xi_{i} - \xi_{i-1}
+  \quad\text{(relative elongation)}.
+\end{equation}
+The discrete Newton and Hooke laws are:
+\begin{equation}
+  \frac{\mathrm{d}p_{i}}{\mathrm{d}t}
+  = \frac{EA}{\Delta x}\bigl(q_{i+1} - q_{i}\bigr),
+  \qquad
+  \frac{\mathrm{d}q_{i}}{\mathrm{d}t}
+  = \frac{1}{\rho A\,\Delta x}\bigl(p_{i} - p_{i-1}\bigr),
+\end{equation}
+with the auxiliary relations:
+\begin{equation}
+  F_{i} = \frac{EA}{\Delta x}\,q_{i},
+  \qquad
+  A\sigma = F,
+  \qquad
+  p_{i} = \rho A\,\Delta x\;\dot{\xi}_{i}.
+\end{equation}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{figs/chapter7/7_2.png}
+  \caption{bond graph for the $n$-lump bar}
+\end{figure}
+
+In bond-graph language each I-element represents the momentum of lump $i$ and
+each C-element represents its elastic compliance.  The 1-junctions impose
+Newton's law (common velocity = $\dot{\xi}_{i}$), while the 0-junctions
+impose Hooke's law (common force = $F_{i}$).
+
+
+\subsection{Boundary elements and admissible configurations}
+\label{ssec:boundary}
+
+The first element ($i=1$) and the $n$-th element require special treatment since
+they are \textbf{boundary elements}: they are not surrounded by lumps on both
+sides.  The modified boundary equations are:
+\begin{equation}
+  \frac{\mathrm{d}q_{1}}{\mathrm{d}t}
+  = \frac{p_{1}}{\rho A\,\Delta x},
+  \qquad
+  \frac{\mathrm{d}p_{n}}{\mathrm{d}t}
+  = F(t) - \frac{EA}{\Delta x}\,q_{n}.
+\end{equation}
+
+To use this approach one first selects the \textbf{number of lumps} $n$; this
+choice then sets the I and C parameters.  The number of lumps should be chosen
+based on accuracy criteria, but it is generally not possible to determine \emph{a
+priori} the rate of convergence to the continuous model, especially when the
+discrete model is embedded in a larger system.
+
+The causal structure of the overall bond graph dictates which of the following
+configurations is appropriate at each boundary junction:
+
+
+
+
+
+
+\subsection{Summary and limitations of simple lumping}
+\label{ssec:lumping_summary}
+
+Taking the limit $n \to \infty$ in the discrete model recovers the wave
+equation~\eqref{eq:wave_eq}.  External forcing or active boundary conditions
+can be incorporated in several ways.  For a point force $F(t)$ at $x = L$,
+the PDE reads:
+\begin{equation}
+  \frac{1}{A}\,F(t)\,\delta(x - L)
+  + E\,\frac{\partial^{2}\xi}{\partial x^{2}}
+  = \rho\,\frac{\partial^{2}\xi}{\partial t^{2}},
+  \label{eq:wave_forced}
+\end{equation}
+where $\delta(\cdot)$ is the Dirac delta distribution representing a
+\textbf{distributed force per unit length} concentrated at the boundary.
+
+Two representations are therefore available for the bar:
 \begin{itemize}[leftmargin=2em,itemsep=2pt]
-  \item The PDE itself (local dynamics).
-  \item \textbf{Initial conditions} at $t = 0$ (as many as the order in time).
-  \item \textbf{Boundary conditions} at the spatial extremes $x = 0$ and $x = L$ (as many as the order in space).
+  \item \textbf{Finite-lump representation.}  Physically transparent and easily
+    embedded in an overall system bond graph.  Non-linear effects pose no
+    particular problems.  However, the state space grows very quickly with $n$
+    while the accuracy does not: each additional lump adds a new, very inaccurate
+    high-frequency mode while improving the existing low-frequency predictions
+    only mildly.  The resulting large disparity in time constants can create
+    severe stiffness problems for numerical integration.
+  \item \textbf{(Linear) PDE representation.}  Very accurate; admits analytical
+    solutions.  However, it is difficult to incorporate into an overall system
+    model, because non-linear effects introduce serious complications and coupling
+    the PDE to the remainder of the system via boundary conditions is
+    non-trivial.
 \end{itemize}
-Only if joined with the proper set of initial and boundary conditions can a PDE be properly solved (yielding a well-posed Cauchy Problem). Notice that a system is typically described with a set of PDEs whose total order is double the space region dimension. 
 
-For linear elastic bodies (isotropic materials), the PDE typically takes the \textbf{wave equation} form:
-\begin{equation}
-  \frac{\partial^2\xi}{\partial t^2} = c^2\frac{\partial^2\xi}{\partial x^2},
-  \quad c = \sqrt{E/\rho},
-\end{equation}
-with wave speed $c$ determined by the elastic modulus $E$ and density $\rho$. Deformations propagate through the body as waves — a perturbation at $x=0$ does not instantaneously influence $x=L$, but arrives after a delay $L/c$. In a sense, a wave can be mathematically considered as a pair of opposite delays!
-
-\begin{insightbox}[When lumped models fail]
-Lumped models assign all inertia to isolated point masses and all compliance to isolated springs with zero mass. This works well when the excitation frequency $\omega$ satisfies $\omega \ll \pi c/L$ (the first natural frequency of the distributed system). When this condition fails — long flexible arms of industrial robots, building floors, transmission lines — distributed effects are essential and lumped models give qualitatively wrong predictions above a certain frequency.
+\begin{insightbox}[The way forward: normal modes]
+  The PDE representation can be manipulated using
+  \emph{normal mode techniques} to yield an \textbf{accurate and
+  computationally efficient finite-order model}.  This is the subject of the
+  rest of this chapter.  The key idea is that the continuous bar can oscillate
+  in an infinite set of orthogonal \emph{mode shapes}, and any motion ---
+  forced or unforced --- can be expressed as a linear combination of those
+  shapes.  Truncating the series at $N$ modes gives an exact model up to the
+  $N$-th natural frequency.
 \end{insightbox}
 
-\section{Simple lumping: discretising the continuum}
-
-The most direct approach: \textbf{retain finite-size lumps} instead of taking the limit to infinitesimal elements. For a bar of length $L$, area $A$, density $\rho$, and modulus $E$, divide it into $n$ elements of length $\Delta x = L/n$. Each lump has:
-\begin{itemize}[leftmargin=2em,itemsep=0pt]
-  \item \textbf{Mass}: $m_i = \rho A\,\Delta x$ (I-element).
-  \item \textbf{Compliance}: $C_i = \Delta x/(EA)$ (C-element, from Hooke's law $\sigma = E\,\varepsilon$, $\varepsilon = \partial\xi/\partial x \approx (q_i)/\Delta x$).
-\end{itemize}
-
-The generalised momentum and displacement for the $i$-th lump are:
-\begin{equation}
-  p_i = \rho A\,\Delta x\cdot\dot{\xi}_i \quad\text{(momentum)},
-  \qquad q_i = \xi_i - \xi_{i-1} \quad\text{(relative deformation)}.
-\end{equation}
-The equations for each interior lump read:
-\begin{equation}
-  \dot{p}_i = \frac{EA}{\Delta x}(q_{i+1} - q_i), \qquad
-  \dot{q}_i = \frac{1}{\rho A\,\Delta x}(p_i - p_{i-1}).
-\end{equation}
-These are the \textbf{discrete Newton and Hooke laws}: Newton's law is a 1-junction constraint (momentum change = net force); Hooke's law is a C-element (displacement = compliance $\times$ force). The first and $n$-th elements must be treated carefully since they are boundary elements, typically requiring the addition of $S_E$ or $S_F$ sources to avoid derivative causality at the boundaries.
-
-\begin{insightbox}[Electrical equivalent of the bar]
-There is a direct parallelism with electrical transmission lines. An electrical line can be lumped into elements of length $\Delta x$ having an inductance $L\Delta x$ and capacitance $C\Delta x$. The equations $\dot{p}_i = \frac{1}{C\Delta x}(q_{i+1}-q_i)$ and $\dot{q}_i = \frac{1}{L\Delta x}(p_i-p_{i-1})$ lead to exactly the same wave equation $\frac{\partial^2 p}{\partial t^2} = \frac{L}{C} \frac{\partial^2 p}{\partial x^2}$ when taking the limit $\Delta x \to 0$.
-\end{insightbox}
-
-\figplaceholder{Bond graph for n-lump bar: chain of alternating I and C elements with 1-junctions, boundary conditions as sources}{See slides 5--8, pack M07}
-
-\paragraph{Timoshenko beam.}
-For a beam, two degrees of freedom per cross-section are needed: transverse displacement $w(x,t)$ and rotation $\phi(x,t)$. $\phi$ is the rotation of the plane cross-section, while $\theta$ is the slope of the neutral axis ($\theta \approx \Delta w / \Delta x$). The shear angle is $\gamma = \theta - \phi$.
-
-The Timoshenko model (which accounts for shear deformation and rotary inertia) introduces per lump:
-\begin{itemize}[leftmargin=2em,itemsep=0pt]
-  \item Translational mass $\rho A\,\Delta x$ and rotary inertia $\rho I\,\Delta x$ (I-elements).
-  \item Bending spring $k_b = EI/\Delta x$ relating moment $M$ to angle difference $\Delta\phi$ (C-element).
-  \item Shear spring $k_s = \kappa GA\,\Delta x^{-1}$ relating shear force $V$ to angle--slope difference $\phi - \Delta w/\Delta x$ (C-element). Here $\kappa$ takes into account that shear distribution is not perfectly uniform across the section.
-\end{itemize}
-
-Taking the limit $\Delta x \to 0$ recovers the Timoshenko PDEs:
-\begin{align}
-  \kappa GA\frac{\partial}{\partial x}\!\left(\frac{\partial w}{\partial x} - \phi\right)
-    &= \rho A\frac{\partial^2 w}{\partial t^2},\\
-  EI\frac{\partial^2\phi}{\partial x^2} + \kappa GA\!\left(\frac{\partial w}{\partial x} - \phi\right)
-    &= \rho I\frac{\partial^2\phi}{\partial t^2}.
-\end{align}
-Neglecting rotary inertia ($\rho I \approx 0$) and assuming $\kappa GA \to \infty$ (infinitely stiff in shear, so $\gamma \to 0$ and $\theta = \phi = \partial w / \partial x$) recovers the simpler \textbf{Euler--Bernoulli model}:
-\begin{equation}
-  EI\frac{\partial^4 w}{\partial x^4} + \rho A\frac{\partial^2 w}{\partial t^2} = q(x,t),
-\end{equation}
-where $q(x,t)$ is the distributed transverse load. 
-\figplaceholder{Bond graph for Timoshenko beam lump i: two I-elements (translational and rotary) + two C-elements (bending and shear) per cell}{See slides 10--12, pack M07}
-
-\paragraph{Limitations of simple lumping.}
-The key drawback is the \textbf{accuracy--complexity trade-off}: each additional lump improves the prediction of low-frequency behaviour but simultaneously introduces new, highly inaccurate high-frequency modes. A model with $n$ lumps has $2n$ modes, but only the lowest $\sim n/3$ are reasonably accurate. Worse, the stiff high-frequency modes impose severe constraints on integration time step. Also, it is difficult to analytically predict the convergence to the continuous model. This motivates the separation of variables approach.
-
-\section{Separation of variables and normal modes}
-
-\begin{warningbox}[Major Limitation]
-The Separation of Variables method works beautifully and provides spectrally exact representations, but it works \textbf{ONLY for linear PDEs}. If your system includes nonlinear distributed effects, you are forced to solve the continuum equations numerically or back up into a finite lumping representation.
+\begin{warningbox}[Use simple lumping with caution]
+  The simple lumping approach \emph{must be used cautiously} and with awareness
+  on the part of the modeller.  Even for seemingly low-frequency excitations a
+  large number of lumps may be required, and convergence is hard to predict a
+  priori.  Moreover, the high-frequency modes introduced by each additional lump
+  are highly inaccurate and may corrupt both the numerical integration and the
+  interaction with the rest of the system.
 \end{warningbox}
 
-The idea is to seek solutions of the PDE as products of a spatial function and a temporal function: $\xi(x,t) = Y(x)\,\eta(t)$. Substituting into the unforced wave equation (for the bar):
-\begin{equation}
-  \rho\,Y(x)\,\ddot{\eta}(t) = EA\,Y''(x)\,\eta(t)
-  \quad\Longrightarrow\quad
-  \frac{\ddot{\eta}}{\eta} = \frac{E}{\rho}\frac{Y''}{Y} = -\omega^2,
-\end{equation}
-where $-\omega^2$ is a separation constant (negative for oscillatory solutions). This yields two \textbf{ordinary differential equations}:
-\begin{equation}
-  \ddot{\eta} + \omega^2\eta = 0, \qquad Y'' + k^2 Y = 0, \quad k^2 = \frac{\rho\omega^2}{E}.
-\end{equation}
-The spatial ODE has general solution $Y(x) = A\cos kx + B\sin kx$; the constants $A$, $B$, and the eigenvalues $k$ (and hence natural frequencies $\omega_n$) are determined by the \textbf{boundary conditions}. 
 
-\paragraph{Example: bar fixed at $x=0$, free at $x=L$.}
-Boundary conditions: $Y(0) = 0$ (fixed, zero displacement) and $Y'(L) = 0$ (free, zero stress). These give $A = 0$ and $\cos k_n L = 0$, so:
-\begin{equation}
-  k_n L = \left(n - \tfrac{1}{2}\right)\pi, \quad n = 1,2,3,\ldots
-  \qquad \omega_n = k_n\sqrt{E/\rho} = \frac{(2n-1)\pi}{2L}\sqrt{\frac{E}{\rho}}.
-\end{equation}
-The corresponding \textbf{mode shapes} (eigenfunctions) are:
-\begin{equation}
-  Y_n(x) = \sin\left(\frac{(2n-1)\pi x}{2L}\right).
-\end{equation}
-These are the natural shapes in which the bar can vibrate. If the bar is displaced into the shape of the $n$-th mode and released, it oscillates purely at frequency $\omega_n$. 
+%──────────────────────────────────────────────────────────────────────
+\section{Lumped models via separation of variables}
+\label{sec:modal}
+%──────────────────────────────────────────────────────────────────────
 
-\paragraph{Orthogonality.}
-Mode shapes of a self-adjoint differential operator are orthogonal with respect to the mass distribution:
-\begin{equation}
-  \int_0^L \rho A\,Y_m(x)\,Y_n(x)\,dx = 0 \quad \text{for } m \neq n.
-\end{equation}
-This is the key property that decouples the equations.
+\subsection{Motivation and overview}
+\label{ssec:modal_intro}
 
-\section{Modal decomposition: the forced case and P.F.R.}
+Many physical elements possess a \textbf{continuous distribution of inertia and
+compliance} properties.  When linearity can be assumed, these distributed elements
+can be represented by linear PDEs in space and time.  The actual dynamics of these
+distributed systems are composed of \textbf{propagating waves} that reflect from
+boundaries and interfere to produce the observed response at any point and time.
+This wave-superposition property can be formalised and exploited for modelling
+purposes via the \textbf{separation of variables} technique.
 
-To handle external forcing within this continuum formulation, we use the \textbf{Point-Force Representation (P.F.R.)}. An external active force $F(t)$ acting strictly at a point $\tilde{x}$ is described as a force per unit length using the Dirac delta function: $f(x,t) = F(t)\delta(x-\tilde{x})$. 
-
-The response to this force is written as a superposition of all modes:
-\begin{equation}
-  \xi(x,t) = \sum_{n=1}^\infty Y_n(x)\,\eta_n(t).
-\end{equation}
-Substituting this into the forced PDE, multiplying by $Y_m(x)$, and integrating over space $x \in [0,L]$, orthogonality eliminates all cross-terms and yields one decoupled ODE per mode. Because of the Dirac delta integral property ($\int F(t)\delta(x-\tilde{x})Y_m(x)dx = F(t)Y_m(\tilde{x})$), the result is:
-\begin{equation}
-  \boxed{m_n\,\ddot{\eta}_n + k_n\,\eta_n = F(t)\,Y_n(\tilde{x})},
-  \qquad m_n = \int_0^L \rho A\,Y_n^2\,dx = \frac{\rho AL}{2}, \quad k_n = m_n\omega_n^2.
-\end{equation}
-This is the \textbf{modal equation}: a simple harmonic oscillator with mass $m_n$ (modal mass), stiffness $k_n = m_n\omega_n^2$ (modal stiffness), and forcing $F(t)\,Y_n(\tilde{x})$ (the modal forcing factor evaluates the mode shape exactly at the point where the force is applied). The response is found separately for each mode and then combined. 
-
-\section{Bond graph for the finite-mode model}
-
-Introducing modal momentum $p_n = m_n\dot{\eta}_n$ and displacement $q_n = \eta_n$, the modal equation becomes:
-\begin{equation}
-  \dot{p}_n = -k_n q_n + F(t)\,Y_n(\tilde{x}), \qquad \dot{q}_n = p_n/m_n.
-\end{equation}
-This is exactly the state equation of an I-element ($I = m_n$) and a C-element ($C = 1/k_n$) on a 1-junction, with the external force $F(t)$ connected via a TF of modulus $Y_n(\tilde{x})$. The \textbf{finite-mode bond graph} is:
-
-\figplaceholder{Bond graph for $N$-mode bar: N parallel I--C pairs (modal oscillators) each connected via TF:Yn(x) to a common port (0-junction) where F is applied}{See slides 23--25, pack M07}
-
-This is the preferred model because:
-\begin{enumerate}[leftmargin=2em,itemsep=2pt]
-  \item It captures the exact frequency content up to the retained modes.
-  \item It has all storage elements in integral causality (when the input is an effort).
-  \item It can be seamlessly connected to other bond graph subsystems.
-  \item Retaining $N$ modes gives a model of order $2N$ that is spectrally exact up to $\omega_N$.
-\end{enumerate}
-
-\begin{insightbox}[Force-free boundary conditions are preferred]
-When the boundary conditions are uncertain or may change (e.g.\ a beam whose end attachment varies during operation), it is best to use \textbf{force-free mode shapes} — eigenfunctions of the PDE with zero force (and moment) at all boundaries. These modes can represent any motion, including motions at previously ``fixed'' boundaries (by attaching a stiff spring to ground later), whereas modes derived for a fixed boundary can never generate motion there. Force-free modes are harder to derive but provide a universal modelling library.
-\end{insightbox}
-
-\paragraph{Rigid Body Modes.}
-When using force-free boundaries, the frequency equation permits $\omega = 0$. These correspond to \textbf{rigid body modes} where the structure moves without deformation. For a free-free beam, there are two such modes: a pure translation ($Y_{00}(x) = 1$) and a pure rotation about the centre of mass ($Y_0(x) = x - L/2$). In the bond graph, these appear as pure I-elements (modal mass and rotary inertia) without accompanying C-elements, because they have zero modal stiffness ($k=0$).
-
-\paragraph{Reading outputs and applying moments at arbitrary locations.}
-The velocity at any point $x_0$ along the bar is:
-\begin{equation}
-  \frac{\partial\xi}{\partial t}(x_0, t) = \sum_n Y_n(x_0)\,\dot{\eta}_n(t) = \sum_n Y_n(x_0)\,\frac{p_n}{m_n}.
-\end{equation}
-In the bond graph, this is a 0-junction connected to TF elements of moduli $Y_n(x_0)$, with each mode's velocity read from its I-element. Similarly, forces can be applied at arbitrary interior points by adding zero-force Se sources at those locations — these serve as output measurement points without injecting any power. 
-
-If an external \emph{moment} is applied instead of a force, the associated TF elements coming from the moment 0-junction have the \emph{mode shape slopes} $dY_n(x)/dx$ evaluated at the location of the moment as their moduli, instead of the mode shapes $Y_n(x)$ themselves.
-
-\section{Damping, Mode Selection, and Causality}
-
-\paragraph{Including Damping.}
-The separation of variables formulation mathematically works only without damping. However, physical structures are lightly damped (modal damping ratio $\zeta_i \in [0.01, 0.1]$). Instead of modeling the complex physical damping distribution, we functionally insert damping into the individual modes. The modal equation becomes:
-\begin{equation}
-  m_i\ddot{\eta}_i + b_i\dot{\eta}_i + k_i\eta_i = F_{modal}
-\end{equation}
-In the bond graph, this is simply an R-element attached to the $i$-th modal 1-junction, with damping constant $b_i = 2\zeta_i\omega_i m_i$.
-
-\paragraph{How many modes to retain? The Residual Compliance.}
-The number of modes retained depends on the expected frequency content of the inputs. Modes whose natural frequency $\omega_i$ is significantly higher than the highest input frequency $\omega_{max}$ operate in the \textbf{stiffness-controlled region}. In this region, the modal inertia and resistance have virtually no effect. 
-As a rule of thumb, modes are retained up to a frequency 2 to 5 times higher than $\omega_{max}$. 
-For all higher modes, instead of completely pruning them, we can drastically improve the model's static accuracy by consolidating their modal stiffnesses into a single \textbf{Residual Compliance}. In the bond graph, all higher-order modal 1-junctions are removed, and a single $C_{residual}$ is placed at the input 0-junction, where $1/k_r = \sum_{i>N} (Y_i^2)/k_i$.
-
-\paragraph{Causality Issues: Flow Inputs.}
-A major problem arises if the external system imposes a velocity (causal flow input) instead of a force. A flow input forces all the TF elements, which in turn forces exactly one I-element of the modes into \textbf{derivative causality}. This completely breaks the decoupling of the modal equations and creates a severe algebraic problem involving the derivatives of the inputs.
-\begin{itemize}
-    \item \textbf{The Fix:} Derivative causality can be structurally avoided by appending an additional modal compliance (without its associated modal inertia) at the flow input. This additional "parasitic" mode absorbs the flow boundary condition and restores integral causality everywhere. While this introduces an algebraic loop among the modes, it is a constant algebraic loop that can be easily solved once and for all inside the model matrix, unlike the massive difficulties of dealing natively with DAE derivative causality.
+The outcome of this procedure is a \textbf{lumped-parameter bond-graph
+representation} of the distributed element which can be seamlessly coupled to
+bond-graph models of the rest of the system.  Crucially:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item The method works for \emph{general linear PDEs}, not only for wave-like
+    systems.
+  \item It provides a spectrally exact representation up to the retained number
+    of modes.
+  \item The resulting bond graph has all storage elements in integral causality,
+    enabling efficient numerical simulation.
 \end{itemize}
 
-\paragraph{Assembling complex structures.}
-If a complex structure is composed of many elements (e.g., an A-frame built of three uniform beams), a complete model is constructed by building finite-mode bond graphs for each beam and connecting them at their geometric interfaces using junction structures and TFs. Care must be taken at the connection points, as rigid connections force shared velocities which can again introduce derivative causality, solvable via the compliance techniques described above.
+
+\subsection{Separation of variables: the unforced bar}
+\label{ssec:sov_unforced}
+
+Consider again the longitudinal vibration of a bar governed by
+equation~\eqref{eq:wave_forced}.  The method of separation of variables assumes
+first that the external force is zero, $F(t) = 0$, and that the displacement
+can be written as a \textbf{product of a purely spatial and a purely temporal
+function}:
+\begin{equation}
+  \xi(x,t) = Y(x)\,f(t).
+  \label{eq:sep_ansatz}
+\end{equation}
+This is the central (and daring) ansatz: it asserts that space and time
+dependences factorise.  Substituting \eqref{eq:sep_ansatz} into the unforced
+wave equation gives:
+\begin{equation}
+  \rho\,Y(x)\,\frac{\mathrm{d}^{2}f}{\mathrm{d}t^{2}}
+  - E\,f(t)\,\frac{\mathrm{d}^{2}Y}{\mathrm{d}x^{2}} = 0.
+\end{equation}
+Dividing through by $Y(x)f(t)$:
+\begin{equation}
+  \frac{1}{f}\,\frac{\mathrm{d}^{2}f}{\mathrm{d}t^{2}}
+  = \frac{E}{\rho}\,\frac{1}{Y}\,\frac{\mathrm{d}^{2}Y}{\mathrm{d}x^{2}}
+  = -\omega^{2},
+  \qquad \omega \in \mathbb{C}.
+  \label{eq:sov_separation}
+\end{equation}
+The left side depends only on $t$ and the right side depends only on $x$; hence
+both must equal the \textbf{same constant}, $-\omega^{2}$.  This yields
+\textbf{two decoupled ODEs}:
+\begin{equation}
+  \frac{\mathrm{d}^{2}f}{\mathrm{d}t^{2}} + \omega^{2}\,f = 0,
+  \label{eq:temporal_ode}
+\end{equation}
+\begin{equation}
+  \frac{\mathrm{d}^{2}Y}{\mathrm{d}x^{2}} + \frac{\rho}{E}\,\omega^{2}\,Y = 0,
+  \label{eq:spatial_ode}
+\end{equation}
+which must be solved once proper boundary and initial conditions are provided.
+The temporal ODE~\eqref{eq:temporal_ode} is a simple harmonic oscillator: once
+$\omega$ is known, $f(t) = C_{1}\cos\omega t + C_{2}\sin\omega t$.  The
+spatial ODE~\eqref{eq:spatial_ode} determines the \emph{allowable} values of
+$\omega$.
+
+
+\subsection{Eigenvalue problem and mode shapes}
+\label{ssec:eigenproblem}
+
+The general solution of the spatial ODE~\eqref{eq:spatial_ode} is:
+\begin{equation}
+  Y(x) = A\cos kx + B\sin kx,
+  \qquad k^{2} = \frac{\rho}{E}\,\omega^{2},
+  \label{eq:spatial_solution}
+\end{equation}
+where the constants $A$ and $B$ and the wave number $k$ depend on the boundary
+conditions.  For the bar \textbf{clamped at $x = 0$ and free at $x = L$}:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item At $x=0$ the displacement vanishes:
+    $\xi(0,t) = Y(0)\,f(t) = 0 \;\Rightarrow\; Y(0) = 0$.
+  \item At $x=L$ the stress $A\sigma(L,t) = EA\,\partial\xi/\partial x\,(L,t) = F(t)$
+    balances the applied force.  In the \emph{unforced} case, $F(t)=0$, this
+    reduces to:
+    $\partial\xi/\partial x\,(L,t) = \mathrm{d}Y/\mathrm{d}x\,(L)\,f(t) = 0
+    \;\Rightarrow\; Y'(L) = 0$.
+\end{itemize}
+
+Applying $Y(0)=0$ to \eqref{eq:spatial_solution} gives $A=0$, so
+$Y(x) = B\sin kx$.  Applying $Y'(L) = 0$:
+\begin{equation}
+  k\,B\cos kL = 0.
+\end{equation}
+The non-trivial solution ($B \neq 0$) requires:
+\begin{equation}
+  \cos kL = 0
+  \quad\Longrightarrow\quad
+  k_{n}L = (2n-1)\,\frac{\pi}{2},
+  \qquad n = 1,2,3,\ldots
+  \label{eq:freq_eq}
+\end{equation}
+This is the \textbf{frequency equation}, entirely analogous to the characteristic
+equation for the eigenvalues of a lumped system.  The corresponding
+\textbf{natural frequencies} are:
+\begin{equation}
+  \omega_{n}^{2} = \frac{E}{\rho}\,k_{n}^{2}
+  = \frac{E}{\rho}\,\frac{(k_{n}L)^{2}}{L^{2}}
+  \quad\Longleftrightarrow\quad
+  \omega_{n} = \sqrt{\frac{E}{\rho}}\,\frac{2n-1}{L}\,\frac{\pi}{2},
+  \qquad n = 1,2,3,\ldots
+  \label{eq:natural_freq}
+\end{equation}
+and the corresponding \textbf{eigenfunctions} (or \textbf{mode shapes}), with
+normalisation $B_{n}=1$, are:
+\begin{equation}
+  Y_{n}(x) = \sin\!\left(k_{n}L\,\frac{x}{L}\right)
+  = \sin\!\left((2n-1)\,\frac{\pi}{2}\,\frac{x}{L}\right),
+  \qquad n = 1,2,3,\ldots
+  \label{eq:mode_shapes}
+\end{equation}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{figs/chapter7/7_3.png}
+  \caption{ First three mode shapes $Y_{1}(x)$, $Y_{2}(x)$, $Y_{3}(x)$}
+\end{figure}
+
+If the bar is displaced in the shape of mode $n$ and released, it oscillates
+purely in that \textbf{modal configuration} at the corresponding modal
+frequency $\omega_{n}$.  Any motion of the bar, from \emph{any} initial
+conditions, is a \textbf{linear combination} of the mode shapes oscillating at
+their respective natural frequencies.
+
+
+\subsection{Orthogonality of mode shapes}
+\label{ssec:orthogonality}
+
+The mode shapes are \textbf{orthogonal} with respect to the mass distribution:
+\begin{equation}
+  \int_{0}^{L} Y_{n}(x)\,Y_{m}(x)\,\mathrm{d}x = 0,
+  \qquad n \neq m.
+\end{equation}
+For the specific shapes~\eqref{eq:mode_shapes} this evaluates to:
+\begin{equation}
+  \int_{0}^{L}
+    \sin\!\left((2n-1)\,\frac{\pi}{2}\,\frac{x}{L}\right)
+    \sin\!\left((2m-1)\,\frac{\pi}{2}\,\frac{x}{L}\right)
+  \mathrm{d}x
+  =
+  \begin{cases}
+    0, & n \neq m, \\[4pt]
+    L/2, & n = m.
+  \end{cases}
+  \label{eq:orthogonality}
+\end{equation}
+This orthogonality property is the cornerstone of modal analysis: it will
+allow us to \emph{decouple} the modal equations when the forced case is
+treated.
+
+
+\subsection{Forced response and modal decomposition}
+\label{ssec:forced_modal}
+
+We are ultimately interested in the \textbf{forced response} of the bar.  We
+now exploit the fact that the response of the bar, whether forced or unforced,
+can \emph{always} be expressed as a linear combination of the mode shapes.
+Starting from the forced PDE~\eqref{eq:wave_forced}, we write:
+\begin{equation}
+  \xi(x,t) = \sum_{n=1}^{\infty} Y_{n}(x)\,\eta_{n}(t),
+  \label{eq:modal_expansion}
+\end{equation}
+where $\eta_{n}(t)$ are the \textbf{modal coordinates} (time-dependent
+amplitudes to be determined).  Substituting~\eqref{eq:modal_expansion} into
+the forced PDE:
+\begin{equation}
+  \sum_{n} \rho A\,Y_{n}\,\ddot{\eta}_{n}
+  - \sum_{n} AE\,\frac{\mathrm{d}^{2}Y_{n}}{\mathrm{d}x^{2}}\,\eta_{n}
+  = F(t)\,\delta(x - L).
+\end{equation}
+Using the fact that the mode shapes satisfy $\mathrm{d}^{2}Y_{n}/\mathrm{d}x^{2}
+= -(\rho/E)\,\omega_{n}^{2}\,Y_{n}$, multiplying both sides by $Y_{m}(x)$ and
+integrating over $[0,L]$:
+\begin{equation}
+  \sum_{n}
+    \left(\int_{0}^{L} \rho A\,Y_{n}\,Y_{m}\,\mathrm{d}x\right)\ddot{\eta}_{n}
+  + \sum_{n}
+    \left(\int_{0}^{L} \rho A\,Y_{n}\,Y_{m}\,\mathrm{d}x\right)\omega_{n}^{2}\,\eta_{n}
+  = \int_{0}^{L} F(t)\,\delta(x-L)\,Y_{m}\,\mathrm{d}x.
+\end{equation}
+The orthogonality relation~\eqref{eq:orthogonality} eliminates all cross-terms
+($n \neq m$), leaving one equation for each mode index $m$:
+\begin{equation}
+  \left(\int_{0}^{L} \rho A\,Y_{m}^{2}\,\mathrm{d}x\right)\ddot{\eta}_{m}
+  + \left(\int_{0}^{L} \rho A\,Y_{m}^{2}\,\mathrm{d}x\right)\omega_{m}^{2}\,\eta_{m}
+  = \int_{0}^{L} F(t)\,\delta(x-L)\,Y_{m}\,\mathrm{d}x.
+\end{equation}
+
+\paragraph{Modal mass, stiffness and forcing.}
+The \textbf{modal mass} is:
+\begin{equation}
+  m_{m} = \int_{0}^{L} \rho A\,Y_{m}^{2}\,\mathrm{d}x = \frac{\rho A L}{2}.
+  \label{eq:modal_mass}
+\end{equation}
+For a point force $F(t)$ applied at $x=L$, the Dirac delta collapses the
+integral on the right-hand side:
+\begin{equation}
+  \int_{0}^{L} F(t)\,\delta(x - L)\,Y_{m}(x)\,\mathrm{d}x
+  = F(t)\,Y_{m}(L),
+\end{equation}
+yielding the \textbf{modal forcing function} $F(t)\,Y_{m}(L)$ --- the force
+modulated by the value of the mode shape at the forcing point.
+
+The \textbf{decoupled modal equation} for mode $m$ is therefore:
+\begin{equation}
+  \boxed{
+    m_{m}\,\ddot{\eta}_{m} + k_{m}\,\eta_{m} = F(t)\,Y_{m}(L)
+  },
+  \qquad
+  k_{m} = m_{m}\,\omega_{m}^{2}
+  \quad\text{(modal stiffness)}.
+  \label{eq:modal_eq}
+\end{equation}
+This is the equation of a \textbf{simple harmonic oscillator} with mass $m_{m}$
+and stiffness $k_{m}$, driven by a force proportional to $Y_{m}(L)$.  Due to
+mode orthogonality, all equations~\eqref{eq:modal_eq} are \emph{completely
+decoupled}: each $\eta_{m}(t)$ can be solved independently and the actual
+physical response is then reconstructed as:
+\begin{equation}
+  \xi(x,t) = \sum_{m=1}^{\infty} Y_{m}(x)\,\eta_{m}(t).
+\end{equation}
+In practice, only a \textbf{finite number of modes} can be retained in the
+simulation, and the truncation level is chosen based on the highest frequency of
+interest in the input.
+
+
+\subsection{Bond-graph representation of the modal model}
+\label{ssec:modal_bg}
+
+To embed the modal model in a bond graph we introduce the \textbf{modal momentum}
+and \textbf{modal displacement}:
+\begin{equation}
+  p_{m} = m_{m}\,\dot{\eta}_{m},
+  \qquad
+  q_{m} = \eta_{m}.
+  \label{eq:modal_state_vars}
+\end{equation}
+Equation~\eqref{eq:modal_eq} then reads, in first-order form:
+\begin{equation}
+  \dot{p}_{m} = -k_{m}\,q_{m} + F(t)\,Y_{m}(L),
+  \qquad
+  \dot{q}_{m} = \frac{p_{m}}{m_{m}}.
+  \label{eq:modal_state_eqs}
+\end{equation}
+These are exactly the state equations of an \textbf{I-element} ($I = m_{m}$) and
+a \textbf{C-element} ($C = 1/k_{m}$) joined at a 1-junction, with the external
+force connected through a \textbf{transformer} of modulus $Y_{m}(L)$.  The
+velocity at the forcing point $x = L$ is recovered from the bond-graph structure
+as:
+\begin{equation}
+  \frac{\partial\xi}{\partial t}(L,t)
+  = \sum_{m=1}^{\infty} Y_{m}(L)\,\dot{\eta}_{m}(t)
+  = \sum_{m=1}^{\infty} Y_{m}(L)\,\frac{p_{m}}{m_{m}},
+\end{equation}
+which corresponds to a 0-junction collecting the TF outputs.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/chapter7/7_4.png}
+  \caption{Bond-graph for the $N$-mode bar}
+\end{figure}
+
+The construction above answers the question that naturally arises: \emph{why
+build a bond graph when the PDE has already been ``solved'' analytically?}  The
+answer is that the force $F(t)$ is in general \textbf{not} a specified input but
+rather \emph{results from the interaction with some external sub-system}.  The
+bond-graph modal model provides a \textbf{port} at $x = L$ with well-defined
+effort and flow variables, so that any external subsystem (a mass--spring--damper,
+an actuator, another flexible body) can be connected without further analysis.
+
+
+\subsection{Reading outputs and applying forces at interior locations}
+\label{ssec:interior_outputs}
+
+A fundamental strength of the modal bond-graph approach is that
+\textbf{any location} on the rod can be monitored as an output, and forces or
+moments can be applied at arbitrary interior points, without any structural
+modification to the modal model.
+
+To read the velocity at an arbitrary interior location $x_{0}$, recall:
+\begin{equation}
+  \frac{\partial\xi}{\partial t}(x_{0},t)
+  = \sum_{m=1}^{\infty} Y_{m}(x_{0})\,\frac{p_{m}}{m_{m}}.
+\end{equation}
+In bond-graph terms this is a new 0-junction connected to the $m$ TF elements
+with moduli $Y_{m}(x_{0})$, reading velocities from each modal I-element.
+
+To \textbf{apply a force at an interior point} $x_{0}$, one introduces a new
+0-junction at $x_{0}$ with its own $S_{E}$ source (or interface), and adds to
+each mode $m$ an additional TF of modulus $Y_{m}(x_{0})$.  Alternatively, if
+only output is desired (no power injected), the source is set to $S_{E}\colon 0$:
+this defines the location without disturbing the dynamics.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/chapter7/7_5.png}
+  \caption{Rod with three interface points}
+\end{figure}
+
+This ``cross-coupling'' of all modes to each interface point is visible in the
+bond graph as a set of TF elements that fan out from each modal 1-junction to
+all 0-junctions.  The structure resembles a web: each node is connected to
+every other through the modal transformers.  While the visual complexity grows
+with the number of modes and ports, the underlying mathematics remains fully
+decoupled at the modal level --- the coupling only reappears at the physical
+output level through the linear combination of mode shapes.
+
+\begin{insightbox}[Exploiting the zero-force trick]
+  Defining each output point as a zero-force input also allows one to
+  \emph{act} on the beam at that location later, simply by replacing the
+  zero source with a finite one.  This provides a clean and modular way to
+  change the actuation architecture without rebuilding the modal model.
+\end{insightbox}
+
+
+%──────────────────────────────────────────────────────────────────────
+\section{Application: heat transport in a bar}
+\label{sec:heat}
+%──────────────────────────────────────────────────────────────────────
+
+\subsection{Problem statement}
+\label{ssec:heat_problem}
+
+As a second major application of the modal approach we consider the simulation
+of the \textbf{temperature distribution} $T(t,x)$ in a bar of length $L$ moving
+at a constant transport speed $\nu_{0}$ (material convection), with:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item External distributed heat sources $u_{i}(t)$ applied at
+    discrete locations $x_{i}$ inside the bar.
+  \item Radiation/convection from the bar surface to the ambient temperature
+    $T_{0}$ with heat-transfer coefficient $h$.
+  \item \textbf{Time-varying boundary conditions}: a prescribed temperature
+    $T_{ST}(t)$ at $x=0$ (inlet) and an output heat flux $Q_{OUT}(t)$ at
+    $x=L$ (outlet).
+\end{itemize}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/chapter7/7_6.png}
+  \caption{Schematic of the heated moving bar}
+\end{figure}
+
+
+\subsection{Derivation of the governing PDE}
+\label{ssec:heat_pde}
+
+The PDE is obtained via lumping over a small element $[x, x+\Delta x]$, exactly
+as in the mechanical case, using the \textbf{pseudo-bond-graph framework}
+introduced in the module on thermal systems.  The element is shown in the
+following figure.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/chapter7/7_7.png}
+  \caption{Thermal element between $x$ and $x+\Delta x$}
+\end{figure}
+
+For the \textbf{heat storage part}:
+\begin{equation}
+  \rho c\,\Delta x\,\frac{\partial T}{\partial t}(t,x)
+  = Q(t,x+\Delta x) - Q(t,x) - Q_{d}(t,x),
+  \label{eq:heat_storage}
+\end{equation}
+where $\rho$ is the bar density and $c$ its specific heat.  The \textbf{heat
+flows} are:
+\begin{equation}
+  \Delta x\,Q(t,x) = k\bigl[T(t,x) - T(t,x-\Delta x)\bigr],
+  \label{eq:heat_conduction}
+\end{equation}
+\begin{equation}
+  Q_{d}(t,x) = h\,\Delta x\bigl[T(t,x) - T_{0}\bigr],
+  \label{eq:heat_radiation}
+\end{equation}
+where $k$ is the thermal conductivity and $h$ is the surface heat-transfer
+coefficient.
+
+Starting from the simplified case $Q_{d}=0$ and letting $\Delta x \to 0$,
+one recovers the classical \textbf{heat equation}:
+\begin{equation}
+  \rho c\,\frac{\partial T}{\partial t}(t,x)
+  = \frac{\partial Q}{\partial x}(t,x),
+  \qquad
+  Q(t,x) = k\,\frac{\partial T}{\partial x}(t,x),
+\end{equation}
+which combined gives:
+\begin{equation}
+  \rho c\,\frac{\partial T}{\partial t}(t,x)
+  = k\,\frac{\partial^{2}T}{\partial x^{2}}(t,x)
+  - h\bigl[T(t,x) - T_{0}\bigr].
+  \label{eq:heat_eq}
+\end{equation}
+
+The full problem --- including heat transport at velocity $\nu_{0}$,
+distributed point heat sources $u_{i}(t)\,\delta(x-x_{i})$, and radiation ---
+is governed by:
+\begin{equation}
+  \rho c\,\frac{\partial\tilde{T}}{\partial t}(t,x)
+  = \alpha\,\frac{\partial^{2}\tilde{T}}{\partial x^{2}}(t,x)
+  - \nu_{0}\,\frac{\partial\tilde{T}}{\partial x}(t,x)
+  - \beta\,\tilde{T}(t,x)
+  + \sum_{i=1}^{m}\delta(x - x_{i})\,\tilde{u}_{i}(t),
+  \label{eq:heat_full}
+\end{equation}
+with boundary conditions:
+\begin{align}
+  \tilde{T}(t,0) &= \tilde{T}_{ST}(t)
+    \quad\text{(inlet temperature)},\\[4pt]
+  \alpha\!\left[\frac{\partial\tilde{T}}{\partial x}(t,L)
+    + \gamma_{2}\,\tilde{T}(t,L)\right]
+    &= \tilde{Q}_{OUT}(t)
+    \quad\text{(outlet flux)},
+\end{align}
+where $\alpha = k/(\rho c)$ is the thermal diffusivity, $\beta = h/(\rho c)$
+accounts for surface radiation, and $\gamma_{2}$ is a parameter defined below.
+
+
+\subsection{Coordinate transformation to remove transport and radiation}
+\label{ssec:heat_transform}
+
+A key step is to \textbf{``remove''} the first-order transport term and the
+radiation term from the PDE, so that the remaining equation is in the standard
+diffusion form to which separation of variables applies.  This is achieved by
+the \textbf{exponential change of coordinates}:
+\begin{equation}
+  \tilde{T}(t,x) = \mathrm{e}^{\gamma_{1}t + \gamma_{2}x}\,w(t,x),
+  \label{eq:heat_transform}
+\end{equation}
+with the two parameters:
+\begin{equation}
+  \gamma_{2} = \frac{\nu_{0}}{2\alpha},
+  \qquad
+  \gamma_{1} = -\beta - \nu_{0}\gamma_{2} + \alpha\gamma_{2}^{2}
+  = -\beta - \frac{\nu_{0}^{2}}{4\alpha}.
+  \label{eq:heat_params}
+\end{equation}
+Substituting \eqref{eq:heat_transform} into \eqref{eq:heat_full}, the transport
+and radiation terms cancel and the new function $w(t,x)$ satisfies the
+\textbf{standard diffusion equation} with source terms:
+\begin{equation}
+  \frac{\partial w}{\partial t}(t,x)
+  = \alpha\,\frac{\partial^{2}w}{\partial x^{2}}(t,x)
+  + \sum_{i=1}^{m}\delta(x - x_{i})\,v_{i}(t,x),
+  \label{eq:heat_w_pde}
+\end{equation}
+with transformed inputs:
+\begin{equation}
+  v_{i}(t,x) = \mathrm{e}^{-(\gamma_{1}t + \gamma_{2}x)}\,\tilde{u}_{i}(t),
+  \qquad i = 1,\ldots,m,
+  \label{eq:heat_vi}
+\end{equation}
+and transformed boundary conditions:
+\begin{align}
+  w(t,0) &= W_{ST}(t) = \mathrm{e}^{-\gamma_{1}t}\,\tilde{T}_{ST}(t),\\[4pt]
+  \alpha\!\left[\frac{\partial w}{\partial x}(t,L)
+    + \gamma_{2}\,w(t,L)\right]
+  &= \alpha\,H_{OUT}(t)
+    = \mathrm{e}^{-(\gamma_{1}t + L\gamma_{2})}\,\tilde{Q}_{OUT}(t).
+  \label{eq:heat_bc_transformed}
+\end{align}
+The transformation~\eqref{eq:heat_transform} is \emph{not} a change of
+independent coordinates: $w$ and $\tilde{T}$ are evaluated at the same $(t,x)$.
+It is rather a \textbf{dependent-variable scaling} that absorbs the exponential
+spatial and temporal decay introduced by transport and radiation.
+
+
+\subsection{Separation of variables for the heat equation}
+\label{ssec:heat_sov}
+
+We now apply separation of variables to~\eqref{eq:heat_w_pde} in two steps.
+
+\paragraph{Step 1: handling time-varying boundary conditions.}
+
+Time-varying boundary conditions prevent a direct application of the method.
+Following a standard approach, we split $w$ as:
+\begin{equation}
+  z(t,x) = \bar{z}(t,x) + z_{0}(t) + x\,z_{L}(t),
+  \label{eq:heat_split}
+\end{equation}
+where the lifting functions $z_{0}(t)$ and $x\,z_{L}(t)$ absorb the boundary
+data, so that $\bar{z}$ satisfies \emph{homogeneous} boundary conditions:
+\begin{equation}
+  \bar{z}(t,0) = 0,
+  \qquad
+  \frac{\partial\bar{z}}{\partial x}(t,L) = 0.
+\end{equation}
+Note that this splitting is \textbf{not} a change of coordinates in the strict
+sense: it is an additive decomposition that simplifies the boundary value
+problem.
+
+\paragraph{Step 2: modal expansion of the homogeneous problem.}
+
+The homogeneous problem for $\bar{z}$:
+\begin{equation}
+  \frac{\partial\bar{z}}{\partial t}(t,x)
+  = \alpha\,\frac{\partial^{2}\bar{z}}{\partial x^{2}}(t,x),
+  \qquad
+  \bar{z}(t,0) = 0,\quad
+  \frac{\partial\bar{z}}{\partial x}(t,L) = 0,
+  \label{eq:heat_homog}
+\end{equation}
+has the same boundary conditions as the unforced bar (zero temperature at
+$x=0$, zero flux at $x=L$).  The \textbf{mode shapes} are therefore:
+\begin{equation}
+  Z_{n}(x) = \sin\!\left[(2n+1)\,\frac{\pi}{2}\,\frac{x}{L}\right],
+  \qquad n = 0, 1, 2, \ldots,
+  \label{eq:heat_modes}
+\end{equation}
+and the solution takes the form:
+\begin{equation}
+  \bar{z}(t,x) = \sum_{n=0}^{\infty} Z_{n}(x)\,f_{n}(t).
+  \label{eq:heat_expansion}
+\end{equation}
+
+
+\subsection{Final modal equations for the heat problem}
+\label{ssec:heat_modal_eqs}
+
+After substituting the expansion~\eqref{eq:heat_expansion} into
+the full PDE (including the boundary-lifting terms, the transformed sources
+$v_{i}$, and the boundary output condition), and exploiting the orthogonality
+of the mode shapes, one arrives at the \textbf{coupled modal ODE system}:
+\begin{align}
+  w(t,x) &= \sum_{n=0}^{\infty} Z_{n}(x)\,\eta'_{n}(t),
+  \label{eq:heat_w_expansion}\\[6pt]
+  w_{L}(t)
+  &= -\gamma_{2}\,w(t,L) + H_{OUT}(t)
+   = -\frac{\nu_{0}}{2\alpha}\sum_{n=0}^{\infty} Z_{n}(L)\,\eta'_{n}(t)
+     + H_{OUT}(t) \notag\\
+  &= -\frac{\nu_{0}}{2\alpha}\sum_{\bar{n}=0}^{\infty}(-1)^{\bar{n}}\,\eta'_{\bar{n}}(t)
+     + H_{OUT}(t),
+  \label{eq:heat_wL}
+\end{align}
+and the evolution equation for each modal amplitude:
+\begin{align}
+  \dot{\eta}'_{n}(t)
+  &= -\frac{(2n+1)^{2}\pi^{2}\alpha}{4L^{2}}\,\eta'_{n}(t)
+     - \frac{\nu_{0}}{L}\sum_{\bar{n}=0}^{\infty}(-1)^{(n+\bar{n})}\,\eta'_{\bar{n}}(t)
+     + \frac{2}{L}\sum_{i=1}^{m} Z_{n}(x_{i})\,v_{i}(t,x_{i})
+     \notag\\
+  &\quad
+     + \frac{(2n+1)\pi\alpha}{L^{2}}\,W_{ST}(t)
+     + (-1)^{n}\,\frac{2\alpha}{L}\,H_{OUT}(t).
+  \label{eq:heat_modal_eqs}
+\end{align}
+
+Equation~\eqref{eq:heat_modal_eqs} is the central result of the heat-problem
+analysis.  Let us examine its structure term by term:
+\begin{itemize}[leftmargin=2em,itemsep=4pt]
+  \item The first term, $-(2n+1)^{2}\pi^{2}\alpha/(4L^{2})\;\eta'_{n}$, is the
+    standard \textbf{modal decay} of the $n$-th diffusion mode: it comes from the
+    spatial second derivative and gives the mode a characteristic relaxation time
+    $\tau_{n} = 4L^{2}/[(2n+1)^{2}\pi^{2}\alpha]$.  Higher modes decay faster.
+  \item The second term, $-(\nu_{0}/L)\sum_{\bar{n}}(-1)^{(n+\bar{n})}\eta'_{\bar{n}}$,
+    arises from the outlet flux boundary condition which, after the coordinate
+    change, introduces a \textbf{coupling between all modes}.  This is the
+    price paid for non-zero transport: the modes are no longer fully decoupled.
+  \item The third term, $\frac{2}{L}\sum_{i} Z_{n}(x_{i})\,v_{i}(t,x_{i})$,
+    is the \textbf{modal forcing} from the distributed point-wise heat sources.
+    The mode-shape value $Z_{n}(x_{i})$ plays the same role as $Y_{n}(L)$ in
+    the mechanical bar.
+  \item The fourth term involves $W_{ST}(t)$: the \textbf{inlet temperature
+    boundary condition} drives each mode with a gain proportional to $(2n+1)$.
+  \item The fifth term involves $H_{OUT}(t)$: the \textbf{outlet flux} drives
+    mode $n$ with an alternating sign $(-1)^{n}$.
+\end{itemize}
+
+\begin{insightbox}[Coupling introduced by transport]
+  In the purely diffusive case ($\nu_{0} = 0$, i.e.\ $\gamma_{2}=0$), the
+  boundary condition at $x=L$ becomes simply $\partial w/\partial x = 0$
+  (zero flux), and the second term in \eqref{eq:heat_modal_eqs} disappears.
+  The modal equations become fully decoupled --- each mode evolves
+  independently, as in the mechanical bar.  Transport introduces
+  inter-modal coupling: physically, the advection of heat modifies the
+  effective boundary condition in a way that mixes modes.  The coupling
+  is weighted by $(-1)^{(n+\bar{n})}$, so adjacent modes interact most
+  strongly with alternating signs.
+\end{insightbox}
+
+\begin{warningbox}[Linearity is required]
+  The entire separation-of-variables and modal-decomposition machinery
+  applies \textbf{only to linear PDEs}.  The coordinate transformation
+  \eqref{eq:heat_transform} is linear; the modal expansion
+  \eqref{eq:heat_expansion} is linear; and the decoupling by orthogonality
+  is linear.  If the heat-transfer coefficient $h$ depends on temperature,
+  or if the transport velocity $\nu_{0}$ is state-dependent, the approach
+  breaks down and one must resort to finite-difference, finite-element, or
+  other nonlinear numerical schemes.
+\end{warningbox}
+
+
+%──────────────────────────────────────────────────────────────────────
+\section{Summary}
+\label{sec:distrib_summary}
+%──────────────────────────────────────────────────────────────────────
+
+Two complementary approaches for modelling distributed-parameter systems have
+been presented.  Their salient properties are summarised below.
+
+\paragraph{Simple (finite) lumping.}
+A lumped-parameter model can be found for a distributed system by describing the
+behaviour of a small element; however, such a model may not be accurate without
+retaining a large number of small elements.  The lumped-parameter representations
+have the advantage that they can be \emph{easily combined} into an overall system
+model and non-linear effects pose no particular problems.  However, the model has
+a \textbf{large state space} and can cause computational problems due to
+\emph{disparities in the time scales} of the distributed portion of the model and
+the remainder of the system.
+
+\paragraph{Continuum (PDE) models.}
+Continuum models can yield insight into system behaviour when analytical solutions
+are available.  However, it is difficult to incorporate a continuum model into an
+overall system model, mostly because of the difficulties in solving the PDEs for
+the continuum part subject to complicated boundary conditions, and the inability
+to handle non-linear effects analytically.
+
+\paragraph{Modal (separation-of-variables) models.}
+The modal approach bridges the two: it takes the PDE as its starting point (full
+accuracy of the continuum), applies separation of variables to decouple the
+spatial and temporal dependences, and produces a \textbf{finite-order
+lumped-parameter bond graph} that retains spectral accuracy up to the number of
+modes included.  The resulting model:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item Has all storage elements in \emph{integral causality}.
+  \item Can be seamlessly coupled to bond-graph models of the rest of the system.
+  \item Allows forces, moments, or heat sources to be applied (and outputs to be
+    read) at arbitrary locations by evaluating the mode shapes at those points.
+  \item Admits the addition of modal damping (R-elements on each modal junction).
+  \item Applies to \emph{general linear PDEs} --- wave equation, heat equation,
+    beam equation --- not only to wave-like systems.
+\end{enumerate}
+The trade-off is that \textbf{linearity is mandatory}: non-linear distributed
+effects force a return to finite lumping or full numerical PDE solvers.
