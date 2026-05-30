@@ -1,5 +1,5 @@
 %=============================================================
-\chapter{The PD Controller Sub-Model}
+\chapter{The PID Controller Sub-Model}
 \label{chap:pd}
 %=============================================================
 
@@ -22,43 +22,37 @@ where $n=6$ for the UR5 manipulator. The terms appearing in \cref{eq:manipulator
   \item $\tau \in \mathbb{R}^{6\times1}$ is the vector of generalized torques applied by the joint actuators $[\text{N}\cdot\text{m}]$.
 \end{itemize}
 
-The control objective is to globally asymptotically stabilize the joint position vector $q$ to a desired constant target configuration $q^* \in \mathbb{R}^{6\times1}$. Since the target configuration is stationary, the reference velocity profile is identically zero.
+The control objective is to follow a kinematic trajectory given with an unknown mass load. 
 
 \section{Control Law}
 
 To fulfill the control objective, the centralized control torque vector $\tau$ is chosen as:
 \begin{equation}
-  \tau = K_p (q^* - q) - K_d \dot{q} + g(q)
+  \tau = K_p (q^* - q) - K_d \dot{q} + K_i (q^* - q) + g(q)
   \label{eq:pd_control_law}
 \end{equation}
 where:
 \begin{itemize}
   \item $K_p = K_p^\top \succeq 0 \in \mathbb{R}^{6\times6} $ is the matrix containing the proportional gains $[\text{N}\cdot\text{m/rad}]$.
   \item $K_d = K_d^\top \succeq 0 \in \mathbb{R}^{6\times6}$ is the matrix containing the derivative gains $[\text{N}\cdot\text{m}\cdot\text{s/rad}]$.
+  \item $K_i = K_i^\top \succeq 0 \in \mathbb{R}^{6\times6}$ is the matrix containing the integral gains $[\text{N}\cdot\text{m}\cdot\text{s/rad}]$.
 \end{itemize}
-The control law consists of a proportional action tracking the regulation error, a derivative action acting directly on the measured joint velocity $\dot{q}$ to inject damping, and a nonlinear feedforward term providing compensation for the gravitational torques.
+The control law consists of a proportional action tracking the regulation error, a derivative action acting directly on the joint velocity to inject damping since we are not using inverse dynamics, an integral action to compensate for the unknown mass load and a nonlinear feedforward term providing compensation for the gravitational torques of the robot.
 
 \section{Bond-Graph Implementation}
 
-Each \texttt{PD} block within the 20-sim library acts as a single-joint decentralized execution unit. It processes continuous signal flows and converts them into an output command. The block maps the control law component-wise for a single joint index $i$:
+Each \texttt{PID} block within the 20-sim library acts as a single-joint decentralized execution unit. It processes continuous signal flows and converts them into an output command. The block maps the control law component-wise for a single joint index $i$:
 \begin{equation}
-  \tau_i = K_{p,i}(q_i^* - q_i) - K_{d,i}\dot{q}_i + \tau_{g,i}
+  \tau_i = K_{p,i}(q_i^* - q_i) - K_{d,i}\dot{q}_i + K_{i,i} (q_i^* - q_i) + \tau_{g,i}
 \end{equation}
 The sub-model handles the following external interfaces:
 \begin{itemize}
-  \item It receives the reference joint angle $q_i$ from the inverse kinematics block. 
+  \item It receives the reference joint angle $q_i^*$ from the inverse kinematics block. 
   \item It receives the vector signal \texttt{Q} = $[q_i, \dot{q}_i]^T$ from the physical \texttt{Joint} block.
   \item It receives the scalar gravity feedforward signal \texttt{gravity} = $\tau_{g,i}$ from the centralized computing unit.
   \item It outputs the scalar signal \texttt{tau} directed to the effort source modulating the joint's actuator.
 \end{itemize}
 
-The signal processing sequence within the block is structured as follows:
-\begin{enumerate}
-  \item A local \textbf{Constant} block defines the reference joint velocity $\dot{q}_i$, which is always set to 0.
-  \item A \textbf{PlusMinus} junction computes the scalar tracking position error $e_i = q_i^* - q_i$.
-  \item A \textbf{Gain} block multiplies the error vector $[e_i, \, -\dot{q}_i]^T$ by the localized parameters matrix $K_i = [K_{p,i}, \, K_{d,i}]$ to construct the tracking control action.
-  \item A final summation node adds the signal coming from the gravity feedforward line, routing the definitive scalar command $\tau_i$ to the output port.
-\end{enumerate}
 
 \begin{figure}[H]
   \centering
@@ -73,7 +67,7 @@ The signal processing sequence within the block is structured as follows:
 
 The gravitational vector $g(q)$ is generated from the potential energy distribution of the multi-body system. For any joint $i$, the required static torque $\tau_{g,i}$ is determined by accumulating the moments produced by all subsequent links $j \geq i$. 
 
-To handle variable tool configurations, the mass profile of the final link is adjusted to incorporate the mass of the end-effector payload: $m_6' = m_6 + m_{\text{load}}$. The generalized gravity torque is evaluated through the vector cross-product equation:
+The mass of the load is considered totally unknown as if it was not present. The generalized gravity torque is evaluated through the vector cross-product equation:
 \begin{equation}
   \tau_{g,i} = \sum_{j=i}^{6} m_j\, g^T \left(z_{i-1} \times (p_{G,j}^0 - p_{i-1}^0)\right),
   \label{eq:gravity}

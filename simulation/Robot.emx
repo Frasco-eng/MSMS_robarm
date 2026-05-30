@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\cenni\Desktop\Automation_magistrale\3_Universit&agrave;\IV_semestre\MSMS\Project\simulation\Robot.emx</LibraryPath>
-    <TimeStamp>2026-5-25 23:56:12</TimeStamp>
+    <TimeStamp>2026-5-28 11:37:07</TimeStamp>
     <AllowLibraryUpdate>True</AllowLibraryUpdate>
   </Description>
 </Information>';
@@ -894,7 +894,6 @@ equations
       signal in T_5 [4,4];
       signal in T_6 [4,4];
       signal out tau_g [6,1];
-      signal boolean in is_picked;
      parameters
       real r_gp_1[3,1] = [0.0; -0.02561; 0.00193];
       real r_gp_2[3,1] = [0.2125; 0.0; 0.11336];
@@ -909,7 +908,6 @@ equations
       real m_4 = 1.1219;
       real m_5 = 1.1219;
       real m_6 = 0.1879;
-      real m_load = 1.0;
     end;
     implementation eq
  parameters
@@ -930,15 +928,7 @@ variables
     real tau_1; real tau_2; real tau_3;
     real tau_4; real tau_5; real tau_6;
 
- 	 real m_load_ctrl;
-
 equations
-	
-    if is_picked then 
-	 	m_load_ctrl = m_load;
-	 else 
-		m_load_ctrl = 0.0;
-	 end;
 
     // p_1 = T_1[1:3,4];
     // p_2 = T_2[1:3,4];
@@ -968,12 +958,12 @@ equations
     // tau_5 = transpose(g) * (m_5*cross(z_4, p_com_5 - p_4) + (m_6+m_load_ctrl)*cross(z_4, p_com_6 - p_4));
     // tau_6 = transpose(g) * ((m_6+m_load_ctrl)*cross(z_5, p_com_6 - p_5));
 	
-	 tau_6 = transpose(g) * cross(T_5[1:3,3], (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_5[1:3,4]));     
-	 tau_5 = transpose(g) * cross(T_4[1:3,3], m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_4[1:3,4]) + (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_4[1:3,4]));     
-	 tau_4 = transpose(g) * cross(T_3[1:3,3], m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_3[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_3[1:3,4]) + (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_3[1:3,4]));     
-	 tau_3 = transpose(g) * cross(T_2[1:3,3], m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_2[1:3,4]) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_2[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_2[1:3,4]) + (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_2[1:3,4]));     
-	 tau_2 = transpose(g) * cross(T_1[1:3,3], m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - T_1[1:3,4]) + m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_1[1:3,4]) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_1[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_1[1:3,4]) + (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_1[1:3,4]));     
-	 tau_1 = transpose(g) * cross(z_0, m_1*(T_1[1:3,1:3]*r_gp_1 + T_1[1:3,4] - p_0) + m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - p_0) + m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - p_0) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - p_0) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - p_0) + (m_6+m_load_ctrl)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - p_0));
+	 tau_6 = transpose(g) * cross(T_5[1:3,3], (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_5[1:3,4]));     
+	 tau_5 = transpose(g) * cross(T_4[1:3,3], m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_4[1:3,4]) + (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_4[1:3,4]));     
+	 tau_4 = transpose(g) * cross(T_3[1:3,3], m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_3[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_3[1:3,4]) + (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_3[1:3,4]));     
+	 tau_3 = transpose(g) * cross(T_2[1:3,3], m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_2[1:3,4]) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_2[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_2[1:3,4]) + (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_2[1:3,4]));     
+	 tau_2 = transpose(g) * cross(T_1[1:3,3], m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - T_1[1:3,4]) + m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - T_1[1:3,4]) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - T_1[1:3,4]) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - T_1[1:3,4]) + (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - T_1[1:3,4]));     
+	 tau_1 = transpose(g) * cross(z_0, m_1*(T_1[1:3,1:3]*r_gp_1 + T_1[1:3,4] - p_0) + m_2*(T_2[1:3,1:3]*r_gp_2 + T_2[1:3,4] - p_0) + m_3*(T_3[1:3,1:3]*r_gp_3 + T_3[1:3,4] - p_0) + m_4*(T_4[1:3,1:3]*r_gp_4 + T_4[1:3,4] - p_0) + m_5*(T_5[1:3,1:3]*r_gp_5 + T_5[1:3,4] - p_0) + (m_6)*(T_6[1:3,1:3]*r_gp_6 + T_6[1:3,4] - p_0));
 	 
 	
     // Output mapping
@@ -1062,7 +1052,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -1071,9 +1061,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -1417,7 +1410,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -1426,9 +1419,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -1772,7 +1768,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -1781,9 +1777,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -2118,7 +2117,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -2127,9 +2126,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -2464,7 +2466,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -2473,9 +2475,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -2810,7 +2815,7 @@ parameters
 variables
 	real phi_1;
 	real phi_2;
-	real detm;
+	// real detm;
 	real a;
 	real b;
 equations
@@ -2819,9 +2824,12 @@ equations
 	
 	state = int(p.f);
 
-	detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
-	a = (phi_2*T_1-phi_1*T_2)*detm;
-	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	// detm = 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	// a = (phi_2*T_1-phi_1*T_2)*detm;
+	// b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * detm;
+	a = (phi_2*T_1-phi_1*T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	b = (-phi_2^3 * T_1 + phi_1^3 * T_2) * 1/(phi_1*phi_2*(sqr(phi_1)-sqr(phi_2)));
+	
 	p.e = a * state^3 + b * state;implementation_end;
       I 264 208
        description '<Information>
@@ -18704,6 +18712,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [50.0, 4.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -18747,8 +18756,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -19105,6 +19115,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [50.0, 4.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -19148,8 +19159,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -19506,6 +19518,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [50.0, 4.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -19549,8 +19562,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -19907,6 +19921,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [50.0, 2.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -19950,8 +19965,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -20308,6 +20324,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [25.0, 1.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -20333,6 +20350,41 @@ parameters
 equations
 	output = C;
      implementation_end;
+      Filter 384 200
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Filter.emx</LibraryPath>
+  <TimeStamp>2007-9-26 12:15:20</TimeStamp>
+  <AllowLibraryUpdate>False</AllowLibraryUpdate>
+</Description>';
+       type 'Filter-Generic'
+        ports
+         signal in u [2,1];
+         signal out y [2,1];
+       end;
+       icon bg bottom
+        figures
+         rectangle 354 185 414 215 color 0 fill 15132390;
+         text 'LP-2' 384 195 color 16711680 14 bold;
+         text 'Butterworth' 384 207 color 0;
+       end;
+       implementation eq
+// 20-sim Filter Editor
+// 'Generic Filter' 2 5000 10 20 lp butter
+variables
+	real hidden n[3], d[3];
+	real hidden s[2];
+initialequations
+	// create numerator and denominator coefficients
+	n = [0.0; 0.0; 9.869604401089358e8];
+	d = [1.0; 44428.82938158367; 9.869604401089363e8];
+equations
+	// the actual dynamic equations
+	s = int ( [
+		n[3] * u - d[3] * y;
+		n[2] * u - d[2] * y + s[1]
+	] );
+	y = (1/d[1]) * (n[1] * u + s[2]);
+implementation_end;
       Gain 520 136
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath>
@@ -20351,8 +20403,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -20690,12 +20743,13 @@ equations
      end;
      connections
       Constant\output -> Mux\input2;
+      Filter\y -> PlusMinus1\minus;
       Gain\output -> PlusMinus\plus;
       gravity -> PlusMinus\minus;
       Mux\output -> PlusMinus1\plus;
       PlusMinus\output -> tau;
       PlusMinus1\output -> Gain\input;
-      Q -> PlusMinus1\minus;
+      Q -> Filter\u;
       q_ref -> Mux\input1;
      end;
     implementation_end;
@@ -20709,6 +20763,7 @@ equations
       signal in q_ref;
      parameters
       real K[1,2] = [25.0, 4.0];
+      real Ki = 5;
     end;
     implementation bg
      submodels
@@ -20752,8 +20807,9 @@ equations
        implementation eq
 parameters
 	real oneup K;		// gain
+	real oneup Ki;
 equations
-	output = K * input;
+	output = K * input + Ki * int(input[1]);
     implementation_end;
       Mux 271 136
 						specifications active 'inputs_2'
@@ -21774,7 +21830,6 @@ equations
    Splitter7\output -> GravityCompensation\T_6 1320 72 1320 8;
    Splitter7\output -> Splitter9\input;
    Splitter8\output -> g\condition 1464 152;
-   Splitter8\output -> GravityCompensation\is_picked 1552 272 1552 -48;
    Splitter8\output -> X0\condition 1432 272;
    Splitter9\output -> g\T_next 1384 104;
    Splitter9\output -> Transformation_Body\T_ee;
@@ -21972,6 +22027,36 @@ equations
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>1.7925735427595007e-16 -9.568487032057742e-11 -2.71680123450296e-17</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_1\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_2\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_3\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_4\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_5\Filter\s_initial</Name>
+    <Rows>2</Rows>
+    <Columns>1</Columns>
+    <Value>0.0 0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_5\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PD_6\Gain\output_state_initial</Name>
+    <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>Joint_1\Omega_constr\p.e_initial</Name>
@@ -22227,9 +22312,6 @@ equations
    <VarName>Unwrap\theta_unwrapped[6]</VarName>
    <VarName>PD_6\Constant\output</VarName>
    <VarName>EE_Trajectory\Cond</VarName>
-   <VarName>Planner\pose_des[1]</VarName>
-   <VarName>Planner\pose_des[2]</VarName>
-   <VarName>Planner\pose_des[3]</VarName>
    <VarName>EE_Trajectory\X</VarName>
    <VarName>EE_Trajectory\Y</VarName>
    <VarName>EE_Trajectory\Z</VarName>
@@ -22862,36 +22944,36 @@ equations
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>10.5772081538764</Value>
+            <Value>-13.8988811373626</Value>
            </X>
            <Y>
-            <Value>13.1422756435088</Value>
+            <Value>-6.42412964632125</Value>
            </Y>
            <Z>
-            <Value>4.67851814203951</Value>
+            <Value>3.60065946745367</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.646026698095582</Value>
+             <Value>0.856257990313584</Value>
             </X>
             <Y>
-             <Value>-0.719787323091766</Value>
+             <Value>0.481152449934962</Value>
             </Y>
             <Z>
-             <Value>-0.25407816683869</Value>
+             <Value>-0.187921722921343</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.169710559457905</Value>
+             <Value>0.163828229240207</Value>
             </X>
             <Y>
-             <Value>-0.18908740143275</Value>
+             <Value>0.0920591215507027</Value>
             </Y>
             <Z>
-             <Value>0.967183685050516</Value>
+             <Value>0.982184009971314</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -23150,11 +23232,11 @@ equations
            <ZAxis>
             <X>
              <VariableName>Transformation_1\R_next[1,3]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269833564758301</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_next[2,3]</VariableName>
-             <Value>0.363831490278244</Value>
+             <Value>0.3751024603843689</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_next[3,3]</VariableName>
@@ -23164,11 +23246,11 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_1\R_next[1,2]</VariableName>
-             <Value>3.0439792908509844e-7</Value>
+             <Value>3.029334152415686e-7</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_next[2,2]</VariableName>
-             <Value>-1.188982778899117e-7</Value>
+             <Value>-1.2258156800726283e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_next[3,2]</VariableName>
@@ -23203,26 +23285,26 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_2\pose_abs[1]</VariableName>
-            <Value>-0.00442645846830472</Value>
+            <Value>-0.005070005830161639</Value>
            </X>
            <Y>
             <VariableName>Transformation_2\pose_abs[2]</VariableName>
-            <Value>-0.011332798137790494</Value>
+            <Value>-0.012529775884381924</Value>
            </Y>
            <Z>
             <VariableName>Transformation_2\pose_abs[3]</VariableName>
-            <Value>0.5139848162491969</Value>
+            <Value>0.5139440041575966</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_2\R_next[1,3]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269833564758301</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_next[2,3]</VariableName>
-             <Value>0.363831490278244</Value>
+             <Value>0.3751024603843689</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_next[3,3]</VariableName>
@@ -23232,15 +23314,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_2\R_next[1,2]</VariableName>
-             <Value>-0.3636823892593384</Value>
+             <Value>-0.37491273880004883</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_next[2,2]</VariableName>
-             <Value>-0.9310830235481262</Value>
+             <Value>-0.9265145063400269</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_next[3,2]</VariableName>
-             <Value>-0.028627263382077217</Value>
+             <Value>-0.0318039208650589</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23436,11 +23518,11 @@ equations
            <ZAxis>
             <X>
              <VariableName>Transformation_1\R_body[1,3]</VariableName>
-             <Value>3.0439792908509844e-7</Value>
+             <Value>3.02933443663278e-7</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_body[2,3]</VariableName>
-             <Value>-1.188982778899117e-7</Value>
+             <Value>-1.2258156800726283e-7</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_body[3,3]</VariableName>
@@ -23450,15 +23532,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_1\R_body[1,2]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269833564758301</Value>
             </X>
             <Y>
              <VariableName>Transformation_1\R_body[2,2]</VariableName>
-             <Value>0.363831490278244</Value>
+             <Value>0.3751024603843689</Value>
             </Y>
             <Z>
              <VariableName>Transformation_1\R_body[3,2]</VariableName>
-             <Value>3.2679486139386427e-7</Value>
+             <Value>3.267948898155737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23559,44 +23641,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_2\pose_abs_body[1]</VariableName>
-            <Value>-0.13017420377501984</Value>
+            <Value>-0.1302127587301293</Value>
            </X>
            <Y>
             <VariableName>Transformation_2\pose_abs_body[2]</VariableName>
-            <Value>0.03778445494374452</Value>
+            <Value>0.038109057007142094</Value>
            </Y>
            <Z>
             <VariableName>Transformation_2\pose_abs_body[3]</VariableName>
-            <Value>0.5139848603665079</Value>
+            <Value>0.5139440482749076</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_2\R_body[1,3]</VariableName>
-             <Value>0.010415196418762207</Value>
+             <Value>0.011929425410926342</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_body[2,3]</VariableName>
-             <Value>0.02666540816426277</Value>
+             <Value>0.029481826350092888</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_body[3,3]</VariableName>
-             <Value>-0.9995901584625244</Value>
+             <Value>-0.9994941353797913</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_2\R_body[1,2]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269834160804749</Value>
             </X>
             <Y>
              <VariableName>Transformation_2\R_body[2,2]</VariableName>
-             <Value>0.3638315200805664</Value>
+             <Value>0.3751024603843689</Value>
             </Y>
             <Z>
              <VariableName>Transformation_2\R_body[3,2]</VariableName>
-             <Value>3.2689422369003296e-7</Value>
+             <Value>3.259629011154175e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23627,26 +23709,26 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_3\pose_abs[1]</VariableName>
-            <Value>0.13610541675224824</Value>
+            <Value>0.13947093931263246</Value>
            </X>
            <Y>
             <VariableName>Transformation_3\pose_abs[2]</VariableName>
-            <Value>0.3484504212030009</Value>
+            <Value>0.3446713583942833</Value>
            </Y>
            <Z>
             <VariableName>Transformation_3\pose_abs[3]</VariableName>
-            <Value>0.5822994532442869</Value>
+            <Value>0.5872606281064849</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_3\R_next[1,3]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269833564758301</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_next[2,3]</VariableName>
-             <Value>0.363831490278244</Value>
+             <Value>0.3751024603843689</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_next[3,3]</VariableName>
@@ -23656,15 +23738,15 @@ equations
            <YAxis>
             <X>
              <VariableName>Transformation_3\R_next[1,2]</VariableName>
-             <Value>-0.06336494535207748</Value>
+             <Value>-0.0701112300157547</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_next[2,2]</VariableName>
-             <Value>-0.1622249335050583</Value>
+             <Value>-0.17326535284519196</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_next[3,2]</VariableName>
-             <Value>0.9847172498703003</Value>
+             <Value>0.9823764562606812</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23695,44 +23777,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_4\pose_abs[1]</VariableName>
-            <Value>0.034436036009818954</Value>
+            <Value>0.0382907061346216</Value>
            </X>
            <Y>
             <VariableName>Transformation_4\pose_abs[2]</VariableName>
-            <Value>0.38816262989818273</Value>
+            <Value>0.3856137925432451</Value>
            </Y>
            <Z>
             <VariableName>Transformation_4\pose_abs[3]</VariableName>
-            <Value>0.5822994889139499</Value>
+            <Value>0.5872606637761479</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_4\R_next[1,3]</VariableName>
-             <Value>-0.3638318181037903</Value>
+             <Value>-0.3750985860824585</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_next[2,3]</VariableName>
-             <Value>-0.931464672088623</Value>
+             <Value>-0.9269728660583496</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_next[3,3]</VariableName>
-             <Value>2.1185887533192727e-7</Value>
+             <Value>-0.004729671869426966</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_4\R_next[1,2]</VariableName>
-             <Value>-0.931464672088623</Value>
+             <Value>-0.9269831776618958</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_next[2,2]</VariableName>
-             <Value>0.3638318181037903</Value>
+             <Value>0.3751027584075928</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_next[3,2]</VariableName>
-             <Value>3.2679483297215484e-7</Value>
+             <Value>3.284075944520737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23763,44 +23845,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_5\pose_abs[1]</VariableName>
-            <Value>-6.446841595147967e-7</Value>
+            <Value>0.002787626037115007</Value>
            </X>
            <Y>
             <VariableName>Transformation_5\pose_abs[2]</VariableName>
-            <Value>0.29999949972019635</Value>
+            <Value>0.29787581102431293</Value>
            </Y>
            <Z>
             <VariableName>Transformation_5\pose_abs[3]</VariableName>
-            <Value>0.5822995089663919</Value>
+            <Value>0.5868130003160109</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_5\R_next[1,3]</VariableName>
-             <Value>-3.9352275393866876e-7</Value>
+             <Value>0.0017721904441714287</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_next[2,3]</VariableName>
-             <Value>-4.245761431320716e-7</Value>
+             <Value>0.004384752828627825</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_next[3,3]</VariableName>
-             <Value>-1.0</Value>
+             <Value>-0.999988853931427</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_5\R_next[1,2]</VariableName>
-             <Value>0.3638318181037903</Value>
+             <Value>0.3750985562801361</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_next[2,2]</VariableName>
-             <Value>0.931464672088623</Value>
+             <Value>0.9269728660583496</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_next[3,2]</VariableName>
-             <Value>-5.386538077800651e-7</Value>
+             <Value>0.004729345440864563</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23831,44 +23913,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_6\pose_abs[1]</VariableName>
-            <Value>-6.770710810234384e-7</Value>
+            <Value>0.002933477301718878</Value>
            </X>
            <Y>
             <VariableName>Transformation_6\pose_abs[2]</VariableName>
-            <Value>0.29999946477757955</Value>
+            <Value>0.2982366761300708</Value>
            </Y>
            <Z>
             <VariableName>Transformation_6\pose_abs[3]</VariableName>
-            <Value>0.4999995089664057</Value>
+            <Value>0.5045139207112908</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_6\R_next[1,3]</VariableName>
-             <Value>-3.9352275393866876e-7</Value>
+             <Value>0.0017721904441714287</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_next[2,3]</VariableName>
-             <Value>-4.245761431320716e-7</Value>
+             <Value>0.004384752828627825</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_next[3,3]</VariableName>
-             <Value>-1.0</Value>
+             <Value>-0.999988853931427</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_6\R_next[1,2]</VariableName>
-             <Value>-3.8136981311254203e-4</Value>
+             <Value>-0.002608034061267972</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_next[2,2]</VariableName>
-             <Value>-0.9999999403953552</Value>
+             <Value>-0.9999869465827942</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_next[3,2]</VariableName>
-             <Value>4.247261813361547e-7</Value>
+             <Value>-0.00438936660066247</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -23949,44 +24031,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_3\pose_abs_body[1]</VariableName>
-            <Value>-0.01839843016905085</Value>
+            <Value>-0.018974756152380284</Value>
            </X>
            <Y>
             <VariableName>Transformation_3\pose_abs_body[2]</VariableName>
-            <Value>-0.005875325573175494</Value>
+            <Value>-0.0069032388964347935</Value>
            </Y>
            <Z>
             <VariableName>Transformation_3\pose_abs_body[3]</VariableName>
-            <Value>0.5139848211511203</Value>
+            <Value>0.51394400905952</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_3\R_body[1,3]</VariableName>
-             <Value>0.35827121138572693</Value>
+             <Value>0.36849188804626465</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_body[2,3]</VariableName>
-             <Value>0.917229413986206</Value>
+             <Value>0.9106466174125671</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_body[3,3]</VariableName>
-             <Value>0.17416097223758698</Value>
+             <Value>0.18691299855709076</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_3\R_body[1,2]</VariableName>
-             <Value>-0.9314647912979126</Value>
+             <Value>-0.9269833564758301</Value>
             </X>
             <Y>
              <VariableName>Transformation_3\R_body[2,2]</VariableName>
-             <Value>0.3638315200805664</Value>
+             <Value>0.3751024901866913</Value>
             </Y>
             <Z>
              <VariableName>Transformation_3\R_body[3,2]</VariableName>
-             <Value>3.315508081414009e-7</Value>
+             <Value>3.2782557468635787e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24067,44 +24149,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_4\pose_abs_body[1]</VariableName>
-            <Value>0.12152798182747607</Value>
+            <Value>0.12496363834853096</Value>
            </X>
            <Y>
             <VariableName>Transformation_4\pose_abs_body[2]</VariableName>
-            <Value>0.35414435578421066</Value>
+            <Value>0.3505416836610845</Value>
            </Y>
            <Z>
             <VariableName>Transformation_4\pose_abs_body[3]</VariableName>
-            <Value>0.5822994583586335</Value>
+            <Value>0.5872606330763085</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_4\R_body[1,3]</VariableName>
-             <Value>-0.3638318181037903</Value>
+             <Value>-0.3750985860824585</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_body[2,3]</VariableName>
-             <Value>-0.931464672088623</Value>
+             <Value>-0.9269728660583496</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_body[3,3]</VariableName>
-             <Value>2.1185887533192727e-7</Value>
+             <Value>-0.004729671869426966</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_4\R_body[1,2]</VariableName>
-             <Value>-0.931464672088623</Value>
+             <Value>-0.9269831776618958</Value>
             </X>
             <Y>
              <VariableName>Transformation_4\R_body[2,2]</VariableName>
-             <Value>0.3638318181037903</Value>
+             <Value>0.3751027584075928</Value>
             </Y>
             <Z>
              <VariableName>Transformation_4\R_body[3,2]</VariableName>
-             <Value>3.2679483297215484e-7</Value>
+             <Value>3.284075944520737e-7</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24185,44 +24267,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_5\pose_abs_body[1]</VariableName>
-            <Value>0.03456337714285552</Value>
+            <Value>0.03842199069079502</Value>
            </X>
            <Y>
             <VariableName>Transformation_5\pose_abs_body[2]</VariableName>
-            <Value>0.38848864252957727</Value>
+            <Value>0.38593823318155973</Value>
            </Y>
            <Z>
             <VariableName>Transformation_5\pose_abs_body[3]</VariableName>
-            <Value>0.5822994577942842</Value>
+            <Value>0.5872622881161996</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_5\R_body[1,3]</VariableName>
-             <Value>-0.3638318181037903</Value>
+             <Value>-0.3750985860824585</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_body[2,3]</VariableName>
-             <Value>-0.931464672088623</Value>
+             <Value>-0.9269728660583496</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_body[3,3]</VariableName>
-             <Value>5.386537509366462e-7</Value>
+             <Value>-0.004729345440864563</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_5\R_body[1,2]</VariableName>
-             <Value>-3.9352275393866876e-7</Value>
+             <Value>0.0017721903277561069</Value>
             </X>
             <Y>
              <VariableName>Transformation_5\R_body[2,2]</VariableName>
-             <Value>-4.245761431320716e-7</Value>
+             <Value>0.0043847523629665375</Value>
             </Y>
             <Z>
              <VariableName>Transformation_5\R_body[3,2]</VariableName>
-             <Value>-1.0</Value>
+             <Value>-0.999988853931427</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24303,44 +24385,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_6\pose_abs_body[1]</VariableName>
-            <Value>-6.451957390769017e-7</Value>
+            <Value>0.002789929884551034</Value>
            </X>
            <Y>
             <VariableName>Transformation_6\pose_abs_body[2]</VariableName>
-            <Value>0.29999949916824736</Value>
+            <Value>0.29788151120216816</Value>
            </Y>
            <Z>
             <VariableName>Transformation_6\pose_abs_body[3]</VariableName>
-            <Value>0.5809995089663922</Value>
+            <Value>0.585513014854454</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_6\R_body[1,3]</VariableName>
-             <Value>3.8136981311254203e-4</Value>
+             <Value>0.002608034061267972</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_body[2,3]</VariableName>
-             <Value>0.9999999403953552</Value>
+             <Value>0.999987006187439</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_body[3,3]</VariableName>
-             <Value>-4.247261813361547e-7</Value>
+             <Value>0.00438936660066247</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_6\R_body[1,2]</VariableName>
-             <Value>-3.9352275393866876e-7</Value>
+             <Value>0.001772190211340785</Value>
             </X>
             <Y>
              <VariableName>Transformation_6\R_body[2,2]</VariableName>
-             <Value>-4.245761431320716e-7</Value>
+             <Value>0.004384752828627825</Value>
             </Y>
             <Z>
              <VariableName>Transformation_6\R_body[3,2]</VariableName>
-             <Value>-1.0</Value>
+             <Value>-0.9999887943267822</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -24439,44 +24521,44 @@ equations
           <Position>
            <X>
             <VariableName>Transformation_Body\pos_load[1]</VariableName>
-            <Value>-0.3013174073301898</Value>
+            <Value>-0.3050907788804723</Value>
            </X>
            <Y>
             <VariableName>Transformation_Body\pos_load[2]</VariableName>
-            <Value>5.216180584216492e-4</Value>
+            <Value>0.00784700282300009</Value>
            </Y>
            <Z>
             <VariableName>Transformation_Body\pos_load[3]</VariableName>
-            <Value>0.06124446911889973</Value>
+            <Value>0.058791033611632584</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Transformation_Body\R_load[1,3]</VariableName>
-             <Value>-0.0036410775501281023</Value>
+             <Value>-0.01638180762529373</Value>
             </X>
             <Y>
              <VariableName>Transformation_Body\R_load[2,3]</VariableName>
-             <Value>0.0014234958216547966</Value>
+             <Value>0.006743327248841524</Value>
             </Y>
             <Z>
              <VariableName>Transformation_Body\R_load[3,3]</VariableName>
-             <Value>-0.9999923706054688</Value>
+             <Value>-0.9998431205749512</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Transformation_Body\R_load[1,2]</VariableName>
-             <Value>-7.27861828636378e-4</Value>
+             <Value>-0.0012978581944480538</Value>
             </X>
             <Y>
              <VariableName>Transformation_Body\R_load[2,2]</VariableName>
-             <Value>-0.9999987483024597</Value>
+             <Value>-0.9999765753746033</Value>
             </Y>
             <Z>
              <VariableName>Transformation_Body\R_load[3,2]</VariableName>
-             <Value>-0.001420854707248509</Value>
+             <Value>-0.006722962483763695</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -25354,8 +25436,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-40.0</Minimum>
-      <Maximum>60.0</Maximum>
+      <Minimum>-30.0</Minimum>
+      <Maximum>70.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>PD_output</Label>
@@ -25692,8 +25774,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-3.0</Minimum>
-      <Maximum>7.0</Maximum>
+      <Minimum>-1.0</Minimum>
+      <Maximum>4.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>PD_output</Label>
@@ -27214,174 +27296,6 @@ equations
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>15</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>Plot</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>-1.2</Minimum>
-      <Maximum>0.8</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>X_des</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.2</Minimum>
-      <Maximum>0.8</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>Y_des</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.2</Minimum>
-      <Maximum>0.8</Maximum>
-      <Linear>true</Linear>
-      <Scaling>1</Scaling>
-      <Label>Z_des</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pose_des[1]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>6076255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>6076255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pose_des[2]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>12553035</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>12553035</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Planner\pose_des[3]</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
      <PlotId>16</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
@@ -28609,7 +28523,7 @@ equations
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>2</PlotPanelId>
-    <PlotPanelVisible>false</PlotPanelVisible>
+    <PlotPanelVisible>true</PlotPanelVisible>
     <Name>Joint_States</Name>
     <Tiling>0</Tiling>
     <PlotIds>
@@ -28649,7 +28563,7 @@ equations
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>5</PlotPanelId>
-    <PlotPanelVisible>false</PlotPanelVisible>
+    <PlotPanelVisible>true</PlotPanelVisible>
     <Name>Dynamics_Proof</Name>
     <Tiling>0</Tiling>
     <PlotIds>
@@ -28670,7 +28584,7 @@ equations
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>7</PlotPanelId>
-    <PlotPanelVisible>false</PlotPanelVisible>
+    <PlotPanelVisible>true</PlotPanelVisible>
     <Name>End_Effector</Name>
     <Tiling>0</Tiling>
     <PlotIds>
@@ -28685,7 +28599,6 @@ equations
     <Name>Inverse_Kinematics</Name>
     <Tiling>0</Tiling>
     <PlotIds>
-     <PlotId>15</PlotId>
      <PlotId>16</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -28693,7 +28606,7 @@ equations
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00208333 0.0037037 0.997917 0.997222
+0.0125 0.0037037 0.9875 0.964815
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
 0.00416667 0.0287037 1 1
@@ -28859,9 +28772,6 @@ equations
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>4.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>

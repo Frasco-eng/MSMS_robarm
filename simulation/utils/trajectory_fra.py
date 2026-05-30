@@ -16,12 +16,13 @@ def generate_curve(t_sp, x_sp, t_eval):
 
 
 def main():
-    T_end = 100.0
-    dt = 1.0
+    T_end = 10.0
+    dt = 0.01
     # [-0.81725, -0.19145, -0.005491]
-    n_points = 10
-    t_sp = np.array([0.0, T_end/10, 2*T_end/10, 3*T_end/10, 4*T_end/10, 5*T_end/10, 6*T_end/10, 7*T_end/10, 8*T_end/10, 9*T_end/10, T_end])
-    x_sp = np.array([[-0.72, -0.11, 0.007, np.pi/2, 0, 0], 
+    n_points = 12
+    t_sp = np.array([0.0, 1*T_end/20, 2*T_end/20, 3*T_end/20, 6*T_end/20, 9*T_end/20, 10*T_end/20, 11*T_end/20, 14*T_end/20, 17*T_end/20, 18*T_end/20, T_end])
+    x_sp = np.array([[-0.78, -0.15145, -0.005491, np.pi/2, 0, 0], 
+                     [-0.5, 0.0, 0.2, np.pi/2, 0, 0], 
                      [0.0, 0.5, 0.2, np.pi, 0, 0], 
                      [0.3, 0.0, 0.2, np.pi, 0, 0],
                      [0.3, 0.0, 0.05, np.pi, 0, 0], 
@@ -32,8 +33,8 @@ def main():
                      [-0.3, 0.0, 0.2, np.pi, 0, 0], 
                      [0.0, 0.3, 0.5, np.pi, 0, 0], 
                      [0.0, 0.3, 0.5, np.pi, 0, 0]])
-    cond_sp = np.array([False, False, False, True, True, True, True, False, False, False, False])
-    t_eval = np.arange(0, T_end, dt)
+    cond_sp = np.array([False, False, False, False, True, True, True, True, False, False, False, False])
+    t_eval = np.arange(0, T_end+1, dt)
     
     x_traj =generate_curve(t_sp, x_sp, t_eval)
 

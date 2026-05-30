@@ -14,12 +14,7 @@ The simulation is designed to test all layers of the model simultaneously, cover
   \item \textbf{Switchable payload}: a rigid load of approximately 1~kg is attached to and detached from the end-effector at prescribed times, controlled by the \texttt{Cond} flag embedded in the trajectory CSV.
 \end{enumerate}
 
-The joint initial conditions are set to match the IK solution at the first waypoint $\mathbf{x}_0 = [-0.72,\; -0.11,\; 0.007,\; \pi/2,\; 0,\; 0]^T$~m/rad:
-\begin{equation}
-q_0 = \begin{bmatrix} -0.81725 \\ -0.19145 \\ -0.005491 \\ 0 \\ 0 \\ 0 \end{bmatrix} \quad \text{(rad)}, \qquad
-\dot{q}_0 = \begin{bmatrix}0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix} \quad \text{(rad/s)}.
-\end{equation}
-
+The joint initial conditions are set to match the IK solution at the first waypoint.
 
 \section{3-D Animation}
 
@@ -27,7 +22,7 @@ Click the image \Cref{fig:anim} to show the animation of the UR5 robot following
 
 \begin{figure}[H]
   \centering
-  \href{https://liveunibo.sharepoint.com/:v:/s/idughis/IQCJnBP_Y-YvTbkAXLTUZcDNAXnBRojG6Ld38mDD1TUP0nQ?e=Ib98C5}{\includegraphics[width=0.8\textwidth]{chapter_results_conclusions/figs/stl2.png}}
+  \href{https://liveunibo.sharepoint.com/:v:/s/idughis/IQBOuWxKc_wdSI1Rsyi2ODbaAUP315An3w9mLJzTkhBuYWU?e=ZaFRQ1}{\includegraphics[width=0.8\textwidth]{chapter_results_conclusions/figs/stl2.png}}
   \caption{3-D animation of the UR5 trajectory tracking.}
   \label{fig:anim}
 \end{figure}
@@ -45,11 +40,13 @@ Click the image \Cref{fig:anim} to show the animation of the UR5 robot following
 \end{figure}
 
 \paragraph{Observation.}
-All six joints track their time-varying references with a small steady-state error, consistent with the PD control law.
-The tracking error remains bounded throughout the 100-second simulation, even across the load pick-up and release events.
+All six joints track their time-varying references with a small steady-state error, consistent with the PID control law.
+The tracking error remains bounded throughout the 10-second simulation, even across the load pick-up and release events.
+Due to the uncertainty in the load mass, and its compensation through the integral term only, a small error is noticeable during the pickup phase, 
+which is then gradually reduced as the integral action accumulates, to later be fully compensated at steady state.
 No overshoots are present thanks to the derivative damping term and the gravity feedforward.
 
-The delay between the reference and actual joint angles is around 0.3 seconds.  
+The delay between the reference and actual joint angles is around 0.1 seconds.  
 
 \section{Joint Torques}
 
@@ -63,8 +60,8 @@ The delay between the reference and actual joint angles is around 0.3 seconds.
 \end{figure}
 
 \paragraph{Observation.}
-The torques are smooth and continuous, following the smooth Cartesian trajectory.
-A visible step change occurs when the load is picked up or released, as the gravity compensation term instantaneously adds or removes the load weight contribution.
+Torques are smooth and bounded with no sign of instability. As the trajectory time is 10s, the dynamics is not negligible and therefore the PID is very active compared to a pure position control scenario, where the torques would be mostly constant and equal to the gravity compensation term.
+
 The close match between the steady-state commanded torque and the analytically predicted gravity torque confirms that the compensation term is correctly implemented.
 
 
