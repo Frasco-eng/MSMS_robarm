@@ -61,16 +61,16 @@ The waypoints are listed in \cref{tab:waypoints} and encode a motion sequence in
     $k$ & $X$ [m] & $Y$ [m] & $Z$ [m] & $\phi$ [rad] & $\theta$ [rad] & $\psi$ [rad] & $\text{cond} [\text{bool}]$\\
     \midrule
     0  & $-0.72$ & $-0.11$ & $0.007$  & $\pi/2$ & 0 & 0 & \texttt{False} \\
-    1  & $0.00$  & $0.50$  & $0.200$  & $\pi$   & 0 & 0 \texttt{False} \\
-    2  & $0.30$  & $0.00$  & $0.200$  & $\pi$   & 0 & 0 \texttt{False} \\
-    3  & $0.30$  & $0.00$  & $0.050$  & $\pi$   & 0 & 0 \texttt{True} \\
-    4  & $0.30$  & $0.00$  & $0.200$  & $\pi$   & 0 & 0 \texttt{True}\\
-    5  & $0.00$  & $-0.50$ & $0.200$  & $\pi$   & 0 & 0 \texttt{True}\\
-    6  & $-0.30$ & $0.00$  & $0.200$  & $\pi$   & 0 & 0 \texttt{True}\\
-    7  & $-0.30$ & $0.00$  & $0.050$  & $\pi$   & 0 & 0 \texttt{True}\\
-    8  & $-0.30$ & $0.00$  & $0.200$  & $\pi$   & 0 & 0 \texttt{False}\\
-    9  & $0.00$  & $0.30$  & $0.500$  & $\pi$   & 0 & 0 \texttt{False}\\
-    10 & $0.00$  & $0.30$  & $0.500$  & $\pi$   & 0 & 0 \texttt{False}\\
+    1  & $0.00$  & $0.50$  & $0.200$  & $\pi$   & 0 & 0 & \texttt{False} \\
+    2  & $0.30$  & $0.00$  & $0.200$  & $\pi$   & 0 & 0 & \texttt{False} \\
+    3  & $0.30$  & $0.00$  & $0.050$  & $\pi$   & 0 & 0 & \texttt{True} \\
+    4  & $0.30$  & $0.00$  & $0.200$  & $\pi$   & 0 & 0 & \texttt{True}\\
+    5  & $0.00$  & $-0.50$ & $0.200$  & $\pi$   & 0 & 0 & \texttt{True}\\
+    6  & $-0.30$ & $0.00$  & $0.200$  & $\pi$   & 0 & 0 & \texttt{True}\\
+    7  & $-0.30$ & $0.00$  & $0.050$  & $\pi$   & 0 & 0 & \texttt{True}\\
+    8  & $-0.30$ & $0.00$  & $0.200$  & $\pi$   & 0 & 0 & \texttt{False}\\
+    9  & $0.00$  & $0.30$  & $0.500$  & $\pi$   & 0 & 0 & \texttt{False}\\
+    10 & $0.00$  & $0.30$  & $0.500$  & $\pi$   & 0 & 0 & \texttt{False}\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -297,7 +297,8 @@ The full signal chain from offline planning to motor torque is summarised in \cr
     % Bottom row (right to left)
     \node[block] (uw)   at (10.5,-2) {Unwrap \\ (phase cont.)};
     \node[block] (pd)   at (7.0, -2) {PD+G \\ Controllers};
-    \node[block] (hd)   at (3.5, -2) {Harmonic Drive \\ + Robot};
+    \node[block] (hd)   at (3.5, -2) {Harmonic Drive};
+    \node[block] (rb)   at (0.0, -2) {Robot Joint};
 
     % Forward path
     \draw[arrow] (csv)  -- (dff);
@@ -306,8 +307,9 @@ The full signal chain from offline planning to motor torque is summarised in \cr
     \draw[arrow] (ik)   -- (uw);
     \draw[arrow] (uw)   -- (pd);
     \draw[arrow] (pd)   -- (hd);
+    \draw[arrow] (hd)   -- (rb);
     % Feedback
-    \draw[arrow] (hd.south) -- ++(0,-0.5)
+    \draw[arrow] (rb.south) -- ++(0,-0.5)
         -| node[near start, below]{\small $q_i,\dot{q}_i$} (pd.south);
   \end{tikzpicture}
   \caption{Signal chain from offline trajectory generation to motor torque command.}

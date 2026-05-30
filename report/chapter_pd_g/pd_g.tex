@@ -28,7 +28,7 @@ The control objective is to follow a kinematic trajectory given with an unknown 
 
 To fulfill the control objective, the centralized control torque vector $\tau$ is chosen as:
 \begin{equation}
-  \tau = K_p (q^* - q) - K_d \dot{q} + K_i (q^* - q) + g(q)
+  \tau = K_p (q^* - q) - K_d \dot{q} + K_i \int{(q^* - q)} + g(q)
   \label{eq:pd_control_law}
 \end{equation}
 where:
@@ -41,9 +41,71 @@ The control law consists of a proportional action tracking the regulation error,
 
 \section{Bond-Graph Implementation}
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+
+% --- Box dimensions ---
+\def\boxW{4.5}    
+\def\boxH{3.5}    % Altezza adatta per tre ingressi e i parametri
+\def\arrowLen{1.8}  
+
+% --- Black box ---
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+
+% --- Title ---
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+    {PID};
+
+% --- Horizontal rule ---
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
+
+% --- Parameters ---
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.8)
+    {$K_{p,i}$, $K_{d,i}$, $K_{i,i}$};
+
+% ==========================================
+% INPUT PORTS (Left Side - Signals)
+% ==========================================
+
+% 1) Reference joint angle
+\def\yInOne{0.8}
+\draw[->, line width=1pt] (-\arrowLen, \yInOne) -- (0, \yInOne);
+\node[above, font=\small] at (-\arrowLen/2, \yInOne) {$q_i^*$};
+
+% 2) State feedback from Joint
+\def\yInTwo{0}
+\draw[->, line width=1pt] (-\arrowLen, \yInTwo) -- (0, \yInTwo);
+\node[above, font=\small] at (-\arrowLen/2, \yInTwo) {$Q = [q_i, \dot{q}_i]^\top$};
+
+% 3) Gravity feedforward
+\def\yInThree{-0.8}
+\draw[->, line width=1pt] (-\arrowLen, \yInThree) -- (0, \yInThree);
+\node[above, font=\small] at (-\arrowLen/2, \yInThree) {$\tau_{g,i}$};
+
+% ==========================================
+% OUTPUT PORT (Right Side - Signal)
+% ==========================================
+
+% Output control effort
+\def\yOut{0}
+\draw[->, line width=1pt] (\boxW, \yOut) -- (\boxW + \arrowLen, \yOut);
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yOut) {$\tau_i$};
+
+\end{tikzpicture}
+\caption{Signal interface of the decentralized \texttt{PID} control block for joint $i$.}
+\label{fig:pid_block}
+\end{figure}
+
 Each \texttt{PID} block within the 20-sim library acts as a single-joint decentralized execution unit. It processes continuous signal flows and converts them into an output command. The block maps the control law component-wise for a single joint index $i$:
 \begin{equation}
-  \tau_i = K_{p,i}(q_i^* - q_i) - K_{d,i}\dot{q}_i + K_{i,i} (q_i^* - q_i) + \tau_{g,i}
+  \tau_i = K_{p,i}(q_i^* - q_i) - K_{d,i}\dot{q}_i + K_{i,i} \int{(q_i^* - q_i)} + \tau_{g,i}
 \end{equation}
 The sub-model handles the following external interfaces:
 \begin{itemize}
@@ -99,41 +161,45 @@ The block computes the individual scalar outputs \texttt{tau\_1} through \texttt
     every node/.style={font=\small},
     line width=0.8pt
 ]
- 
+
 % --- Box dimensions ---
 \def\boxW{4.5}    
-\def\boxH{5.5}    % Tall box to fit 6 inputs + parameters
+\def\boxH{6.5}    % Altezza aumentata per distanziare maggiormente gli ingressi
 \def\arrowLen{1.5}  
- 
+
 % --- Black box ---
 \draw[fill=white, draw=black, line width=1.2pt]
     (0, -\boxH/2) rectangle (\boxW, \boxH/2);
- 
+
 % --- Title ---
 \node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
     {GravityTerm};
- 
+
 % --- Horizontal rule ---
 \draw[black, line width=0.5pt]
     (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
- 
+
 % --- Parameters ---
 \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
     {$r_{gp,1\dots6}$, $g$,\\ $m_{1\dots5}$, $m_6 + m_{load}$};
- 
+
 % ==========================================
 % INPUT PORTS (Left Side - Signals)
 % ==========================================
 
-\def\startY{1.2}
-\def\stepY{-0.6}
+\def\startY{1.6}  % Punto di partenza rialzato
+\def\stepY{-0.8}  % Distanza aumentata tra una freccia e l'altra (prima era -0.6)
 
-\foreach \i in {1,...,6} {
+% Il comando 'evaluate' calcola l'intero di \i-1 e lo salva in \prevI
+\foreach \i [evaluate=\i as \prevI using int(\i-1)] in {1,...,6} {
     \pgfmathsetmacro{\yPos}{\startY + (\i-1)*\stepY}
+    
     \draw[->, line width=1pt] (-\arrowLen, \yPos) -- (0, \yPos);
-    \node[above, font=\small] at (-\arrowLen/2, \yPos) {\texttt{T\_\i}};
+    
+    % Ora stampiamo i valori veri delle variabili \prevI e \i
+    \node[above, font=\small] at (-\arrowLen/2, \yPos) {$\prescript{\prevI}{}{T}_{\i}$};
 }
- 
+
 % ==========================================
 % OUTPUT PORT (Right Side - Signal)
 % ==========================================
@@ -141,8 +207,8 @@ The block computes the individual scalar outputs \texttt{tau\_1} through \texttt
 \def\yOut{0}
 \draw[->, line width=1pt]
     (\boxW, \yOut) -- (\boxW + \arrowLen, \yOut);
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yOut) {\texttt{tau\_g}};
- 
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yOut) { $\tau_{g}$ };
+
 \end{tikzpicture}
 \caption{Signal interface of the \texttt{GravityTerm} sub-model in 20-sim.}
 \label{fig:gravity_term}

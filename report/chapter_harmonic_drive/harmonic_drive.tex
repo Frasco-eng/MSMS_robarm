@@ -19,52 +19,43 @@ These components exhibit several non-ideal characteristics that introduce dynami
 
 \section{Ports \& Parameters}
 The \texttt{HarmonicDrive} sub-model's port structure is as follows:
-
 \begin{center}
-
 \begin{tikzpicture}[
     >=Stealth,
     every node/.style={font=\small},
     line width=0.8pt
 ]
- 
+
 \def\boxW{4.5}    % width of the black box
 \def\boxH{2.2}    % increased height to comfortably fit multi-line parameters
 \def\arrowLen{2}  % length of arrows
-\def\strokeH{0.2} % half-height of causal stroke
- 
+
 \draw[fill=white, draw=black, line width=1.2pt]
     (0, -\boxH/2) rectangle (\boxW, \boxH/2);
- 
+
 \node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.2)
     {HarmonicDrive};
- 
+
 \draw[black, line width=0.5pt]
     (0.15, \boxH/2 - 0.7) -- (\boxW - 0.15, \boxH/2 - 0.7);
- 
+
 \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.8)
     {$J, N, k_1, k_2, k_3$ \\ $T_1, T_2, b_w, b_{f,+}, b_{f,-}$};
 
-% --- Central Input Arrow (Pin) ---
 \def\yCentral{0}
- 
-\draw[->, line width=1pt]
+
+% --- Input Power Bond (Pin) ---
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
     (-\arrowLen, \yCentral) -- (0, \yCentral);
- 
-\draw[line width=1pt]
-    (0, \yCentral - \strokeH) -- (0, \yCentral + \strokeH);
- 
-\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$P_{in}$};
- 
- 
-\draw[->, line width=1pt]
+\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$\tau_{in}$};
+\node[below, font=\small] at (-\arrowLen/2, \yCentral - 0.05) {$\nu_{in}$};
+
+% --- Output Power Bond (Pout) ---
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
     (\boxW, \yCentral) -- (\boxW + \arrowLen, \yCentral);
- 
-\draw[line width=1pt]
-    (\boxW, \yCentral - \strokeH) -- (\boxW, \yCentral + \strokeH);
- 
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$P_{out}$};
- 
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$\tau_{out}$};
+\node[below, font=\small] at (\boxW + \arrowLen/2, \yCentral - 0.05) {$\nu_{out}$};
+
 \end{tikzpicture}
 \end{center}
 

@@ -17,7 +17,7 @@ The complete \texttt{Robot} model assembles the sub-models described in the prev
 \section{Kinematic Chain Assembly}
 
 \subsection{Robot Unit}
-The robot comprises identical units consisting of the Joint, Link, Transformation, Harmonic Drive, and a PD controller with gravity compensation, all interconnected sequentially.
+The robot comprises identical units consisting of the Joint, Link, Transformation, Harmonic Drive, and a PID controller with gravity compensation, all interconnected sequentially.
 
 \begin{figure}[H]
   \centering
@@ -79,7 +79,7 @@ The \texttt{X0} block has the following ports:
 \begin{itemize}
   \item \texttt{ee}: power input from Link$_6$ (the end-effector port of the last link).
   \item \texttt{one}: power output towards the payload I-element.
-  \item \texttt{constrainer}: power port connected to the constraint 1-junction (feedback path).
+  \item \texttt{constraint}: power port connected to the constraint 1-junction (feedback path).
   \item \texttt{source\_effort}: power input from an $S_e$ block (zero-effort source, modelling a free end-effector with no contact force applied).
   \item \texttt{condition}: boolean signal input from \texttt{Cond}.
 \end{itemize}
@@ -88,10 +88,10 @@ The \texttt{X0} block has the following ports:
 
 The switching logic of \texttt{X0} is governed by the following conditional equations:
 \begin{align}
-  e_{\text{ee}}      &= \begin{cases} e_{\text{constrainer}} & \text{if } \texttt{Cond} \\ e_{S_e} & \text{otherwise} \end{cases} \\
-  e_{\text{one}}     &= \begin{cases} e_{\text{constrainer}} & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases} \\
+  e_{\text{ee}}      &= \begin{cases} e_{\text{constraint}} & \text{if } \texttt{Cond} \\ e_{S_e} & \text{otherwise} \end{cases} \\
+  e_{\text{one}}     &= \begin{cases} e_{\text{constraint}} & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases} \\
   f_{S_e}            &= \begin{cases} \mathbf{0} & \text{if } \texttt{Cond} \\ f_{\text{one}} - f_{\text{ee}} & \text{otherwise} \end{cases} \\
-  f_{\text{constrainer}} &= \begin{cases} -(f_{\text{one}} - f_{\text{ee}}) & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases}
+  f_{\text{constraint}} &= \begin{cases} -(f_{\text{one}} - f_{\text{ee}}) & \text{if } \texttt{Cond} \\ \mathbf{0} & \text{otherwise} \end{cases}
 \end{align}
 
 \paragraph{Free mode (\texttt{Cond} = \texttt{false}).}
@@ -137,7 +137,7 @@ It receives the same boolean \texttt{Cond} signal and the transformation matrix 
 where $R_6$ is the rotation matrix of the end-effector frame extracted from $T_6$.
 When \texttt{Cond} is false, the gravitational effort is set to zero, consistent with the decoupled load.
 
-The gravity compensation block \texttt{GravityCompensation} receives the same boolean \texttt{is\_picked} flag and adds the load mass $m_{\text{load}}$ to the effective mass of joint 6 when computing the feedforward gravity torques, ensuring that the PD+G controller correctly compensates for the additional weight whenever the load is picked up.
+The gravity compensation block \texttt{GravityCompensation} receives the same boolean \texttt{is\_picked} flag and adds the load mass $m_{\text{load}}$ to the effective mass of joint 6 when computing the feedforward gravity torques, ensuring that the PID+G controller correctly compensates for the additional weight whenever the load is picked up.
 
 \begin{figure}[H]
   \centering

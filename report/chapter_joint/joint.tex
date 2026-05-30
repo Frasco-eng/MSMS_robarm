@@ -14,77 +14,76 @@ In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
 \end{enumerate}
 
 \begin{center}
-\begin{tikzpicture}[
-    >=Stealth,
-    every node/.style={font=\small},
-    line width=0.8pt
-]
- 
-% --- Box dimensions ---
-\def\boxW{4.5}    % width of the black box
-\def\boxH{2.8}    % height of the black box (increased to fit 3 outputs)
-\def\arrowLen{2}  % length of arrows
-\def\strokeH{0.2} % half-height of causal stroke
- 
-% --- Black box (white fill, black border) ---
-\draw[fill=white, draw=black, line width=1.2pt]
-    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
- 
-% --- Title ---
-\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
-    {Joint};
- 
-% --- Horizontal rule below title ---
-\draw[black, line width=0.5pt]
-    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
- 
-% --- Parameters ---
-\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 1.25)
-    {$d_i$, $a_i$, $\alpha_i$, $\theta_{\text{off},i}$};
- 
-% ==========================================
-% INPUT PORTS (Left Side)
-% ==========================================
+  \begin{tikzpicture}[
+      >=Stealth,
+      every node/.style={font=\small},
+      line width=0.8pt
+  ]
 
-% 1) twist_i (power in)
-\def\yInOne{0.5}
-\draw[->, line width=1pt]
-    (-\arrowLen, \yInOne) -- (0, \yInOne);
-\node[above, font=\small] at (-\arrowLen/2, \yInOne + 0.05) {\texttt{twist\_i}};
+  % --- Box dimensions ---
+  \def\boxW{4.5}    % width of the black box
+  \def\boxH{2.8}    % height of the black box
+  \def\arrowLen{2}  % length of arrows
 
-% 2) actuator (power in)
-\def\yInTwo{-0.5}
-\draw[->, line width=1pt]
-    (-\arrowLen, \yInTwo) -- (0, \yInTwo);
-\draw[line width=1pt]
-    (0, \yInTwo - \strokeH) -- (0, \yInTwo + \strokeH);
-\node[above, font=\small] at (-\arrowLen/2, \yInTwo + 0.05) {\texttt{actuator}};
- 
-% ==========================================
-% OUTPUT PORTS (Right Side)
-% ==========================================
+  % --- Black box (white fill, black border) ---
+  \draw[fill=white, draw=black, line width=1.2pt]
+      (0, -\boxH/2) rectangle (\boxW, \boxH/2);
 
-% 1) Output 1
-\def\yOutOne{0.8}
-\draw[->, line width=1pt]
-    (\boxW, \yOutOne) -- (\boxW + \arrowLen, \yOutOne);
-\draw[line width=1pt]
-    (\boxW, \yOutOne - \strokeH) -- (\boxW, \yOutOne + \strokeH);
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yOutOne + 0.05) {$\nu_{i+1}$};
+  % --- Title ---
+  \node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+      {Joint};
 
-% 2) Output 2
-\def\yOutTwo{0.0}
-\draw[->, line width=1pt]
-    (\boxW, \yOutTwo) -- (\boxW + \arrowLen, \yOutTwo);
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yOutTwo + 0.05) {$H_i^{i-1}$};
+  % --- Horizontal rule below title ---
+  \draw[black, line width=0.5pt]
+      (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
 
-% 3) Output 3
-\def\yOutThree{-0.8}
-\draw[->, line width=1pt]
-    (\boxW, \yOutThree) -- (\boxW + \arrowLen, \yOutThree);
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yOutThree + 0.05) {$x_i = [q_i, \dot{q}_i]^\top$};
- 
-\end{tikzpicture}
+  % --- Parameters ---
+  \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 1.25)
+      {$d_i$, $a_i$, $\alpha_i$, $\theta_{\text{off},i}$};
+
+  % ==========================================
+  % POWER BONDS (Left & Right Sides)
+  % ==========================================
+
+  % 1) Power from previous link (left)
+  \def\yInOne{0.5}
+  % Usiamo -{Latex[length=2.5mm, width=2.5mm, left]} per la half-arrow bondgraph
+  \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+      (-\arrowLen, \yInOne) -- (0, \yInOne);
+  \node[above, font=\small] at (-\arrowLen/2, \yInOne + 0.05) {$\tau_{i-1}$};
+  \node[below, font=\small] at (-\arrowLen/2, \yInOne - 0.05) {$\nu_{i-1}$};
+
+  % 2) Power from actuator (left)
+  \def\yInTwo{-0.5}
+  \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+      (-\arrowLen, \yInTwo) -- (0, \yInTwo);
+  \node[above, font=\small] at (-\arrowLen/2, \yInTwo + 0.05) {$\tau_i$};
+  \node[below, font=\small] at (-\arrowLen/2, \yInTwo - 0.05) {$\dot{q}_i$};
+
+  % 3) Power to next link (right) - centrato o sfalsato
+  \def\yOutOne{0.0}
+  \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+      (\boxW, \yOutOne) -- (\boxW + \arrowLen, \yOutOne);
+  \node[above, font=\small] at (\boxW + \arrowLen/2, \yOutOne + 0.05) {$\tau_i$};
+  \node[below, font=\small] at (\boxW + \arrowLen/2, \yOutOne - 0.05) {$\nu_i$};
+
+  % ==========================================
+  % SIGNAL OUTPUTS (South Side)
+  % ==========================================
+
+  % 1) Output Signal 1: Homogeneous Transform
+  \def\xSigOne{\boxW/3}
+  \draw[-Stealth, line width=1pt]
+      (\xSigOne, -\boxH/2) -- (\xSigOne, -\boxH/2 - 1.5);
+  \node[right, font=\small] at (\xSigOne, -\boxH/2 - 0.75) {$H_i^{i-1}$};
+
+  % 2) Output Signal 2: State
+  \def\xSigTwo{2*\boxW/3}
+  \draw[-Stealth, line width=1pt]
+      (\xSigTwo, -\boxH/2) -- (\xSigTwo, -\boxH/2 - 1.5);
+  \node[right, font=\small] at (\xSigTwo, -\boxH/2 - 0.75) {$x_i = [q_i, \dot{q}_i]^\top$};
+
+  \end{tikzpicture}
 \end{center}
 
 

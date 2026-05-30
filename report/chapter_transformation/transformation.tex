@@ -25,54 +25,50 @@ The \texttt{Transformation} sub-model's port structure is as follows:
     every node/.style={font=\small},
     line width=0.8pt
 ]
- 
+
 \def\boxW{4.5}    % width of the black box
 \def\boxH{2.2}    % height of the box
 \def\arrowLen{2}  % length of arrows
- 
+
 \draw[fill=white, draw=black, line width=1.2pt]
     (0, -\boxH/2) rectangle (\boxW, \boxH/2);
- 
+
 \node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.2)
     {Transformation};
- 
+
 \draw[black, line width=0.5pt]
     (0.15, \boxH/2 - 0.7) -- (\boxW - 0.15, \boxH/2 - 0.7);
- 
+
 % DH Parameters
 \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.9)
     {$a_i, \alpha_i, d_i, \theta_i$};
 
-% --- Input Signal Arrow ---
 \def\yCentral{0}
- 
-\def\yInOne{0.5}
-\draw[->, line width=1pt]
-    (-\arrowLen, \yInOne) -- (0, \yInOne);
-\node[above, font=\small] at (-\arrowLen/2, \yInOne + 0.05) {$T_{\text{prev}}$};
 
-
-\def\yInTwo{-0.5}
+% --- Input Signal Arrow (Left) ---
 \draw[->, line width=1pt]
-    (-\arrowLen, \yInTwo) -- (0, \yInTwo);
-\node[above, font=\small] at (-\arrowLen/2, \yInTwo + 0.05) {$T_i$};
- 
- 
-% --- Output Signal Arrow ---
+    (-\arrowLen, \yCentral) -- (0, \yCentral);
+\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$\prescript{0}{}{T}_{i-1}$};
+
+% --- Input Signal Arrow (Bottom) ---
+\def\xBot{\boxW/2}
+\draw[->, line width=1pt]
+    (\xBot, -\boxH/2 - 1.5) -- (\xBot, -\boxH/2);
+\node[right, font=\small] at (\xBot, -\boxH/2 - 0.75) {$\prescript{i-1}{}{T}_i$};
+
+% --- Output Signal Arrow (Right) ---
 \draw[->, line width=1pt]
     (\boxW, \yCentral) -- (\boxW + \arrowLen, \yCentral);
- 
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$T_{\text{next}}$};
-
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$\prescript{0}{}{T}_i$};
 
 \end{tikzpicture}
 \end{center}
 
 \section{Equations}
 
-Given the absolute transformation $T_{\text{prev}}$ up to frame $i-1$ and the incremental DH transformation $T_i$ provided by the \texttt{Joint} block, the absolute transformation is updated as:
+Given the absolute transformation $\prescript{0}{}{T}_{i-1}$ up to frame $i-1$ and the incremental DH transformation $\prescript{i-1}{}{T}_i$ provided by the \texttt{Joint} block, the absolute transformation is updated as:
 \begin{equation}
-  T_{\text{next}} = T_{\text{prev}} \cdot T_i.
+  \prescript{0}{}{T}_i = \prescript{0}{}{T}_{i-1} \cdot \prescript{i-1}{}{T}_i.
   \label{eq:chain}
 \end{equation}
 

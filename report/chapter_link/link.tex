@@ -7,63 +7,60 @@
 
 Each link of the UR5 is modelled as a rigid body characterised as follows: 
 \begin{center}
-
 \begin{tikzpicture}[
     >=Stealth,
     every node/.style={font=\small},
     line width=0.8pt
 ]
- 
+
 % --- Box dimensions ---
 \def\boxW{4.5}    % width of the black box
-\def\boxH{1.7}    % height of the black box (taller to fit two inputs)
+\def\boxH{1.7}    % height of the black box
 \def\arrowLen{2}  % length of arrows
-\def\strokeH{0.2} % half-height of causal stroke
- 
+
 % --- Black box (white fill, black border) ---
 \draw[fill=white, draw=black, line width=1.2pt]
     (0, -\boxH/2) rectangle (\boxW, \boxH/2);
- 
+
 % --- Title ---
 \node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
     {Link};
- 
+
 % --- Horizontal rule below title ---
 \draw[black, line width=0.5pt]
     (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
- 
+
 % --- Parameters ---
 \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
     {$J$, $m$, $r_{GP}$};
- 
-\def\yOne{0.5}
- 
-\draw[->, line width=1pt]
-    (-\arrowLen, \yOne) -- (0, \yOne);
- 
-\node[above, font=\small]       at (-\arrowLen/2,  \yOne + 0.05) {$T_0^i$};
 
-\def\yTwo{-0.5}
- 
-\draw[->, line width=1pt]
-    (-\arrowLen, \yTwo) -- (0, \yTwo);
- 
-\draw[line width=1pt]
-    (0, \yTwo - \strokeH) -- (0, \yTwo + \strokeH);
- 
-\node[above, font=\small]       at (-\arrowLen/2,  \yTwo + 0.05) {$P_{in}$};
- 
-\def\yOut{0}
- 
-\draw[->, line width=1pt]
-    (\boxW, \yOut) -- (\boxW + \arrowLen, \yOut);
- 
-% Causal stroke at the tail (x=\boxW, where the arrow leaves the box)
-\draw[line width=1pt]
-    (\boxW, \yOut - \strokeH) -- (\boxW, \yOut + \strokeH);
- 
-\node[above, font=\small]       at (\boxW + \arrowLen/2,  \yOut + 0.05) {$P_{out}$};
- 
+% ==========================================
+% POWER BONDS (Left & Right Sides)
+% ==========================================
+
+% 1) Power Bond Input: P_in (Left, centered)
+\def\yBond{0}
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (-\arrowLen, \yBond) -- (0, \yBond);
+\node[above, font=\small] at (-\arrowLen/2, \yBond + 0.05) {$\tau_{in}$};
+\node[below, font=\small] at (-\arrowLen/2, \yBond - 0.05) {$\nu_{in}$};
+
+% 2) Power Bond Output: P_out (Right, centered)
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (\boxW, \yBond) -- (\boxW + \arrowLen, \yBond);
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yBond + 0.05) {$\tau_{out}$};
+\node[below, font=\small] at (\boxW + \arrowLen/2, \yBond - 0.05) {$\nu_{out}$};
+
+% ==========================================
+% SIGNAL INPUT/OUTPUT (Bottom Side)
+% ==========================================
+
+% 1) Signal Input: T_0^i (Bottom, entering upwards)
+\def\xSig{\boxW/2}
+\draw[-Stealth, line width=1pt]
+    (\xSig, -\boxH/2 - 1.5) -- (\xSig, -\boxH/2);
+\node[right, font=\small] at (\xSig, -\boxH/2 - 0.75) {$T_0^i$};
+
 \end{tikzpicture}
 \end{center}
 
