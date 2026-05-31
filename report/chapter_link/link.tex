@@ -59,7 +59,7 @@ Each link of the UR5 is modelled as a rigid body characterised as follows:
 \def\xSig{\boxW/2}
 \draw[-Stealth, line width=1pt]
     (\xSig, -\boxH/2 - 1.5) -- (\xSig, -\boxH/2);
-\node[right, font=\small] at (\xSig, -\boxH/2 - 0.75) {$T_0^i$};
+\node[right, font=\small] at (\xSig, -\boxH/2 - 0.75) {$\prescript{0}{}{T}_i$};
 
 \end{tikzpicture}
 \end{center}
@@ -87,29 +87,30 @@ Numerical values for the UR5 are listed in \cref{tab:link_params}.
 \end{table}
 
 For what concerns the inertias, matrices for each link are listed below:
-\begin{align}
-  J_1 &= \begin{bmatrix}
+\begin{gather*}
+  J_1 = \begin{bmatrix}
     0.0067 & 0 & 0 \\
     0 & 0.0064 & 0 \\
     0 & 0 & 0.0067
-  \end{bmatrix} \text{ kg m}^2, \\
-  J_2 &= \begin{bmatrix}
+  \end{bmatrix} \text{ kg m}^2 \\
+  J_2 = \begin{bmatrix}
     0.0149 & 0 & 0 \\
     0 & 0.3564 & 0 \\
     0 & 0 & 0.3553
-  \end{bmatrix} \text{ kg m}^2, \\
-  J_3 &= \begin{bmatrix}
+  \end{bmatrix} \text{ kg m}^2 \\
+  J_3 = \begin{bmatrix}
     0.0025 & 0 & 0.0034 \\
     0 & 0.0551 & 0 \\
     0.0034 & 0 & 0.0546
-  \end{bmatrix} \text{ kg m}^2, \\
-  J_4 &= \begin{bmatrix}
+  \end{bmatrix} \text{ kg m}^2 \\
+  J_4 = \begin{bmatrix}
     0.0012 & 0 & 0 \\
     0 & 0.0012 & 0 \\
     0 & 0 & 0.0009
-   \end{bmatrix} \text{ kg m}^2, \\
-   J_5 &= J_4, \qquad J_6 = 0.001 \cdot \mathbf{I}.
-\end{align}
+   \end{bmatrix} \text{ kg m}^2 \\
+   J_5 = J_4 \\
+   J_6 = 0.001 \cdot \mathbf{I} \text{ kg m}^2.
+\end{gather*}
 
 \section{Ports and parameters}
 
@@ -122,8 +123,8 @@ Denoting the generalised momentum as
 \end{equation}
 one obtains the state-space form that 20-sim integrates directly:
 \begin{align}
-  \dot{p}_{\text{lin}} &= f^{\text{ext}} + m\,\omega \times v_G, \\
-  \dot{h}_{\text{ang}} &= \tau^{\text{ext}} + \omega \times J\omega, \\
+  \dot{p}_{\text{lin}} &= f^{\text{ext}} - m\,\omega \times v_G, \\
+  \dot{h}_{\text{ang}} &= \tau^{\text{ext}} - \omega \times J\omega, \\
   v_G &= p_{\text{lin}} / m, \\
   \omega &= J^{-1} h_{\text{ang}}.
 \end{align}
@@ -137,46 +138,18 @@ The submodel implements the equations of motion as described above.
 
 The \texttt{Link} sub-model exposes two \emph{power ports} of dimension six:
 \begin{itemize}
-  \item \texttt{wrench\_i}: the power applied seen from reference frame of the i-th link. It is seen as the one exiting from joint $i$ and entering link $i$.
-  \item \texttt{wrench\_ipp}: it is also seen as the one exiting from link $i$ and entering joint $i+1$. It is the wrench applied by the link on the next joint.
+  \item \texttt{wrench\_i}: the power applied seen from reference frame of the i-th link. It is seen as the one exiting from link $i$ and entering link $i$.
+  \item \texttt{wrench\_ipp}: it is also seen as the one exiting from link $i$ and entering link $i+1$. It is the wrench applied by the link on the next link.
 \end{itemize}
 It also receives a signal input \texttt{T\_next}, the homogeneous transformation, used to orient gravity.
 
 Internally the model contains:
 \begin{enumerate}
-  \item Two \textbf{MTF} elements (\texttt{i\_com} and \texttt{ipp\_com}) that shift the reference from the joint origins to the centre of mass.
+  \item Two \textbf{MTF} elements (\texttt{i\_com} and \texttt{ipp\_com}) that shift the reference from the link origins to the centre of mass.
   \item A \textbf{1-junction} that enforces the common-velocity constraint at the centre of mass and sums all efforts.
   \item The \textbf{Body} I-element that integrates the Newton--Euler equations described above.
   \item A \textbf{MSe} element that injects the gravitational wrench.
 \end{enumerate}
-
-\subsection{Gravity Source (MSe)}
-
-The gravitational force in the inertial frame is $f_g = [0,\,0,\,-mg]^T$.
-To express it in the body frame of link $i$, the rotation matrix $R_i \in SO(3)$ extracted from \texttt{T\_next} is used:
-\begin{equation}
-  f_g^{\text{body}} = R_i^T \begin{pmatrix}0\\0\\-mg\end{pmatrix}, \qquad \tau_g^{\text{body}} = \mathbf{0}.
-\end{equation}
-This wrench is injected at the 1-junction so that it acts on the body mass.
-
-\subsection{MTF Equations}
-
-For a displacement vector $r_{Gp} \in \mathbb{R}^3$ from the joint origin to the CoM:
-\begin{align}
-  v_G &= v_{\text{joint}} + \omega \times r_{Gp}, \\
-  \tau_{\text{joint}} &= \tau_G + r_{Gp} \times f_G.
-\end{align}
-These equations are implemented as a modulated transformer in 20-sim, where the modulation matrix is $[r_{Gp}]_\times$.
-
-\subsection{Causality Assignment}
-
-Both power ports carry \emph{fixed integral causality}.
-This means:
-\begin{itemize}
-  \item Efforts (forces/torques at the joints) are \emph{given} by the connected joints.
-  \item Velocities (flows) are \emph{computed} by the body integrator.
-\end{itemize}
-The 1-junction has one element with \emph{effort-out} causality (the Body I-element) and all others with \emph{effort-in} causality (the two MTF connections and the MSe source).
 
 \begin{figure}[H]
   \centering
@@ -184,3 +157,155 @@ The 1-junction has one element with \emph{effort-out} causality (the Body I-elem
   \label{Link bond-graph}
   \caption{Bond-graph diagram of the \texttt{Link} sub-model.}
 \end{figure}
+
+
+\subsection{Gravity Source (MSe)}
+
+The gravitational force in the inertial frame is $f_g = [0,\,0,\,-mg]^T$.
+To express it in the body frame of link $i$, the rotation matrix $\prescript{0}{}{i}R \in SO(3)$ extracted from \texttt{T\_next} (namely, $\prescript{0}{}{T}_i$) is used:
+\begin{equation}
+  \prescript{body}{}{f}_g = \prescript{0}{}{R}_i^\top \begin{pmatrix}0\\0\\-mg\end{pmatrix}, \qquad \prescript{body}{}{\tau}_g = \mathbf{0}.
+\end{equation}
+This wrench is injected at the 1-junction so that it acts on the body mass.
+
+\subsection{MTF Equations}
+In the developed architecture, the physical rigid-body transformation across the link's length is entirely handled by the adjacent \texttt{Joint} sub-models. 
+Consequently, both the input and output power ports of the \texttt{Link} sub-model are referenced to the same spatial location: the local origin of frame $i$.
+Let $W = [f, \tau]^T$ be the generic wrench and $\nu = [v, \omega]^T$ be the generic twist. The mathematical relations governing the power-preserving transformation from the port origin to the CoM are:
+\begin{align}
+  v_{\text{port}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
+  \tau_{\text{G}} &= \tau_{\text{G}} - r_{GP} \times f_{\text{G}}.
+\end{align}
+
+Based on the bond-graph causalities, the two MTF blocks implement these equations as follows.
+
+\paragraph{MTF (\texttt{i\_com}):}
+This block receives efforts from the upstream joint and dictates flows back to it. The 20-sim implementation directly mirrors the kinematic and dynamic relations:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+
+% --- Box dimensions ---
+\def\boxW{4.5}    
+\def\boxH{2.0}    
+\def\arrowLen{2}  
+
+% --- Black box ---
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+
+% --- Title ---
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+    {MTF (\texttt{i\_com})};
+
+% --- Horizontal rule ---
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
+
+% --- Parameters ---
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
+    {$r_{GP}$};
+
+% ==========================================
+% POWER BONDS (Left & Right Sides)
+% ==========================================
+
+% Input Power Bond
+\def\yBond{0}
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (-\arrowLen, \yBond) -- (0, \yBond);
+\node[above, font=\small] at (-\arrowLen/2, \yBond + 0.05) {$W_{in}$};
+\node[below, font=\small] at (-\arrowLen/2, \yBond - 0.05) {$\nu_{in}$};
+
+% Output Power Bond
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (\boxW, \yBond) -- (\boxW + \arrowLen, \yBond);
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yBond + 0.05) {$W_{com}$};
+\node[below, font=\small] at (\boxW + \arrowLen/2, \yBond - 0.05) {$\nu_{com}$};
+
+\end{tikzpicture}
+\end{figure}
+
+\begin{align}
+  v_{\text{in}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
+  \omega_{\text{in}} &= \omega_{\text{G}}, \\
+  \tau_{\text{G}} &= \tau_{\text{in}} - r_{GP} \times f_{\text{in}}, \\
+  f_{\text{G}} &= f_{\text{in}}.
+\end{align}
+
+\paragraph{MTF (\texttt{com\_ipp}):}
+Similarly, this block connects the CoM 1-junction to the downstream joint interface. Since the downstream port is physically co-located at the local origin, the same $r_{GP}$ is applied:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    line width=0.8pt
+]
+
+% --- Box dimensions ---
+\def\boxW{4.5}    
+\def\boxH{2.0}    
+\def\arrowLen{2}  
+
+% --- Black box ---
+\draw[fill=white, draw=black, line width=1.2pt]
+    (0, -\boxH/2) rectangle (\boxW, \boxH/2);
+
+% --- Title ---
+\node[anchor=north, font=\normalsize\bfseries] at (\boxW/2, \boxH/2 - 0.15)
+    {MTF (\texttt{com\_ipp})};
+
+% --- Horizontal rule ---
+\draw[black, line width=0.5pt]
+    (0.15, \boxH/2 - 0.65) -- (\boxW - 0.15, \boxH/2 - 0.65);
+
+% --- Parameters ---
+\node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.75)
+    {$r_{GP}$};
+
+% ==========================================
+% POWER BONDS (Left & Right Sides)
+% ==========================================
+
+% Input Power Bond
+\def\yBond{0}
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (-\arrowLen, \yBond) -- (0, \yBond);
+\node[above, font=\small] at (-\arrowLen/2, \yBond + 0.05) {$W_{com}$};
+\node[below, font=\small] at (-\arrowLen/2, \yBond - 0.05) {$\nu_{com}$};
+
+% Output Power Bond
+\draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
+    (\boxW, \yBond) -- (\boxW + \arrowLen, \yBond);
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yBond + 0.05) {$W_{out}$};
+\node[below, font=\small] at (\boxW + \arrowLen/2, \yBond - 0.05) {$\nu_{out}$};
+
+\end{tikzpicture}
+\end{figure}
+
+\begin{align}
+  v_{\text{out}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
+  \omega_{\text{out}} &= \omega_{\text{G}}, \\
+  \tau_{\text{G}} &= \tau_{\text{out}} - r_{GP} \times f_{\text{out}}, \\
+  f_{\text{G}} &= f_{\text{out}}.
+\end{align}
+
+Both sets of equations ensure that the linear and angular power $P = f^T v + \tau^T \omega$ is strictly conserved across the coordinate shift.
+
+\subsection{Causality Assignment}
+
+Both power ports carry \emph{fixed integral causality}.
+This means:
+\begin{itemize}
+  \item Efforts (forces/torques at the links) are \emph{given} by the connected joints.
+  \item Velocities (flows) are \emph{computed} by the body integrator.
+\end{itemize}
+The 1-junction has one element with \emph{effort-out} causality (the Body I-element) and all others with \emph{effort-in} causality (the two MTF connections and the MSe source).
+

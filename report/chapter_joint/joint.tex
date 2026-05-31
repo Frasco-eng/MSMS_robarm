@@ -13,6 +13,8 @@ In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
   \item Receiving the scalar actuator torque $\tau_i \quad \forall i = 1, \dots, 6$ and transmitting it to the mechanical chain.
 \end{enumerate}
 
+The previous and next link (link $i-1$ and link $i$ respectively) port has fixed effort-out causality, while the actuator port has fixed flow out causality. 
+
 \begin{center}
   \begin{tikzpicture}[
       >=Stealth,
@@ -57,8 +59,8 @@ In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
   \def\yInTwo{-0.5}
   \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
       (-\arrowLen, \yInTwo) -- (0, \yInTwo);
-  \node[above, font=\small] at (-\arrowLen/2, \yInTwo + 0.05) {$\tau_i$};
-  \node[below, font=\small] at (-\arrowLen/2, \yInTwo - 0.05) {$\dot{q}_i$};
+  \node[above, font=\small] at (-\arrowLen/2, \yInTwo + 0.05) {$\tau_{act}$};
+  \node[below, font=\small] at (-\arrowLen/2, \yInTwo - 0.05) {$\dot{q}_{act} = \dot{q}_i$};
 
   % 3) Power to next link (right) - centrato o sfalsato
   \def\yOutOne{0.0}
@@ -75,7 +77,7 @@ In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
   \def\xSigOne{\boxW/3}
   \draw[-Stealth, line width=1pt]
       (\xSigOne, -\boxH/2) -- (\xSigOne, -\boxH/2 - 1.5);
-  \node[right, font=\small] at (\xSigOne, -\boxH/2 - 0.75) {$H_i^{i-1}$};
+  \node[right, font=\small] at (\xSigOne, -\boxH/2 - 0.75) {$\prescript{i-1}{}{T}_i$};
 
   % 2) Output Signal 2: State
   \def\xSigTwo{2*\boxW/3}
@@ -97,10 +99,10 @@ In the bond-graph model, the \texttt{Joint} sub-model is responsible for:
     \toprule
     Port & Type & Description \\
     \midrule
-    \texttt{$\nu_i$}    & power in  (fixed-out causality) & Twist of frame $i-1$ \\
-    \texttt{$\nu_{i+1}$}  & power out (fixed-out causality) & Twist of frame $i$ \\
-    \texttt{$\tau_i$}    & power in  (fixed-in causality)  & Actuator scalar torque bond \\
-    \texttt{$H_i^{i-1}$}        & signal out $[4\times4]$         & DH homogeneous transformation $H_i^{i-1}$ \\
+    \texttt{$\nu_{i-1}$}    & power in  (fixed-out causality) & Twist of frame $i-1$ \\
+    \texttt{$\nu_{i}$}  & power out (fixed-out causality) & Twist of frame $i$ \\
+    \texttt{$\tau_{act}$}    & power in  (fixed-in causality)  & Actuator scalar torque bond \\
+    \texttt{$\prescript{i-1}{}{T}_i$}        & signal out $[4\times4]$         & DH homogeneous transformation $\prescript{i-1}{}{T}_i$ \\
     \texttt{$x_i$}           & signal out $[2\times1]$         & Joint state $[q_i,\;\dot{q}_i]^T$ \\
     \bottomrule
   \end{tabular}
@@ -141,7 +143,7 @@ Given the joint angle $\theta_i = q_i + \tilde{q}_i$ and the stored parameters, 
     a_i\cos\theta_i \\ a_i\sin\theta_i \\ d_i
   \end{pmatrix}.
 \end{align}
-The MTF enforces power continuity by transforming twists and wrenches:
+The MTF enforces power continuity by transforming twists and wrenches (the notation pedix has been shifted of one index for clarity):
 \begin{align}
   \tau_{\text{ipp}} &= R_i^T \tau_i, \\
   f_{\text{ipp}}    &= R_i^T f_i - R_i^T (P_i \times \tau_i), \\

@@ -131,15 +131,15 @@ The gravitational vector $g(q)$ is generated from the potential energy distribut
 
 The mass of the load is considered totally unknown as if it was not present. The generalized gravity torque is evaluated through the vector cross-product equation:
 \begin{equation}
-  \tau_{g,i} = \sum_{j=i}^{6} m_j\, g^T \left(z_{i-1} \times (p_{G,j}^0 - p_{i-1}^0)\right),
+  \tau_{g,i} = \sum_{j=i}^{6} m_j\, g^T \left(z_{i-1} \times (\prescript{0}{}{p}_{G,j} - \prescript{0}{}{p}_{i-1})\right),
   \label{eq:gravity}
 \end{equation}
 where:
 \begin{itemize}
   \item $g = [0, \, 0, \, -9.81]^T \in \mathbb{R}^{3\times1}$ is the static acceleration gravity vector defined in the base reference frame.
-  \item $z_{i-1} \in \mathbb{R}^{3\times1}$ is the orientation vector of the joint actuation axis, extracted as the third column of the homogeneous transformation matrix $T_{i-1}$.
-  \item $p_{G,j}^0 \in \mathbb{R}^{3\times1}$ is the coordinates vector specifying the absolute position of the center of mass of link $j$.
-  \item $p_{i-1}^0 \in \mathbb{R}^{3\times1}$ is the absolute position vector of the origin of coordinate frame $i-1$.
+  \item $z_{i-1} \in \mathbb{R}^{3\times1}$ is the orientation vector of the joint actuation axis, extracted as the third column of the homogeneous transformation matrix $\prescript{0}{}{T}_{i-1}$.
+  \item $\prescript{0}{}{p}_{G,j} \in \mathbb{R}^{3\times1}$ is the coordinates vector specifying the absolute position of the center of mass of link $j$.
+  \item $\prescript{0}{}{p}_{i-1} \in \mathbb{R}^{3\times1}$ is the absolute position vector of the origin of coordinate frame $i-1$.
 \end{itemize}
 
 \subsection{Implementation in the GravityTerm Block}
@@ -148,9 +148,9 @@ The \texttt{GravityTerm} block coordinates the computation of the feedforward va
 
 The structural transformations $T_1$ through $T_6$ enter the block as $4\times4$ matrices from the kinematic transformation chain. For each link index $j$, the translation parameters and spatial vectors are mapped according to the following operations:
 \begin{align}
-  p_j^0     &= T_j[1\!:\!3, \, 4], \\
-  p_{G,j}^0 &= T_j[1\!:\!3, \, 1\!:\!3]\cdot r_{\text{gp},j} + p_j^0, \\
-  z_j       &= T_j[1\!:\!3, \, 3].
+  \prescript{0}{}{p}_{j}     &= \prescript{0}{}{T}_j[1\!:\!3, \, 4], \\
+  \prescript{0}{}{p}_{G,j} &= \prescript{0}{}{T}_j[1\!:\!3, \, 1\!:\!3]\cdot r_{\text{GP},j} + \prescript{0}{}{p}_{j}, \\
+  z_j       &= \prescript{0}{}{T}_j[1\!:\!3, \, 3].
 \end{align}
 The block computes the individual scalar outputs \texttt{tau\_1} through \texttt{tau\_6} executing the vector additions defined in \cref{eq:gravity}. The outputs are packed into the vector signal \texttt{tau\_g} $\in \mathbb{R}^{6\times1}$ and forwarded to the respective controllers.
 

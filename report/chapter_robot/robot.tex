@@ -68,7 +68,11 @@ Moreover, the non-linear C-element within the harmonic drive retains integral ca
 
 \subsection{Overview and Switchable Load}
 
-The payload sub-system has been redesigned to support two distinct operating modes: \emph{free end-effector} (no load attached) and \emph{rigid load attached}.
+The payload sub-system has been redesigned to support two distinct operating modes: 
+\begin{itemize}
+  \item \textbf{Free mode:} The end-effector is free of any load, and the payload body is decoupled from the robot chain.
+  \item \textbf{Load mode:} The payload is rigidly attached to the end-effector, and its inertia is fully coupled with the robot dynamics.
+\end{itemize}
 The transition between the two modes is governed by a boolean condition signal \texttt{Cond}, which is read from the trajectory CSV file generated offline by the Python planner (see \cref{chap:trajectory}).
 This allows the simulation to replicate a pick-and-place scenario in which the robot arm picks up a load at a specific instant, carries it along a portion of the trajectory, and then releases it.
 

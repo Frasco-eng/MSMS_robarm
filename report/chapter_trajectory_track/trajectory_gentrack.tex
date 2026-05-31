@@ -13,18 +13,47 @@ The complete trajectory-tracking stack of the UR5 model can be decomposed into t
     \item A load condition signal that indicates whether the end-effector is carrying a load or not, based on the inter-waypoint segments.
   \end{itemize}
   \item \textbf{Online reference erogation and Workspace-to-Joint mapping}: the CSV is read at each simulation step and the desired end-effector pose is converted to a homogeneous transformation matrix and then mapped to joint angles by the closed-form IK solver.
-  \item \textbf{Joint reference conditioning}: the raw IK output is phase-unwrapped to remove $2\pi$ discontinuities, and the resulting continuous joint references are fed to the six PD+G controllers.
+  \item \textbf{Joint reference conditioning}: the raw IK output is phase-unwrapped to remove $2\pi$ discontinuities, and the resulting continuous joint references are fed to the six PID+G controllers.
 \end{enumerate}
 
 The UR5 joints angle is provided by an Integrator block, which does not enforce any bounds on the joint angles. This means that the joint angles can grow indefinitely in either direction, and the controller must be designed to handle this unboundedness. The phase unwrapping step is crucial to ensure that the joint references remain continuous and do not exhibit jumps of $2\pi$ when crossing the $\pm\pi$ boundary.
 
-Figure \ref{fig:traj_overview} illustrates the signal flow from the offline planner through to the low-level controllers.
+Figure \ref{fig:traj_chain} illustrates the signal flow from the offline planner through to the low-level controllers.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.0\textwidth]{chapter_trajectory_track/figs/traj_gen.png}
-  \caption{Trajectory planning and control architecture.}
-  \label{fig:traj_overview}
+  \begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\small},
+    block/.style={draw, rectangle, rounded corners, minimum width=2.6cm,
+                  minimum height=0.8cm, align=center, fill=blue!10},
+    arrow/.style={->, thick}
+  ]
+    % Top row (left to right)
+    \node[block] (csv)  at (0.0,  0) {CSV File \\ (Python)};
+    \node[block] (dff)  at (3.5,  0) {DataFromFile \\ \texttt{EE\_Traj.}};
+    \node[block] (plan) at (7.0,  0) {Planner \\ (pose $\to T_{\mathrm{des}}$)};
+    \node[block] (ik)   at (10.5, 0) {IK Block \\ (closed-form)};
+    % Bottom row (right to left)
+    \node[block] (uw)   at (10.5,-2) {Unwrap \\ (phase cont.)};
+    \node[block] (pd)   at (7.0, -2) {PID+G \\ Controllers};
+    \node[block] (hd)   at (3.5, -2) {Harmonic Drive};
+    \node[block] (rb)   at (0.0, -2) {Robot Joint};
+
+    % Forward path
+    \draw[arrow] (csv)  -- (dff);
+    \draw[arrow] (dff)  -- (plan);
+    \draw[arrow] (plan) -- (ik);
+    \draw[arrow] (ik)   -- (uw);
+    \draw[arrow] (uw)   -- (pd);
+    \draw[arrow] (pd)   -- (hd);
+    \draw[arrow] (hd)   -- (rb);
+    % Feedback
+    \draw[arrow] (rb.south) -- ++(0,-0.5)
+        -| node[near start, below]{\small $q_i,\dot{q}_i$} (pd.south);
+  \end{tikzpicture}
+  \caption{Signal chain from offline trajectory generation to motor torque command.}
+  \label{fig:traj_chain}
 \end{figure}
 
 %-------------------------------------------------------------
@@ -34,7 +63,7 @@ Figure \ref{fig:traj_overview} illustrates the signal flow from the offline plan
 
 The end-effector trajectory is defined by a set of $N_w = 11$ waypoints in the six-dimensional Cartesian space $[X,\,Y,\,Z,\,\phi,\,\theta,\,\psi]^\top$, where $(X,Y,Z)$ is the position of the tool-center point in the world frame and $(\phi,\theta,\psi)$ are the XYZ Cardan angles (yaw, pitch, roll) of the end-effector orientation.
 
-The waypoints are sampled at uniformly spaced times over a time horizon of $T_{\text{end}} = 100$ seconds, so that the $k$-th waypoint is defined at time $t_k$ as:
+The waypoints are sampled at uniformly spaced times over a time horizon of $T_{\text{end}} = 10$ seconds, so that the $k$-th waypoint is defined at time $t_k$ as:
 \begin{equation}
   t_k = k \cdot \frac{T_{\text{end}}}{N_w - 1}, \qquad k = 0, 1, \ldots, N_w - 1.
 \end{equation}
@@ -78,6 +107,14 @@ The waypoints are listed in \cref{tab:waypoints} and encode a motion sequence in
 A boolean condition array $\texttt{cond\_sp} \in \{0,1\}^{N_w}$ assigns a load status to each inter-waypoint segment:
 segments $[t_3, t_7]$ have $\texttt{Cond} = 1$ (load attached), all others have $\texttt{Cond} = 0$ (free end-effector).
 The condition is held constant within each segment.
+
+A graphical representation of the waypoints and the resulting trajectory is provided in \ref{fig:traj_plot}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{chapter_trajectory_track/figs/trajectory_reference.png}
+  \caption{Visualization of the Workspace Trajectory.}
+  \label{fig:traj_plot}
+\end{figure}
 
 \subsection{PCHIP Spline Interpolation}
 
@@ -248,7 +285,7 @@ Similarly, the elbow cosine $D$ is kept within $[-1,1]$ by design of the waypoin
 %-------------------------------------------------------------
 
 The analytical IK solution returns joint angles in $]-\pi, \pi]$ at every time step independently.
-If a joint crosses the $\pm\pi$ boundary between two consecutive time steps, the raw IK output exhibits a jump of $2\pi$, which would cause a discontinuous (and physically unrealisable) reference for the PD controller.
+If a joint crosses the $\pm\pi$ boundary between two consecutive time steps, the raw IK output exhibits a jump of $2\pi$, which would cause a discontinuous (and physically unrealisable) reference for the PID controller.
 
 The \texttt{Unwrap} block eliminates these jumps by enforcing continuity:
 \begin{equation}
@@ -265,53 +302,15 @@ This is the discrete-time equivalent of the standard continuous unwrapping condi
 %-------------------------------------------------------------
 
 The unwrapped joint reference vector $\boldsymbol{\theta}_{\text{ref}}(t)$ is fed to a \texttt{Demux} block that splits it into six scalar references $\theta_{\text{ref},i}(t)$, one per joint.
-Each scalar reference is routed to the \texttt{q\_ref} input of the corresponding \texttt{PD} controller block.
+Each scalar reference is routed to the \texttt{q\_ref} input of the corresponding \texttt{PID} controller block.
 
-The PD+G controller for joint $i$ computes the motor torque command as:
+The PID+G controller for joint $i$ computes the motor torque command as:
 \begin{equation}
   \tau_i = K_{p,i}\bigl(\theta_{\text{ref},i} - q_i\bigr)
          + K_{d,i}\bigl(\dot{\theta}_{\text{ref},i} - \dot{q}_i\bigr)
          + \tau_{g,i}(\mathbf{q}),
 \end{equation}
 where $\tau_{g,i}(\mathbf{q})$ is the gravity feedforward torque supplied by the \texttt{GravityCompensation} block.
-The desired joint velocity $\dot{\theta}_{\text{ref},i}$ is provided as a constant zero signal in the current implementation, meaning that the derivative action acts only on the measured joint velocity $\dot{q}_i$, effectively implementing a PD controller with a velocity feedback term.
+The desired joint velocity $\dot{\theta}_{\text{ref},i}$ is provided as a constant zero signal in the current implementation, meaning that the derivative action acts only on the measured joint velocity $\dot{q}_i$, effectively implementing a PID controller with a velocity feedback term.
 
 The resulting torque command $\tau_i$ is scaled by the gear ratio $N$ and injected into the harmonic drive sub-model as a modulated effort source (\texttt{MSe}), closing the control loop at the lowest level of the hierarchy.
-
-The full signal chain from offline planning to motor torque is summarised in \cref{fig:traj_chain}:
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[
-    >=Stealth,
-    every node/.style={font=\small},
-    block/.style={draw, rectangle, rounded corners, minimum width=2.6cm,
-                  minimum height=0.8cm, align=center, fill=blue!10},
-    arrow/.style={->, thick}
-  ]
-    % Top row (left to right)
-    \node[block] (csv)  at (0.0,  0) {CSV File \\ (Python)};
-    \node[block] (dff)  at (3.5,  0) {DataFromFile \\ \texttt{EE\_Traj.}};
-    \node[block] (plan) at (7.0,  0) {Planner \\ (pose $\to T_{\mathrm{des}}$)};
-    \node[block] (ik)   at (10.5, 0) {IK Block \\ (closed-form)};
-    % Bottom row (right to left)
-    \node[block] (uw)   at (10.5,-2) {Unwrap \\ (phase cont.)};
-    \node[block] (pd)   at (7.0, -2) {PD+G \\ Controllers};
-    \node[block] (hd)   at (3.5, -2) {Harmonic Drive};
-    \node[block] (rb)   at (0.0, -2) {Robot Joint};
-
-    % Forward path
-    \draw[arrow] (csv)  -- (dff);
-    \draw[arrow] (dff)  -- (plan);
-    \draw[arrow] (plan) -- (ik);
-    \draw[arrow] (ik)   -- (uw);
-    \draw[arrow] (uw)   -- (pd);
-    \draw[arrow] (pd)   -- (hd);
-    \draw[arrow] (hd)   -- (rb);
-    % Feedback
-    \draw[arrow] (rb.south) -- ++(0,-0.5)
-        -| node[near start, below]{\small $q_i,\dot{q}_i$} (pd.south);
-  \end{tikzpicture}
-  \caption{Signal chain from offline trajectory generation to motor torque command.}
-  \label{fig:traj_chain}
-\end{figure}

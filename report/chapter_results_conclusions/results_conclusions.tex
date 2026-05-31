@@ -7,7 +7,7 @@
 
 The simulation is designed to test all layers of the model simultaneously, covering both the dynamic response of the mechanical chain and the complete trajectory-tracking control stack:
 \begin{enumerate}
-  \item \textbf{Cartesian trajectory tracking}: the end-effector is commanded to follow a smooth six-dimensional Cartesian reference trajectory (position and orientation) generated offline via a PCHIP spline interpolant through a set of ten waypoints spanning 100 seconds of simulation.
+  \item \textbf{Cartesian trajectory tracking}: the end-effector is commanded to follow a smooth six-dimensional Cartesian reference trajectory (position and orientation) generated offline via a PCHIP spline interpolant through a set of ten waypoints spanning 10 seconds of simulation.
   \item \textbf{Inverse kinematics}: at every time step, the desired end-effector pose is mapped to joint-space references by the closed-form UR5 IK solver. An unwrapping stage ensures continuity of the joint references across $2\pi$ boundaries.
   \item \textbf{Gravity compensation}: the arm must hold its posture against gravity at all times, including while carrying a load.
   \item \textbf{Harmonic drive effects}: the elastic flex-spline introduces a slight lag between the commanded and actual joint position.

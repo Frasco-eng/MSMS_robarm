@@ -47,14 +47,14 @@ The \texttt{HarmonicDrive} sub-model's port structure is as follows:
 % --- Input Power Bond (Pin) ---
 \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
     (-\arrowLen, \yCentral) -- (0, \yCentral);
-\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$\tau_{in}$};
-\node[below, font=\small] at (-\arrowLen/2, \yCentral - 0.05) {$\nu_{in}$};
+\node[above, font=\small] at (-\arrowLen/2, \yCentral + 0.05) {$\tau_{\text{motor}}$};
+\node[below, font=\small] at (-\arrowLen/2, \yCentral - 0.05) {$\nu_{\text{motor}}$};
 
 % --- Output Power Bond (Pout) ---
 \draw[-{Latex[length=2.5mm, width=2.5mm, left]}, line width=1pt]
     (\boxW, \yCentral) -- (\boxW + \arrowLen, \yCentral);
-\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$\tau_{out}$};
-\node[below, font=\small] at (\boxW + \arrowLen/2, \yCentral - 0.05) {$\nu_{out}$};
+\node[above, font=\small] at (\boxW + \arrowLen/2, \yCentral + 0.05) {$\tau_{\text{harmonic}}$};
+\node[below, font=\small] at (\boxW + \arrowLen/2, \yCentral - 0.05) {$\nu_{\text{harmonic}}$};
 
 \end{tikzpicture}
 \end{center}
@@ -124,7 +124,7 @@ The resistance is governed by the same smooth regularised formula:
 where $\dot{\varphi} = \omega_{\text{out}} - \omega_{\text{load}}$ is the relative angular velocity across the flex-spline,
 $B_s = 0.4$~Nm is the symmetric Coulomb-like structural damping coefficient (i.e.\ $B_{s,+} = 0.4$~Nm, $B_{s,-} = -0.4$~Nm), and $b_w$ is the same viscous coefficient shared with the shaft friction elements.
 Because this element is on the compliance branch, its effort opposes the rate of elastic deformation, adding dissipation proportional to how rapidly the flex-spline is being twisted.
-This element is essential to damp the high-frequency oscillations associated with the elastic flex-spline mode that would otherwise persist indefinitely under a purely conservative C element.
+This element is \textbf{essential to damp the high-frequency oscillations} associated with the elastic flex-spline mode that would otherwise persist indefinitely under a purely conservative C element.
 
 \subsection{Causality Assignment}
 
