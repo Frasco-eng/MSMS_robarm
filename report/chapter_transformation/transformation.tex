@@ -41,7 +41,7 @@ The \texttt{Transformation} sub-model's port structure is as follows:
 
 % DH Parameters
 \node[anchor=north, font=\footnotesize, align=center] at (\boxW/2, \boxH/2 - 0.9)
-    {$a_i, \alpha_i, d_i, \theta_i$};
+    {$p_\text{body,i}$};
 
 \def\yCentral{0}
 
@@ -63,6 +63,8 @@ The \texttt{Transformation} sub-model's port structure is as follows:
 
 \end{tikzpicture}
 \end{center}
+
+The only given parameter is the position of the stl body with respect to the DH frame, denoted as $p_{\text{body}, i}$, which is used to offset the link body in the 3D visualization. The corresponding stl orientation is defined inside the \texttt{transformation} block.
 
 \section{Equations}
 
