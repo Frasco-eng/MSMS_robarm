@@ -113,7 +113,7 @@ The constraint junction (OneJunction$_1$) closes the loop: the flow mismatch bet
 When the load is active, a rigid velocity constraint must be enforced between the distal port of Link$_6$ and the payload body.
 This is achieved via a 1-junction (\texttt{OneJunction$_1$}) connected to a very stiff C element (compliance $c = 10^{-6}$~m/N), which approximates a rigid kinematic constraint while preserving full integral causality:
 \begin{equation}
-  \boldsymbol{\tau}_{\text{constraint}} = \frac{1}{c}\int \bigl(\mathbf{f}_{\text{one}} - \mathbf{f}_{\text{ee}}\bigr)\,dt.
+  \boldsymbol{\tau}_{\text{constraint}} = \frac{1}{c}\int \bigl(\mathbf{f}_{\text{one}} - \mathbf{f}_{\text{ee}}\bigr)\,dt
 \end{equation}
 The flow difference $\mathbf{f}_{\text{one}} - \mathbf{f}_{\text{ee}}$ integrates to a very small displacement (due to the high stiffness), and the resulting effort is fed back as the constraint wrench that enforces zero relative motion between the end-effector and the payload.
 An additional resistive element R ($r = 10^4$~Nm\,s/m) is placed on this same 1-junction to damp the high-frequency oscillations of the constraint spring and prevent numerical chattering.
@@ -125,8 +125,8 @@ perfectly zero (at the pick-up instant) and deactivated when the relative veloci
 
 The payload body is modelled as a full 6-DOF inertia element (I-field) with translational mass $m_{\text{load}}$ and rotational inertia $J_{\text{load}}$:
 \begin{align}
-  \dot{\mathbf{p}} &= \frac{1}{m_{\text{load}}}\bigl(\mathbf{f}_e^{[1:3]} - m_{\text{load}}\,\boldsymbol{\omega}\times\mathbf{v}\bigr), \\
-  \dot{\mathbf{h}} &= J_{\text{load}}^{-1}\bigl(\mathbf{f}_e^{[4:6]} - \boldsymbol{\omega}\times J_{\text{load}}\boldsymbol{\omega}\bigr),
+  \dot{\mathbf{p}} &= \frac{1}{m_{\text{load}}}\bigl(\mathbf{f}_e^{[1:3]} - m_{\text{load}}\,\boldsymbol{\omega}\times\mathbf{v}\bigr) \\
+  \dot{\mathbf{h}} &= J_{\text{load}}^{-1}\bigl(\mathbf{f}_e^{[4:6]} - \boldsymbol{\omega}\times J_{\text{load}}\boldsymbol{\omega}\bigr)
 \end{align}
 where $\mathbf{v}$ and $\boldsymbol{\omega}$ are the linear and angular velocities of the load frame, and $\mathbf{f}_e$ is the six-dimensional wrench exerted by the constraint.
 The default parameters are $m_{\text{load}} = 1.0$~kg and $J_{\text{load}} = \text{diag}(0.001, 0.001, 0.001)$~kg\,m$^2$.
@@ -136,7 +136,7 @@ The default parameters are $m_{\text{load}} = 1.0$~kg and $J_{\text{load}} = \te
 A dedicated modulated source of effort \texttt{g} applies the gravitational wrench to the payload.
 It receives the same boolean \texttt{Cond} signal and the transformation matrix $T_6$ of the end-effector frame:
 \begin{equation}
-  \mathbf{F}_{\text{grav}}^{[1:3]} = R_6^T \begin{bmatrix}0\\0\\-m_{\text{load}}\,g\end{bmatrix}, \qquad \mathbf{F}_{\text{grav}}^{[4:6]} = \mathbf{0},
+  \mathbf{F}_{\text{grav}}^{[1:3]} = R_6^T \begin{bmatrix}0\\0\\-m_{\text{load}}\,g\end{bmatrix}, \qquad \mathbf{F}_{\text{grav}}^{[4:6]} = \mathbf{0}
 \end{equation}
 where $R_6$ is the rotation matrix of the end-effector frame extracted from $T_6$.
 When \texttt{Cond} is false, the gravitational effort is set to zero, consistent with the decoupled load.

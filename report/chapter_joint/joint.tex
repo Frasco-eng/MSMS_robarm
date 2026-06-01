@@ -138,17 +138,17 @@ Given the joint angle $\theta_i = q_i + \tilde{q}_i$ and the stored parameters, 
     \cos\theta_i & -\sin\theta_i\cos\alpha_i &  \sin\theta_i\sin\alpha_i \\
     \sin\theta_i &  \cos\theta_i\cos\alpha_i & -\cos\theta_i\sin\alpha_i \\
     0            &  \sin\alpha_i             &  \cos\alpha_i
-  \end{pmatrix}, \\[6pt]
+  \end{pmatrix} \\[6pt]
   P_i &= \begin{pmatrix}
     a_i\cos\theta_i \\ a_i\sin\theta_i \\ d_i
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{align}
 The MTF enforces power continuity by transforming twists and wrenches (the notation pedix has been shifted of one index for clarity):
 \begin{align}
-  \tau_{\text{ipp}} &= R_i^T \tau_i, \\
-  f_{\text{ipp}}    &= R_i^T f_i - R_i^T (P_i \times \tau_i), \\
-  \omega_i          &= R_i\,\omega_{\text{ipp}}, \\
-  v_i               &= P_i \times R_i\,\omega_{\text{ipp}} + R_i\,v_{\text{ipp}}.
+  \tau_{\text{ipp}} &= R_i^T \tau_i \\
+  f_{\text{ipp}}    &= R_i^T f_i - R_i^T (P_i \times \tau_i) \\
+  \omega_i          &= R_i\,\omega_{\text{ipp}} \\
+  v_i               &= P_i \times R_i\,\omega_{\text{ipp}} + R_i\,v_{\text{ipp}}
 \end{align}
 Simultaneously, the MTF outputs the homogeneous transformation matrix $T_i$ as a signal to be used by the 3D animation tool for the visual representation of the kinematic chain.
 
@@ -177,7 +177,7 @@ The joint sub-model presents the most complex causality situation in the entire 
   \item The inbound port \texttt{twist\_i} has \emph{fixed effort-out} causality: the joint \emph{imposes} force/torque on the previous link and \emph{receives} velocity from it.
   \item The outbound port \texttt{twist\_ipp} has \emph{fixed effort-out} causality as well: the joint imposes force/torque on the next link.
   \item The MTF has a \emph{causality constraint}: the two sides must have opposite causality (one effort-in, one effort-out).
-  \item The constraint elements (\texttt{Vel\_constr} for translational DoFs, \texttt{Omega\_constr} for $xy$-rotation) set effort from flow via an algebraic constraint equation, implying \emph{derivative causality} on the constrained directions.
+  \item The constraint elements (\texttt{Vel\_constr} for translational DoFs, \texttt{Omega\_constr} for $xy$-rotation) set effort from flow via an algebraic constraint equation. It constraints the flow of all the translational and two rotational Dofs ($x$ and $y$) to zero, while the remaining rotational DoF ($z$) is left free.
   \item The \texttt{actuator} port has \emph{fixed-in causality}: the motor effort is imposed externally, so the 0-junction for $q_z$ has \emph{one effort-in} element (the actuator).
 \end{itemize}
 

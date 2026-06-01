@@ -123,10 +123,10 @@ Denoting the generalised momentum as
 \end{equation}
 one obtains the state-space form that 20-sim integrates directly:
 \begin{align}
-  \dot{p}_{\text{lin}} &= f^{\text{ext}} - m\,\omega \times v_G, \\
-  \dot{h}_{\text{ang}} &= \tau^{\text{ext}} - \omega \times J\omega, \\
-  v_G &= p_{\text{lin}} / m, \\
-  \omega &= J^{-1} h_{\text{ang}}.
+  \dot{p}_{\text{lin}} &= f^{\text{ext}} - m\,\omega \times v_G \\
+  \dot{h}_{\text{ang}} &= \tau^{\text{ext}} - \omega \times J\omega \\
+  v_G &= p_{\text{lin}} / m \\
+  \omega &= J^{-1} h_{\text{ang}}
 \end{align}
 
 \subsection{Body Submodel}
@@ -164,7 +164,7 @@ Internally the model contains:
 The gravitational force in the inertial frame is $f_g = [0,\,0,\,-mg]^T$.
 To express it in the body frame of link $i$, the rotation matrix $\prescript{0}{}{i}R \in SO(3)$ extracted from \texttt{T\_next} (namely, $\prescript{0}{}{T}_i$) is used:
 \begin{equation}
-  \prescript{body}{}{f}_g = \prescript{0}{}{R}_i^\top \begin{pmatrix}0\\0\\-mg\end{pmatrix}, \qquad \prescript{body}{}{\tau}_g = \mathbf{0}.
+  \prescript{body}{}{f}_g = \prescript{0}{}{R}_i^\top \begin{pmatrix}0\\0\\-mg\end{pmatrix} \qquad \prescript{body}{}{\tau}_g = \mathbf{0}
 \end{equation}
 This wrench is injected at the 1-junction so that it acts on the body mass.
 
@@ -173,8 +173,8 @@ In the developed architecture, the physical rigid-body transformation across the
 Consequently, both the input and output power ports of the \texttt{Link} sub-model are referenced to the same spatial location: the local origin of frame $i$.
 Let $W = [f, \tau]^T$ be the generic wrench and $\nu = [v, \omega]^T$ be the generic twist. The mathematical relations governing the power-preserving transformation from the port origin to the CoM are:
 \begin{align}
-  v_{\text{port}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
-  \tau_{\text{G}} &= \tau_{\text{G}} - r_{GP} \times f_{\text{G}}.
+  v_{\text{port}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}} \\
+  \tau_{\text{G}} &= \tau_{\text{G}} - r_{GP} \times f_{\text{G}}
 \end{align}
 
 Based on the bond-graph causalities, the two MTF blocks implement these equations as follows.
@@ -232,10 +232,10 @@ This block receives efforts from the upstream joint and dictates flows back to i
 \end{figure}
 
 \begin{align}
-  v_{\text{in}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
-  \omega_{\text{in}} &= \omega_{\text{G}}, \\
-  \tau_{\text{G}} &= \tau_{\text{in}} - r_{GP} \times f_{\text{in}}, \\
-  f_{\text{G}} &= f_{\text{in}}.
+  v_{\text{in}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}} \\
+  \omega_{\text{in}} &= \omega_{\text{G}} \\
+  \tau_{\text{G}} &= \tau_{\text{in}} - r_{GP} \times f_{\text{in}} \\
+  f_{\text{G}} &= f_{\text{in}}
 \end{align}
 
 \paragraph{MTF (\texttt{com\_ipp}):}
@@ -291,10 +291,10 @@ Similarly, this block connects the CoM 1-junction to the downstream joint interf
 \end{figure}
 
 \begin{align}
-  v_{\text{out}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}}, \\
-  \omega_{\text{out}} &= \omega_{\text{G}}, \\
-  \tau_{\text{G}} &= \tau_{\text{out}} - r_{GP} \times f_{\text{out}}, \\
-  f_{\text{G}} &= f_{\text{out}}.
+  v_{\text{out}} &= v_{\text{G}} + r_{GP} \times \omega_{\text{G}} \\
+  \omega_{\text{out}} &= \omega_{\text{G}} \\
+  \tau_{\text{G}} &= \tau_{\text{out}} - r_{GP} \times f_{\text{out}} \\
+  f_{\text{G}} &= f_{\text{out}}
 \end{align}
 
 Both sets of equations ensure that the linear and angular power $P = f^T v + \tau^T \omega$ is strictly conserved across the coordinate shift.

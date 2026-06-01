@@ -76,28 +76,28 @@ The key elements are:
 \paragraph{Gearbox inertia (I element).}
 The harmonic drive inertia $J_{\text{rotor}}$ stores kinetic energy:
 \begin{equation}
-  J\,\dot{\omega}_m = \tau_m - \tau_{\text{friction}} - \tau_{\text{elastic}}/N,
+  J\,\dot{\omega}_m = \tau_m - \tau_{\text{friction}} - \tau_{\text{elastic}}/N
 \end{equation}
 where $\omega_m$ is the motor angular velocity and $N$ is the gear ratio (negative due to sign convention, default $N=-0.01$, i.e.\ ratio of 100).
 
 \paragraph{Gear ratio (TF element).}
 The transformer element with ratio $N$ enforces:
 \begin{equation}
-  \tau_m = N \, \tau_{\text{out}}, \qquad \omega_{\text{out}} = N \, \omega_m.
+  \tau_m = N \, \tau_{\text{out}}, \qquad \omega_{\text{out}} = N \, \omega_m
 \end{equation}
 
 \paragraph{Torsional stiffness (C element -- smooth cubic).}
 The flex-spline introduces a non-linear torsional compliance.
 The constitutive law is implemented as a smooth cubic polynomial that interpolates the three stiffness breakpoints:
 \begin{equation}
-  \tau_s(\varphi) = a\,\varphi^3 + b\,\varphi,
+  \tau_s(\varphi) = a\,\varphi^3 + b\,\varphi
 \end{equation}
 where $\varphi = \int(\omega_{\text{out}} - \omega_{\text{load}})\,dt$ is the elastic twist of the flex-spline, and the coefficients $a$ and $b$ are computed from the three-zone stiffness data via:
 \begin{align}
-  \varphi_1 &= \frac{T_1}{k_1}, \qquad \varphi_2 = \varphi_1 + \frac{T_2 - T_1}{k_2}, \\
-  \Delta &= \varphi_1\,\varphi_2\bigl(\varphi_1^2 - \varphi_2^2\bigr), \\
-  a &= \frac{\varphi_2\,T_1 - \varphi_1\,T_2}{\Delta}, \qquad
-  b = \frac{-\varphi_2^3\,T_1 + \varphi_1^3\,T_2}{\Delta},
+  \varphi_1 &= \frac{T_1}{k_1} \qquad \varphi_2 = \varphi_1 + \frac{T_2 - T_1}{k_2} \\
+  \Delta &= \varphi_1\,\varphi_2\bigl(\varphi_1^2 - \varphi_2^2\bigr) \\
+  a &= \frac{\varphi_2\,T_1 - \varphi_1\,T_2}{\Delta} \qquad
+  b = \frac{-\varphi_2^3\,T_1 + \varphi_1^3\,T_2}{\Delta}
 \end{align}
 
 
@@ -106,7 +106,7 @@ At the motor-side 1-junction (input shaft), a combined resistance element captur
 \begin{equation}
   \tau_f(\omega) = \frac{b_{f,+} - b_{f,-}}{2} \cdot \frac{2}{\pi}\arctan\!\Bigl(\omega - \tan\!\Bigl(\frac{\pi}{2}\cdot\frac{b_{f,+}+b_{f,-}}{b_{f,+}-b_{f,-}}\Bigr)\Bigr)
   + \frac{b_{f,+}+b_{f,-}}{2}
-  + b_w\,\omega,
+  + b_w\,\omega
 \end{equation}
 with $b_{f,+} = 0.008$~Nm and $b_{f,-} = -0.007$~Nm, and $b_w = 6.4\times10^{-4}$~Nm\,s/rad.
 The $\arctan$ regularisation avoids a discontinuity at zero velocity and ensures numerical stability.
@@ -119,7 +119,7 @@ A third resistance element is placed at the compliance 1-junction, in parallel w
 This models the internal structural damping of the flex-spline itself: as the flex-spline elastically deforms, part of the stored energy is dissipated through material hysteresis.
 The resistance is governed by the same smooth regularised formula:
 \begin{equation}
-  \tau_{d}(\dot{\varphi}) = B_s \cdot \frac{2}{\pi}\arctan(\dot{\varphi}) + b_w\,\dot{\varphi},
+  \tau_{d}(\dot{\varphi}) = B_s \cdot \frac{2}{\pi}\arctan(\dot{\varphi}) + b_w\,\dot{\varphi}
 \end{equation}
 where $\dot{\varphi} = \omega_{\text{out}} - \omega_{\text{load}}$ is the relative angular velocity across the flex-spline,
 $B_s = 0.4$~Nm is the symmetric Coulomb-like structural damping coefficient (i.e.\ $B_{s,+} = 0.4$~Nm, $B_{s,-} = -0.4$~Nm), and $b_w$ is the same viscous coefficient shared with the shaft friction elements.
