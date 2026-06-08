@@ -132,23 +132,23 @@ These are set for each of the six joints according to \ref{tab:dh_params}.
 \section{The MTF Element as a DH Transformer}
 
 The core of the \texttt{Joint} model is an MTF element that implements the DH transformation.
-Given the joint angle $\theta_i = q_i + \tilde{q}_i$ and the stored parameters, the rotation matrix $R_i$ and translation $P_i$ are computed as follows:
+Given the joint angle $\theta_i = q_i + \tilde{q}_i$ and the stored parameters, the rotation matrix $^{i-1}R_i$ and translation $^{i-1}P_i$ are computed as follows:
 \begin{align}
-  R_i &= \begin{pmatrix}
+  ^{i-1}R_i &= \begin{pmatrix}
     \cos\theta_i & -\sin\theta_i\cos\alpha_i &  \sin\theta_i\sin\alpha_i \\
     \sin\theta_i &  \cos\theta_i\cos\alpha_i & -\cos\theta_i\sin\alpha_i \\
     0            &  \sin\alpha_i             &  \cos\alpha_i
   \end{pmatrix} \\[6pt]
-  P_i &= \begin{pmatrix}
+  ^{i-1}P_i &= \begin{pmatrix}
     a_i\cos\theta_i \\ a_i\sin\theta_i \\ d_i
   \end{pmatrix}
 \end{align}
 The MTF enforces power continuity by transforming twists and wrenches (the notation pedix has been shifted of one index for clarity):
 \begin{align}
-  \tau_{\text{ipp}} &= R_i^T \tau_i \\
-  f_{\text{ipp}}    &= R_i^T f_i - R_i^T (P_i \times \tau_i) \\
-  \omega_i          &= R_i\,\omega_{\text{ipp}} \\
-  v_i               &= P_i \times R_i\,\omega_{\text{ipp}} + R_i\,v_{\text{ipp}}
+  \tau_{\text{ipp}} &= {}^{i-1}R_i^T \tau_i - {}^{i-1}R_i^T ({ }^{i-1}P_i \times \tau_i) \\
+  f_{\text{ipp}}    &= {}^{i-1}R_i^T f_i  \\
+  \omega_i          &= {}^{i-1}R_i\,\omega_{\text{ipp}} \\
+  v_i               &= {}^{i-1}P_i \times {}^{i-1}R_i\,\omega_{\text{ipp}} + {}^{i-1}R_i\,v_{\text{ipp}}
 \end{align}
 Simultaneously, the MTF outputs the homogeneous transformation matrix $T_i$ as a signal to be used by the 3D animation tool for the visual representation of the kinematic chain.
 
